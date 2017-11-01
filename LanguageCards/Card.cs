@@ -8,6 +8,8 @@ namespace LanguageCards
 {
     public class Card
     {
+        public int Id { get; set; }
+
         /// <summary>
         /// Word itself
         /// </summary>
@@ -26,9 +28,9 @@ namespace LanguageCards
         /// <summary>
         /// Represents a set of examples containing this word
         /// </summary>
-        public ICollection<string> Examples { get; set; }
+        public ICollection<Example> Examples { get; set; }
 
-        public Card(string word, string definition, string translation, IEnumerable<string> examples)
+        public Card(string word, string definition, string translation, IEnumerable<Example> examples)
         {
             Word = word;
             Definition = definition;
