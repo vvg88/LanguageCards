@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanguageCards", "LanguageCards\LanguageCards.csproj", "{D8A9C04C-1506-4288-8395-367462CFEE07}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanguageCards", "LanguageCards\LanguageCards.csproj", "{FA4B0C47-841E-4C28-9706-F15915C1B580}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D8A9C04C-1506-4288-8395-367462CFEE07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D8A9C04C-1506-4288-8395-367462CFEE07}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D8A9C04C-1506-4288-8395-367462CFEE07}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D8A9C04C-1506-4288-8395-367462CFEE07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA4B0C47-841E-4C28-9706-F15915C1B580}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA4B0C47-841E-4C28-9706-F15915C1B580}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA4B0C47-841E-4C28-9706-F15915C1B580}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA4B0C47-841E-4C28-9706-F15915C1B580}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
