@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2006
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanguageCards", "LanguageCards\LanguageCards.csproj", "{B255995E-43E3-4D77-9A0E-02A3A05C4BFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanguageCards", "LanguageCards\LanguageCards.csproj", "{ABC87148-866A-4BA2-8884-8597C2D6F38A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B255995E-43E3-4D77-9A0E-02A3A05C4BFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B255995E-43E3-4D77-9A0E-02A3A05C4BFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B255995E-43E3-4D77-9A0E-02A3A05C4BFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B255995E-43E3-4D77-9A0E-02A3A05C4BFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABC87148-866A-4BA2-8884-8597C2D6F38A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABC87148-866A-4BA2-8884-8597C2D6F38A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABC87148-866A-4BA2-8884-8597C2D6F38A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABC87148-866A-4BA2-8884-8597C2D6F38A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

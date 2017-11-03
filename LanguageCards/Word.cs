@@ -4,14 +4,11 @@ using System.Text;
 
 namespace LanguageCards
 {
-    public class Example
+    public class Word
     {
         public int Id { get; set; }
         public string Text { get; set; }
-
-        public Example(string text)
-        {
-            Text = text;
-        }
+        public string Language { get; set; }
+        public WordClass ClassOfWord { get; set; }
     }
 }

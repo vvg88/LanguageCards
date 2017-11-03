@@ -10,6 +10,7 @@ namespace LanguageCards
     public class CardsDb : DbContext
     {
         public DbSet<Card> Cards { get; set; }
+        public DbSet<Word> Words { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
