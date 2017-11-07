@@ -1,16 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using LanguageCards.Data.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LanguageCards
+namespace LanguageCards.Data
 {
     public class CardsDb : DbContext
     {
         public DbSet<Card> Cards { get; set; }
-        public DbSet<Word> Words { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<CardScore> CardScores { get; set; }
+        public DbSet<Language> Languages { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using LanguageCards.Data;
+using LanguageCards.Data.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -12,23 +14,24 @@ namespace LanguageCards
             using (CardsDb CardsDataBase = new CardsDb())
             {
                 DbInitializer.InitializeContext(CardsDataBase);
-
-                var sortedCards = CardsDataBase.Cards.OrderBy(card => card.Word.Text);
-
-                foreach (var card in CardsDataBase.Cards)
+                var sortedCards = CardsDataBase.Cards.Include(card => card.Word)
+                                                     .Include(card => card.Word.Language)
+                                                     .Include(card => card.Word.Translations)
+                                                     .OrderBy(card => card.Word.Text);
+                
+                foreach (var card in sortedCards)
                 {
                     Console.WriteLine($"{card.Word.Text}: ");
                 }
-
                 Console.Write("Type a word: ");
                 var word = Console.ReadLine();
                 var foundCard = sortedCards.FirstOrDefault(card => card.Word.Text == word);
-                /*if (foundCard != null)
+                if (foundCard != null)
                 {
-                    Console.WriteLine(foundCard.Definition);
-                    Console.WriteLine(foundCard.Translations.FirstOrDefault());
-                    Console.WriteLine(foundCard.Example);
-                }*/
+                    Console.WriteLine(foundCard.Word.Definition);
+                    Console.WriteLine(foundCard.Word.Translations.FirstOrDefault());
+                    Console.WriteLine(foundCard.Word.Example);
+                }
             }
 
             Console.Read();

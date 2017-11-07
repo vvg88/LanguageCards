@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LanguageCards
+namespace LanguageCards.Data.Models
 {
     /// <summary>
     /// Parts of speach

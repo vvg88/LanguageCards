@@ -3,10 +3,17 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="ContextInitializer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="SQLQuery1.sql" />
   </ItemGroup>
 
   <ItemGroup>
