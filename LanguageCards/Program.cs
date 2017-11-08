@@ -18,7 +18,8 @@ namespace LanguageCards
                                                      .Include(card => card.Word.Language)
                                                      .Include(card => card.Word.Translations)
                                                      .OrderBy(card => card.Word.Text);
-                
+                var words = CardsDataBase.Words.Include(wrd => wrd.Language).Include(wrd => wrd.ClassOfWord);
+
                 foreach (var card in sortedCards)
                 {
                     Console.WriteLine($"{card.Word.Text}: ");
@@ -29,7 +30,7 @@ namespace LanguageCards
                 if (foundCard != null)
                 {
                     Console.WriteLine(foundCard.Word.Definition);
-                    Console.WriteLine(foundCard.Word.Translations.FirstOrDefault());
+                    Console.WriteLine(foundCard.Word.Translations.FirstOrDefault().Text);
                     Console.WriteLine(foundCard.Word.Example);
                 }
             }

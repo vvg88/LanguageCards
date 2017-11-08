@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2006
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanguageCards", "LanguageCards\LanguageCards.csproj", "{ABC87148-866A-4BA2-8884-8597C2D6F38A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanguageCards.Data", "LanguageCards\LanguageCards.Data.csproj", "{ABC87148-866A-4BA2-8884-8597C2D6F38A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

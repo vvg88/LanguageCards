@@ -5,14 +5,11 @@ using System.Text;
 namespace LanguageCards.Data.Models
 {
     /// <summary>
-    /// Parts of speech
+    /// Represents part of speech
     /// </summary>
-    public enum WordClass
+    public class SpeechPart
     {
-        Noun,
-        Verb,
-        Adjective,
-        Adverb,
-        Pronoun
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }
