@@ -2,3 +2,5 @@
 LanguageCards/bin/
 obj/
 packages/
+.sql
+*.sql
