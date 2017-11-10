@@ -1,10 +1,11 @@
-﻿using System;
+﻿using LanguageCards.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace LanguageCards.Data.Models
+namespace LanguageCards.Data
 {
     static class DbInitializer
     {
@@ -18,7 +19,7 @@ namespace LanguageCards.Data.Models
                 return;
             }
 
-            AddUser(context, "Vladimir", "Grishanin");
+            var user = AddUser(context, "Vladimir", "Grishanin");
             
             var originalLang = AddLang(context, CultureInfo.CurrentCulture);
             var tranlateLang = AddLang(context, CultureInfo.GetCultures(CultureTypes.AllCultures).FirstOrDefault(cultInf => cultInf.Name == "ru"));
@@ -33,7 +34,7 @@ namespace LanguageCards.Data.Models
             };
 
             #region Cards adding
-            AddCard(
+            var card = AddCard(
                 contxt: context,
                 txt: "creation",
                 lang: originalLang,
@@ -46,8 +47,9 @@ namespace LanguageCards.Data.Models
                     new Word() { Text = "Творчество", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Noun] },
                     new Word() { Text = "Созидание", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Noun] }
                 });
+            AddScore(context, card, user);
 
-            AddCard(
+            card = AddCard(
                 contxt: context,
                 txt: "redundant",
                 lang: originalLang,
@@ -60,8 +62,9 @@ namespace LanguageCards.Data.Models
                     new Word() { Text = "Избыточный", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Adjective] },
                     new Word() { Text = "Чрезмерный", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Adjective] }
                 });
+            AddScore(context, card, user);
 
-            AddCard(
+            card = AddCard(
                 contxt: context,
                 txt: "avalanche",
                 lang: originalLang,
@@ -74,8 +77,9 @@ namespace LanguageCards.Data.Models
                     new Word() { Text = "Обвал", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Noun] },
                     new Word() { Text = "Масса", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Noun] }
                 });
+            AddScore(context, card, user);
 
-            AddCard(
+            card = AddCard(
                 contxt: context,
                 txt: "ice",
                 lang: originalLang,
@@ -88,8 +92,9 @@ namespace LanguageCards.Data.Models
                     new Word() { Text = "Ледяной", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Adjective] },
                     new Word() { Text = "Покрываться льдом", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Verb] }
                 });
+            AddScore(context, card, user);
 
-            AddCard(
+            card = AddCard(
                 contxt: context,
                 txt: "patch",
                 lang: originalLang,
@@ -102,8 +107,9 @@ namespace LanguageCards.Data.Models
                     new Word() { Text = "Заплата", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Noun] },
                     new Word() { Text = "Латать", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Verb] }
                 });
+            AddScore(context, card, user);
 
-            AddCard(
+            card = AddCard(
                 contxt: context,
                 txt: "snow",
                 lang: originalLang,
@@ -116,8 +122,9 @@ namespace LanguageCards.Data.Models
                     new Word() { Text = "Снежный", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Adjective] },
                     new Word() { Text = "Заносить снегом", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Verb] }
                 });
+            AddScore(context, card, user);
 
-            AddCard(
+            card = AddCard(
                 contxt: context,
                 txt: "glacier",
                 lang: originalLang,
@@ -128,8 +135,9 @@ namespace LanguageCards.Data.Models
                 {
                     new Word() { Text = "Ледник", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Noun] }
                 });
+            AddScore(context, card, user);
 
-            AddCard(
+            card = AddCard(
                 contxt: context,
                 txt: "snowflake",
                 lang: originalLang,
@@ -140,8 +148,9 @@ namespace LanguageCards.Data.Models
                 {
                     new Word() { Text = "Снежинка", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Noun] },
                 });
+            AddScore(context, card, user);
 
-            AddCard(
+            card = AddCard(
                 contxt: context,
                 txt: "hail",
                 lang: originalLang,
@@ -154,8 +163,9 @@ namespace LanguageCards.Data.Models
                     new Word() { Text = "Оклик", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Noun] },
                     new Word() { Text = "Приветствовать", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Verb] }
                 });
-            
-            AddCard(
+            AddScore(context, card, user);
+
+            card = AddCard(
                 contxt: context,
                 txt: "ice cream",
                 lang: originalLang,
@@ -166,15 +176,19 @@ namespace LanguageCards.Data.Models
                 {
                     new Word() { Text = "Мороженое", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Noun] }
                 });
+            AddScore(context, card, user);
             #endregion
+
+            context.Sessions.Add(new Session() { SessionTime = DateTime.Now.Ticks, Name = "Session1", User = user });
 
             context.SaveChanges();
         }
 
-        private static void AddUser(CardsDb context, string firstName, string lastName)
+        private static User AddUser(CardsDb context, string firstName, string lastName)
         {
             var newUser = new User() { FirstName = firstName, LastName = lastName };
             context.Users.Add(newUser);
+            return newUser;
         }
 
         private static Language AddLang(CardsDb contxt, CultureInfo cInf)
@@ -184,11 +198,12 @@ namespace LanguageCards.Data.Models
             return newLang;
         }
 
-        private static void AddCard(CardsDb contxt, string txt, Language lang, SpeechPart wClass, string defStr, string examp, IEnumerable<Word> translations)
+        private static Card AddCard(CardsDb contxt, string txt, Language lang, SpeechPart wClass, string defStr, string examp, IEnumerable<Word> translations)
         {
             var word = new Term() { Text = txt, Language = lang, ClassOfWord = wClass, Definition = defStr, Example = examp, Translations = translations.ToArray() };
             var card = new Card() { Word = word };
             contxt.Cards.Add(card);
+            return card;
         }
 
         private static SpeechPart AddSpeechPart(CardsDb contxt, WordClass wc)
@@ -196,6 +211,13 @@ namespace LanguageCards.Data.Models
             var speechPart = new SpeechPart() { Name = wc.ToString() };
             contxt.SpeechParts.Add(speechPart);
             return speechPart;
+        }
+
+        private static CardScore AddScore(CardsDb contxt, Card card, User user)
+        {
+            var cardScore = new CardScore() { Card = card, User = user, Score = 0 };
+            contxt.CardScores.Add(cardScore);
+            return cardScore;
         }
     }
 }

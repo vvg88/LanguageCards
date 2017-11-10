@@ -16,6 +16,7 @@ namespace LanguageCards.Data
         public DbSet<Language> Languages { get; set; }
         public DbSet<SpeechPart> SpeechParts { get; set; }
         public DbSet<Word> Words { get; set; }
+        public DbSet<Session> Sessions { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

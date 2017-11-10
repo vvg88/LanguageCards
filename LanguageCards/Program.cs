@@ -1,4 +1,5 @@
 ﻿using LanguageCards.Data;
+using LanguageCards.Data.Access_Layer;
 using LanguageCards.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,25 +15,37 @@ namespace LanguageCards
             using (CardsDb CardsDataBase = new CardsDb())
             {
                 DbInitializer.InitializeContext(CardsDataBase);
-                var sortedCards = CardsDataBase.Cards.Include(card => card.Word)
-                                                     .Include(card => card.Word.Language)
-                                                     .Include(card => card.Word.Translations)
-                                                     .OrderBy(card => card.Word.Text);
-                var words = CardsDataBase.Words.Include(wrd => wrd.Language).Include(wrd => wrd.ClassOfWord);
+                using (var accessProvider = DbAccessLayer.DbAccessProvider)
+                {
+                    var user = accessProvider.GetUsers().FirstOrDefault();
+                    var cards = accessProvider.GetRandomCards(5, user);
+                    foreach (var card in cards)
+                    {
+                        Console.WriteLine($"{card.Word.Text}: ");
+                    }
+                    Console.WriteLine();
 
-                foreach (var card in sortedCards)
-                {
-                    Console.WriteLine($"{card.Word.Text}: ");
+                    cards = accessProvider.GetRandomCards(5, user);
+                    foreach (var card in cards)
+                    {
+                        Console.WriteLine($"{card.Word.Text}: ");
+                    }
+                    Console.WriteLine();
+                    cards = accessProvider.GetRandomCards(5, user);
+                    foreach (var card in cards)
+                    {
+                        Console.WriteLine($"{card.Word.Text}: ");
+                    }
                 }
-                Console.Write("Type a word: ");
-                var word = Console.ReadLine();
-                var foundCard = sortedCards.FirstOrDefault(card => card.Word.Text == word);
-                if (foundCard != null)
-                {
-                    Console.WriteLine(foundCard.Word.Definition);
-                    Console.WriteLine(foundCard.Word.Translations.FirstOrDefault().Text);
-                    Console.WriteLine(foundCard.Word.Example);
-                }
+                //Console.Write("Type a word: ");
+                //var word = Console.ReadLine();
+                //var foundCard = cards.FirstOrDefault(card => card.Word.Text == word);
+                //if (foundCard != null)
+                //{
+                //    Console.WriteLine(foundCard.Word.Definition);
+                //    Console.WriteLine(foundCard.Word.Translations.FirstOrDefault().Text);
+                //    Console.WriteLine(foundCard.Word.Example);
+                //}
             }
 
             Console.Read();
