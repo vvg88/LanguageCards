@@ -1,0 +1,22 @@
+﻿<h1>Cards</h1>
+
+<p>This component demonstrates cards.</p>
+
+<p *ngIf="!cards"><em>Loading...</em></p>
+
+<table class='table' *ngIf="cards">
+    <thead>
+        <tr>
+            <th>Word</th>
+            <th>Definition</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let card of cards">
+            <td>{{ card.word }}</td>
+            <td>{{ card.definition }}</td>
+            <td>{{ card.example }}</td>
+        </tr>
+    </tbody>
+</table>
