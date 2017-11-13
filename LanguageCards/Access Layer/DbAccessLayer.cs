@@ -5,14 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using LanguageCards.Data.Models;
 
-namespace LanguageCards.Data.Access_Layer
+namespace LanguageCards.Data.AccessLayer
 {
     public class DbAccessLayer : IDisposable
     {
         private CardsDb cardsDb;
-        private int[] randomIntegers;
-        private int rndIntegersPosition;
         private Random cardsRandomizer;
+        private List<Card> requestedCardsList;
         private static DbAccessLayer dbAccessProvider;
 
         public static DbAccessLayer DbAccessProvider => dbAccessProvider ?? (dbAccessProvider = new DbAccessLayer());
@@ -21,63 +20,53 @@ namespace LanguageCards.Data.Access_Layer
         {
             cardsRandomizer = new Random();
             cardsDb = new CardsDb();
+            requestedCardsList = new List<Card>();
             DbInitializer.InitializeContext(cardsDb);
         }
-
-        /*public IEnumerable<Card> GetRandomCards(int cardsNumber, User user, UserProgress session, int scoreLessThan = 5)
-        {
-            //var targetCards = cardsDb.Cards.Include(card => card.Word)
-            //                               .Include(card => card.Word.Language)
-            //                               .Include(card => card.Word.Translations);
-            //.Where();
-            var sessionCards = session?.SessionCards;
-            var targetCards = cardsDb.CardScores.Include(cs => cs.Card)
-                                                .Include(cs => cs.User)
-                                                .Where(cs => cs.Score < scoreLessThan && cs.User.Id == user.Id)
-                                                .Select(cs => cs.Card);
-            //var a = sessionCards.Intersect(targetCards);
-            throw new NotImplementedException();
-        }*/
-
+        
         public IEnumerable<Card> GetRandomCards(int cardsNumber, User user, int scoreLessThan = 5)
         {
-            var targetCards = cardsDb.CardScoresStatuses.Where(cs => cs.Score < scoreLessThan && cs.User.Id == user.Id)
-                                                .Select(cs => cs.Card);
-            var cardsAsList = targetCards.Include(c => c.Word).ToList();
-            var rndArr = GetRandomSet(cardsNumber, 0, cardsAsList.Count);
-            return rndArr.Select(i => cardsAsList[i]);
+            if (requestedCardsList.Count == 0)
+            {
+                requestedCardsList = RequestCards(user).ToList();
+            }
+            var randomIndexes = GetRandomSet(cardsNumber, requestedCardsList.Count);
+            var randomCards = randomIndexes.Select(i => requestedCardsList[i]).ToList();
+            requestedCardsList = requestedCardsList.Where((card, i) => !randomIndexes.Contains(i)).ToList();
+            return randomCards;
         }
 
         public IEnumerable<User> GetUsers() => cardsDb.Users;
 
-        /*public IEnumerable<UserProgress> GetSessions(User user) => cardsDb.Sessions.Include(s => s.SessionCards)
-                                                                              .Include(s => s.User)
-                                                                              .Where(s => s.User.Id == user.Id);*/
-
-        private IEnumerable<int> GetRandomSet(int setSize, int setMinVal, int setMaxVal)
+        private IEnumerable<Card> RequestCards(User user, int defaultCardsNum = 50)
         {
-            if (randomIntegers == null || rndIntegersPosition >= randomIntegers.Length)
-                InitRandomSet(setMaxVal - setMinVal);
-
-            var setToReturn = randomIntegers.Skip(rndIntegersPosition).Take(setSize);
-            rndIntegersPosition += setSize;
-            return setToReturn;
+            var targetCards = cardsDb.CardScoresStatuses.Where(cs => (CardStatusEnum)cs.CardStatus.Value == CardStatusEnum.InProcess && cs.User.Id == user.Id)
+                                                        .Select(cs => cs.Card);
+            if (targetCards.Count() == 0)
+            {
+                targetCards = cardsDb.CardScoresStatuses.Where(cs => cs.User.Id == user.Id)
+                                     .Select(cs => cs.Card)
+                                     .Take(defaultCardsNum);
+            }
+            targetCards.Include(card => card.Word).Load();
+            return targetCards;
         }
-
-        private void InitRandomSet(int setSize)
+        
+        private IEnumerable<int> GetRandomSet(int setSize, int setMax)
         {
-            randomIntegers = new int[setSize];
-            rndIntegersPosition = 0;
+            if (setSize > setMax)
+                throw new ArgumentException("Required size of random non-negative integers collection should be more than maximum value!");
+
             var rndList = new List<int>(setSize);
             while (rndList.Count < setSize)
             {
-                var rndVal = cardsRandomizer.Next(setSize);
+                var rndVal = cardsRandomizer.Next(setMax);
                 if (!rndList.Contains(rndVal))
                 {
                     rndList.Add(rndVal);
                 }
             }
-            randomIntegers = rndList.ToArray();
+            return rndList;
         }
 
         public void Dispose()

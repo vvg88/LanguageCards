@@ -11,7 +11,7 @@ namespace LanguageCards.Data
     {
         public static void InitializeContext(CardsDb context)
         {
-            context.Database.EnsureDeleted();
+            //context.Database.EnsureDeleted();
             var b = context.Database.EnsureCreated();
 
             if (context.Cards.Any())
