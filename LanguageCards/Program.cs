@@ -18,7 +18,7 @@ namespace LanguageCards
                 using (var accessProvider = DbAccessLayer.DbAccessProvider)
                 {
                     var user = accessProvider.GetUsers().FirstOrDefault();
-                    var cards = accessProvider.GetRandomCards(5, user);
+                    var cards = accessProvider.GetRandomCards(3, user);
                     foreach (var card in cards)
                     {
                         Console.WriteLine($"{card.Word.Text}: ");

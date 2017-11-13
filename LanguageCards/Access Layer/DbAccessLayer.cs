@@ -30,6 +30,10 @@ namespace LanguageCards.Data.AccessLayer
             {
                 requestedCardsList = RequestCards(user).ToList();
             }
+            else if (requestedCardsList.Count < cardsNumber)
+            {
+                requestedCardsList.AddRange(RequestCards(user).Except(requestedCardsList));
+            }
             var randomIndexes = GetRandomSet(cardsNumber, requestedCardsList.Count);
             var randomCards = randomIndexes.Select(i => requestedCardsList[i]).ToList();
             requestedCardsList = requestedCardsList.Where((card, i) => !randomIndexes.Contains(i)).ToList();

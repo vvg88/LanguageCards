@@ -11,7 +11,7 @@ namespace LanguageCards.Data
     {
         public static void InitializeContext(CardsDb context)
         {
-            //context.Database.EnsureDeleted();
+            context.Database.EnsureDeleted();
             var b = context.Database.EnsureCreated();
 
             if (context.Cards.Any())
@@ -54,7 +54,7 @@ namespace LanguageCards.Data
                     new Word() { Text = "Творчество", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Noun] },
                     new Word() { Text = "Созидание", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Noun] }
                 });
-            AddScore(context, card, user, cardStatuses[CardStatusEnum.NotStudied]);
+            AddScore(context, card, user, cardStatuses[CardStatusEnum.InProcess]);
 
             card = AddCard(
                 contxt: context,
@@ -69,7 +69,7 @@ namespace LanguageCards.Data
                     new Word() { Text = "Избыточный", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Adjective] },
                     new Word() { Text = "Чрезмерный", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Adjective] }
                 });
-            AddScore(context, card, user, cardStatuses[CardStatusEnum.NotStudied]);
+            AddScore(context, card, user, cardStatuses[CardStatusEnum.InProcess]);
 
             card = AddCard(
                 contxt: context,
@@ -84,7 +84,7 @@ namespace LanguageCards.Data
                     new Word() { Text = "Обвал", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Noun] },
                     new Word() { Text = "Масса", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Noun] }
                 });
-            AddScore(context, card, user, cardStatuses[CardStatusEnum.NotStudied]);
+            AddScore(context, card, user, cardStatuses[CardStatusEnum.InProcess]);
 
             card = AddCard(
                 contxt: context,
@@ -99,7 +99,7 @@ namespace LanguageCards.Data
                     new Word() { Text = "Ледяной", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Adjective] },
                     new Word() { Text = "Покрываться льдом", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Verb] }
                 });
-            AddScore(context, card, user, cardStatuses[CardStatusEnum.NotStudied]);
+            AddScore(context, card, user, cardStatuses[CardStatusEnum.InProcess]);
 
             card = AddCard(
                 contxt: context,
@@ -114,7 +114,7 @@ namespace LanguageCards.Data
                     new Word() { Text = "Заплата", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Noun] },
                     new Word() { Text = "Латать", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Verb] }
                 });
-            AddScore(context, card, user, cardStatuses[CardStatusEnum.NotStudied]);
+            AddScore(context, card, user, cardStatuses[CardStatusEnum.InProcess]);
 
             card = AddCard(
                 contxt: context,
