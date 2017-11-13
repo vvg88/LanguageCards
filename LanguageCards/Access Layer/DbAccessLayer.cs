@@ -24,7 +24,7 @@ namespace LanguageCards.Data.Access_Layer
             DbInitializer.InitializeContext(cardsDb);
         }
 
-        public IEnumerable<Card> GetRandomCards(int cardsNumber, User user, Session session, int scoreLessThan = 5)
+        /*public IEnumerable<Card> GetRandomCards(int cardsNumber, User user, UserProgress session, int scoreLessThan = 5)
         {
             //var targetCards = cardsDb.Cards.Include(card => card.Word)
             //                               .Include(card => card.Word.Language)
@@ -35,24 +35,24 @@ namespace LanguageCards.Data.Access_Layer
                                                 .Include(cs => cs.User)
                                                 .Where(cs => cs.Score < scoreLessThan && cs.User.Id == user.Id)
                                                 .Select(cs => cs.Card);
-            var a = sessionCards.Intersect(targetCards);
+            //var a = sessionCards.Intersect(targetCards);
             throw new NotImplementedException();
-        }
+        }*/
 
         public IEnumerable<Card> GetRandomCards(int cardsNumber, User user, int scoreLessThan = 5)
         {
-            var targetCards = cardsDb.CardScores.Where(cs => cs.Score < scoreLessThan && cs.User.Id == user.Id)
+            var targetCards = cardsDb.CardScoresStatuses.Where(cs => cs.Score < scoreLessThan && cs.User.Id == user.Id)
                                                 .Select(cs => cs.Card);
             var cardsAsList = targetCards.Include(c => c.Word).ToList();
-            var rndArr = GetRandomSet(cardsNumber, 0, targetCards.Count());
+            var rndArr = GetRandomSet(cardsNumber, 0, cardsAsList.Count);
             return rndArr.Select(i => cardsAsList[i]);
         }
 
         public IEnumerable<User> GetUsers() => cardsDb.Users;
 
-        public IEnumerable<Session> GetSessions(User user) => cardsDb.Sessions.Include(s => s.SessionCards)
+        /*public IEnumerable<UserProgress> GetSessions(User user) => cardsDb.Sessions.Include(s => s.SessionCards)
                                                                               .Include(s => s.User)
-                                                                              .Where(s => s.User.Id == user.Id);
+                                                                              .Where(s => s.User.Id == user.Id);*/
 
         private IEnumerable<int> GetRandomSet(int setSize, int setMinVal, int setMaxVal)
         {

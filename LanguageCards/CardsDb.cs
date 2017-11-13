@@ -12,11 +12,11 @@ namespace LanguageCards.Data
     {
         public DbSet<Card> Cards { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<CardScore> CardScores { get; set; }
+        public DbSet<CardScoreAndStatus> CardScoresStatuses { get; set; }
         public DbSet<Language> Languages { get; set; }
         public DbSet<SpeechPart> SpeechParts { get; set; }
         public DbSet<Word> Words { get; set; }
-        public DbSet<Session> Sessions { get; set; }
+        public DbSet<CardStatus> Statuses { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

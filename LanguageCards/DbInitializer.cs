@@ -11,7 +11,7 @@ namespace LanguageCards.Data
     {
         public static void InitializeContext(CardsDb context)
         {
-            //context.Database.EnsureDeleted();
+            context.Database.EnsureDeleted();
             var b = context.Database.EnsureCreated();
 
             if (context.Cards.Any())
@@ -33,6 +33,13 @@ namespace LanguageCards.Data
                 { WordClass.Pronoun, AddSpeechPart(context, WordClass.Pronoun) },
             };
 
+            var cardStatuses = new Dictionary<CardStatusEnum, CardStatus>
+            {
+                {CardStatusEnum.NotStudied, AddCardStatus(context, CardStatusEnum.NotStudied) },
+                {CardStatusEnum.InProcess, AddCardStatus(context, CardStatusEnum.InProcess) },
+                {CardStatusEnum.Finished, AddCardStatus(context, CardStatusEnum.Finished) },
+            };
+
             #region Cards adding
             var card = AddCard(
                 contxt: context,
@@ -47,7 +54,7 @@ namespace LanguageCards.Data
                     new Word() { Text = "Творчество", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Noun] },
                     new Word() { Text = "Созидание", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Noun] }
                 });
-            AddScore(context, card, user);
+            AddScore(context, card, user, cardStatuses[CardStatusEnum.NotStudied]);
 
             card = AddCard(
                 contxt: context,
@@ -62,7 +69,7 @@ namespace LanguageCards.Data
                     new Word() { Text = "Избыточный", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Adjective] },
                     new Word() { Text = "Чрезмерный", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Adjective] }
                 });
-            AddScore(context, card, user);
+            AddScore(context, card, user, cardStatuses[CardStatusEnum.NotStudied]);
 
             card = AddCard(
                 contxt: context,
@@ -77,7 +84,7 @@ namespace LanguageCards.Data
                     new Word() { Text = "Обвал", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Noun] },
                     new Word() { Text = "Масса", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Noun] }
                 });
-            AddScore(context, card, user);
+            AddScore(context, card, user, cardStatuses[CardStatusEnum.NotStudied]);
 
             card = AddCard(
                 contxt: context,
@@ -92,7 +99,7 @@ namespace LanguageCards.Data
                     new Word() { Text = "Ледяной", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Adjective] },
                     new Word() { Text = "Покрываться льдом", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Verb] }
                 });
-            AddScore(context, card, user);
+            AddScore(context, card, user, cardStatuses[CardStatusEnum.NotStudied]);
 
             card = AddCard(
                 contxt: context,
@@ -107,7 +114,7 @@ namespace LanguageCards.Data
                     new Word() { Text = "Заплата", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Noun] },
                     new Word() { Text = "Латать", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Verb] }
                 });
-            AddScore(context, card, user);
+            AddScore(context, card, user, cardStatuses[CardStatusEnum.NotStudied]);
 
             card = AddCard(
                 contxt: context,
@@ -122,7 +129,7 @@ namespace LanguageCards.Data
                     new Word() { Text = "Снежный", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Adjective] },
                     new Word() { Text = "Заносить снегом", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Verb] }
                 });
-            AddScore(context, card, user);
+            AddScore(context, card, user, cardStatuses[CardStatusEnum.NotStudied]);
 
             card = AddCard(
                 contxt: context,
@@ -135,7 +142,7 @@ namespace LanguageCards.Data
                 {
                     new Word() { Text = "Ледник", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Noun] }
                 });
-            AddScore(context, card, user);
+            AddScore(context, card, user, cardStatuses[CardStatusEnum.NotStudied]);
 
             card = AddCard(
                 contxt: context,
@@ -148,7 +155,7 @@ namespace LanguageCards.Data
                 {
                     new Word() { Text = "Снежинка", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Noun] },
                 });
-            AddScore(context, card, user);
+            AddScore(context, card, user, cardStatuses[CardStatusEnum.NotStudied]);
 
             card = AddCard(
                 contxt: context,
@@ -163,7 +170,7 @@ namespace LanguageCards.Data
                     new Word() { Text = "Оклик", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Noun] },
                     new Word() { Text = "Приветствовать", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Verb] }
                 });
-            AddScore(context, card, user);
+            AddScore(context, card, user, cardStatuses[CardStatusEnum.NotStudied]);
 
             card = AddCard(
                 contxt: context,
@@ -176,10 +183,8 @@ namespace LanguageCards.Data
                 {
                     new Word() { Text = "Мороженое", Language = tranlateLang, ClassOfWord = speechParts[WordClass.Noun] }
                 });
-            AddScore(context, card, user);
+            AddScore(context, card, user, cardStatuses[CardStatusEnum.NotStudied]);
             #endregion
-
-            context.Sessions.Add(new Session() { SessionTime = DateTime.Now.Ticks, Name = "Session1", User = user });
 
             context.SaveChanges();
         }
@@ -208,16 +213,23 @@ namespace LanguageCards.Data
 
         private static SpeechPart AddSpeechPart(CardsDb contxt, WordClass wc)
         {
-            var speechPart = new SpeechPart() { Name = wc.ToString() };
+            var speechPart = new SpeechPart() { Value = (int)wc, Name = wc.ToString() };
             contxt.SpeechParts.Add(speechPart);
             return speechPart;
         }
 
-        private static CardScore AddScore(CardsDb contxt, Card card, User user)
+        private static CardScoreAndStatus AddScore(CardsDb contxt, Card card, User user, CardStatus cardStat)
         {
-            var cardScore = new CardScore() { Card = card, User = user, Score = 0 };
-            contxt.CardScores.Add(cardScore);
+            var cardScore = new CardScoreAndStatus() { Card = card, User = user, Score = 0, MaxScore = 5, CardStatus = cardStat };
+            contxt.CardScoresStatuses.Add(cardScore);
             return cardScore;
+        }
+
+        private static CardStatus AddCardStatus(CardsDb contxt, CardStatusEnum cStat)
+        {
+            var crdStat = new CardStatus() { Value = (int)cStat, Name = cStat.ToString() };
+            contxt.Statuses.Add(crdStat);
+            return crdStat;
         }
     }
 }
