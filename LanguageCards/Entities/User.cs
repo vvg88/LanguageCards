@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LanguageCards.Data.Models
+namespace LanguageCards.Data.Entities
 {
     public class User
     {

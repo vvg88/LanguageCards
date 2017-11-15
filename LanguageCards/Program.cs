@@ -1,6 +1,6 @@
 ﻿using LanguageCards.Data;
 using LanguageCards.Data.AccessLayer;
-using LanguageCards.Data.Models;
+using LanguageCards.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Globalization;
@@ -12,7 +12,7 @@ namespace LanguageCards
     {
         static void Main(string[] args)
         {
-            using (CardsDb CardsDataBase = new CardsDb())
+            using (LanguageCardsContext CardsDataBase = new LanguageCardsContext())
             {
                 DbInitializer.InitializeContext(CardsDataBase);
                 using (var accessProvider = DbAccessLayer.DbAccessProvider)

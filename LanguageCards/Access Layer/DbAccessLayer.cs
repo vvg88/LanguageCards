@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using LanguageCards.Data.Models;
+using LanguageCards.Data.Entities;
 
 namespace LanguageCards.Data.AccessLayer
 {
     public class DbAccessLayer : IDisposable
     {
-        private CardsDb cardsDb;
+        private LanguageCardsContext cardsDb;
         private Random cardsRandomizer;
         private List<Card> requestedCardsList;
         private static DbAccessLayer dbAccessProvider;
@@ -19,7 +19,7 @@ namespace LanguageCards.Data.AccessLayer
         private DbAccessLayer()
         {
             cardsRandomizer = new Random();
-            cardsDb = new CardsDb();
+            cardsDb = new LanguageCardsContext();
             requestedCardsList = new List<Card>();
             DbInitializer.InitializeContext(cardsDb);
         }
@@ -44,11 +44,11 @@ namespace LanguageCards.Data.AccessLayer
 
         private IEnumerable<Card> RequestCards(User user, int defaultCardsNum = 50)
         {
-            var targetCards = cardsDb.CardScoresStatuses.Where(cs => (CardStatusEnum)cs.CardStatus.Value == CardStatusEnum.InProcess && cs.User.Id == user.Id)
+            var targetCards = cardsDb.CardProgresses.Where(cs => (CardStatusEnum)cs.CardStatus.Value == CardStatusEnum.InProgress && cs.User.Id == user.Id)
                                                         .Select(cs => cs.Card);
             if (targetCards.Count() == 0)
             {
-                targetCards = cardsDb.CardScoresStatuses.Where(cs => cs.User.Id == user.Id)
+                targetCards = cardsDb.CardProgresses.Where(cs => cs.User.Id == user.Id)
                                      .Select(cs => cs.Card)
                                      .Take(defaultCardsNum);
             }

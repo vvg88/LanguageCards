@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace LanguageCards.Data.Models
+namespace LanguageCards.Data.Enums
 {
     public enum CardStatusEnum
     {
-        NotStudied,
-        InProcess,
+        NotStudied = 1,
+        InProgress,
         Finished
     }
 }
