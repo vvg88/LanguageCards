@@ -12,7 +12,7 @@ namespace LanguageCards.Data
     {
         public static void InitializeContext(LanguageCardsContext context)
         {
-            context.Database.EnsureDeleted();
+            //context.Database.EnsureDeleted();
             var b = context.Database.EnsureCreated();
 
             if (context.Cards.Any())
@@ -22,8 +22,8 @@ namespace LanguageCards.Data
 
             var user = AddUser(context, "Vladimir", "Grishanin");
             
-            var originalLang = AddLang(context, CultureInfo.CurrentCulture);
-            var tranlateLang = AddLang(context, CultureInfo.GetCultures(CultureTypes.AllCultures)
+            var originalLang = AddLanguage(context, CultureInfo.CurrentCulture);
+            var translateLang = AddLanguage(context, CultureInfo.GetCultures(CultureTypes.AllCultures)
                                                            .FirstOrDefault(cultInf => cultInf.Name == "ru"));
 
             var speechParts = new Dictionary<SpeechPartEnum, SpeechPart>
@@ -37,12 +37,12 @@ namespace LanguageCards.Data
 
             var cardStatuses = new Dictionary<CardStatusEnum, CardStatus>
             {
-                {CardStatusEnum.NotStudied, AddCardStatus(context, CardStatusEnum.NotStudied) },
                 {CardStatusEnum.InProgress, AddCardStatus(context, CardStatusEnum.InProgress) },
                 {CardStatusEnum.Finished, AddCardStatus(context, CardStatusEnum.Finished) },
             };
 
             #region Cards adding
+
             var card = AddCard(
                 contxt: context,
                 txt: "creation",
@@ -52,11 +52,11 @@ namespace LanguageCards.Data
                 examp: "The creation of a new political party.",
                 translations: new[]
                 {
-                    new Translation() { Text = "Создание", Language = tranlateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
-                    new Translation() { Text = "Творчество", Language = tranlateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
-                    new Translation() { Text = "Созидание", Language = tranlateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] }
+                    new Translation() { Text = "Создание", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
+                    new Translation() { Text = "Творчество", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
+                    new Translation() { Text = "Созидание", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] }
                 });
-            AddScore(context, card, user, cardStatuses[CardStatusEnum.InProgress]);
+            AddProgress(context, card, user, cardStatuses[CardStatusEnum.InProgress]);
 
             card = AddCard(
                 contxt: context,
@@ -67,11 +67,11 @@ namespace LanguageCards.Data
                 examp: "In the sentence \"She is a single unmarried woman\", the word \"unmarried\" is redundant.",
                 translations: new[]
                 {
-                    new Translation() { Text = "Излишний", Language = tranlateLang, SpeechPart = speechParts[SpeechPartEnum.Adjective] },
-                    new Translation() { Text = "Избыточный", Language = tranlateLang, SpeechPart = speechParts[SpeechPartEnum.Adjective] },
-                    new Translation() { Text = "Чрезмерный", Language = tranlateLang, SpeechPart = speechParts[SpeechPartEnum.Adjective] }
+                    new Translation() { Text = "Излишний", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Adjective] },
+                    new Translation() { Text = "Избыточный", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Adjective] },
+                    new Translation() { Text = "Чрезмерный", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Adjective] }
                 });
-            AddScore(context, card, user, cardStatuses[CardStatusEnum.InProgress]);
+            AddProgress(context, card, user, cardStatuses[CardStatusEnum.InProgress]);
 
             card = AddCard(
                 contxt: context,
@@ -82,11 +82,11 @@ namespace LanguageCards.Data
                 examp: "A huge avalanche destroyed a town.",
                 translations: new[]
                 {
-                    new Translation() { Text = "Лавина", Language = tranlateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
-                    new Translation() { Text = "Обвал", Language = tranlateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
-                    new Translation() { Text = "Масса", Language = tranlateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] }
+                    new Translation() { Text = "Лавина", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
+                    new Translation() { Text = "Обвал", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
+                    new Translation() { Text = "Масса", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] }
                 });
-            AddScore(context, card, user, cardStatuses[CardStatusEnum.InProgress]);
+            AddProgress(context, card, user, cardStatuses[CardStatusEnum.InProgress]);
 
             card = AddCard(
                 contxt: context,
@@ -97,11 +97,11 @@ namespace LanguageCards.Data
                 examp: "He slipped on a patch of ice.",
                 translations: new[]
                 {
-                    new Translation() { Text = "Лёд", Language = tranlateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
-                    new Translation() { Text = "Ледяной", Language = tranlateLang, SpeechPart = speechParts[SpeechPartEnum.Adjective] },
-                    new Translation() { Text = "Покрываться льдом", Language = tranlateLang, SpeechPart = speechParts[SpeechPartEnum.Verb] }
+                    new Translation() { Text = "Лёд", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
+                    new Translation() { Text = "Ледяной", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Adjective] },
+                    new Translation() { Text = "Покрываться льдом", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Verb] }
                 });
-            AddScore(context, card, user, cardStatuses[CardStatusEnum.InProgress]);
+            AddProgress(context, card, user, cardStatuses[CardStatusEnum.InProgress]);
 
             card = AddCard(
                 contxt: context,
@@ -112,11 +112,11 @@ namespace LanguageCards.Data
                 examp: "The hotel walls were covered in damp patches.",
                 translations: new[]
                 {
-                    new Translation() { Text = "Пятно", Language = tranlateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
-                    new Translation() { Text = "Заплата", Language = tranlateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
-                    new Translation() { Text = "Латать", Language = tranlateLang, SpeechPart = speechParts[SpeechPartEnum.Verb] }
+                    new Translation() { Text = "Пятно", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
+                    new Translation() { Text = "Заплата", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
+                    new Translation() { Text = "Латать", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Verb] }
                 });
-            AddScore(context, card, user, cardStatuses[CardStatusEnum.InProgress]);
+            AddProgress(context, card, user, cardStatuses[CardStatusEnum.InProgress]);
 
             card = AddCard(
                 contxt: context,
@@ -127,11 +127,10 @@ namespace LanguageCards.Data
                 examp: "A blanket of snow lay on the ground.\nOutside the snow began to fall.",
                 translations: new[]
                 {
-                    new Translation() { Text = "Снег", Language = tranlateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
-                    new Translation() { Text = "Снежный", Language = tranlateLang, SpeechPart = speechParts[SpeechPartEnum.Adjective] },
-                    new Translation() { Text = "Заносить снегом", Language = tranlateLang, SpeechPart = speechParts[SpeechPartEnum.Verb] }
+                    new Translation() { Text = "Снег", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
+                    new Translation() { Text = "Снежный", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Adjective] },
+                    new Translation() { Text = "Заносить снегом", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Verb] }
                 });
-            AddScore(context, card, user, cardStatuses[CardStatusEnum.NotStudied]);
 
             card = AddCard(
                 contxt: context,
@@ -142,9 +141,8 @@ namespace LanguageCards.Data
                 examp: "A glacier is like a river of ice.\nAs the weather got warmer, the glacier started to melt.",
                 translations: new[]
                 {
-                    new Translation() { Text = "Ледник", Language = tranlateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] }
+                    new Translation() { Text = "Ледник", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] }
                 });
-            AddScore(context, card, user, cardStatuses[CardStatusEnum.NotStudied]);
 
             card = AddCard(
                 contxt: context,
@@ -155,9 +153,8 @@ namespace LanguageCards.Data
                 examp: "On day 9, the snowflakes became very big.",
                 translations: new[]
                 {
-                    new Translation() { Text = "Снежинка", Language = tranlateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
+                    new Translation() { Text = "Снежинка", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
                 });
-            AddScore(context, card, user, cardStatuses[CardStatusEnum.NotStudied]);
 
             card = AddCard(
                 contxt: context,
@@ -168,11 +165,10 @@ namespace LanguageCards.Data
                 examp: "There will be widespread showers of rain and hail.",
                 translations: new[]
                 {
-                    new Translation() { Text = "Град", Language = tranlateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
-                    new Translation() { Text = "Оклик", Language = tranlateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
-                    new Translation() { Text = "Приветствовать", Language = tranlateLang, SpeechPart = speechParts[SpeechPartEnum.Verb] }
+                    new Translation() { Text = "Град", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
+                    new Translation() { Text = "Оклик", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
+                    new Translation() { Text = "Приветствовать", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Verb] }
                 });
-            AddScore(context, card, user, cardStatuses[CardStatusEnum.NotStudied]);
 
             card = AddCard(
                 contxt: context,
@@ -183,9 +179,9 @@ namespace LanguageCards.Data
                 examp: "Danny, come here and choose your ice cream.\nWe sell 32 different flavours of ice cream.\nA tub of ice cream.",
                 translations: new[]
                 {
-                    new Translation() { Text = "Мороженое", Language = tranlateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] }
+                    new Translation() { Text = "Мороженое", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] }
                 });
-            AddScore(context, card, user, cardStatuses[CardStatusEnum.NotStudied]);
+
             #endregion
 
             context.SaveChanges();
@@ -198,7 +194,7 @@ namespace LanguageCards.Data
             return newUser;
         }
 
-        private static Language AddLang(LanguageCardsContext contxt, CultureInfo cInf)
+        private static Language AddLanguage(LanguageCardsContext contxt, CultureInfo cInf)
         {
             var newLang = new Language() { Name = cInf.EnglishName, NativeName = cInf.NativeName };
             contxt.Languages.Add(newLang);
@@ -220,7 +216,7 @@ namespace LanguageCards.Data
             return speechPart;
         }
 
-        private static CardProgress AddScore(LanguageCardsContext contxt, Card card, User user, CardStatus cardStat)
+        private static CardProgress AddProgress(LanguageCardsContext contxt, Card card, User user, CardStatus cardStat)
         {
             var cardScore = new CardProgress() { Card = card, User = user, Score = 0, MaxScore = 5, CardStatus = cardStat };
             contxt.CardProgresses.Add(cardScore);

@@ -6,8 +6,7 @@ namespace LanguageCards.Data.Enums
 {
     public enum CardStatusEnum
     {
-        NotStudied = 1,
-        InProgress,
+        InProgress = 1,
         Finished
     }
 }
