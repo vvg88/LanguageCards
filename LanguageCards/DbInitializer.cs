@@ -8,11 +8,11 @@ using System.Text;
 
 namespace LanguageCards.Data
 {
-    static class DbInitializer
+    public static class DbInitializer
     {
         public static void InitializeContext(LanguageCardsContext context)
         {
-            //context.Database.EnsureDeleted();
+            context.Database.EnsureDeleted();
             var b = context.Database.EnsureCreated();
 
             if (context.Cards.Any())
@@ -52,9 +52,12 @@ namespace LanguageCards.Data
                 examp: "The creation of a new political party.",
                 translations: new[]
                 {
-                    new Translation() { Text = "Создание", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
-                    new Translation() { Text = "Творчество", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
-                    new Translation() { Text = "Созидание", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] }
+                    new Word() { Text = "Творчество", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun],
+                                 Definition = "Процесс деятельности, создающий качественно новые материальные и духовные ценности или итог создания объективно нового." },
+                    new Word() { Text = "Созидание", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun],
+                                 Definition = "Процесс создания чего-либо." },
+                    new Word() { Text = "Создание", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun],
+                                 Definition = "Действие по значению гл. создавать." },
                 });
 
             card = AddCard(
@@ -66,9 +69,12 @@ namespace LanguageCards.Data
                 examp: "In the sentence \"She is a single unmarried woman\", the word \"unmarried\" is redundant.",
                 translations: new[]
                 {
-                    new Translation() { Text = "Излишний", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Adjective] },
-                    new Translation() { Text = "Избыточный", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Adjective] },
-                    new Translation() { Text = "Чрезмерный", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Adjective] }
+                    new Word() { Text = "Излишний", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Adjective],
+                                 Definition = "Превышающий нужное количество чего-либо." },
+                    new Word() { Text = "Избыточный", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Adjective],
+                                 Definition = "Имеющийся в избытке." },
+                    new Word() { Text = "Чрезмерный", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Adjective],
+                                 Definition = "Превосходящий меру, слишком большой по силе, величине, степени проявления." }
                 });
 
             card = AddCard(
@@ -80,9 +86,12 @@ namespace LanguageCards.Data
                 examp: "A huge avalanche destroyed a town.",
                 translations: new[]
                 {
-                    new Translation() { Text = "Лавина", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
-                    new Translation() { Text = "Обвал", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
-                    new Translation() { Text = "Масса", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] }
+                    new Word() { Text = "Лавина", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun],
+                                 Definition = "Масса снега или другого рыхлого вещества, стремительно падающая или соскальзывающая со склонов гор." },
+                    new Word() { Text = "Обвал", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun],
+                                 Definition = "Отрыв и падение масс горных пород вниз со склонов гор под действием силы тяжести." },
+                    new Word() { Text = "Масса", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun],
+                                 Definition = "Неопределённо большое количество." }
                 });
 
             card = AddCard(
@@ -94,9 +103,12 @@ namespace LanguageCards.Data
                 examp: "He slipped on a patch of ice.",
                 translations: new[]
                 {
-                    new Translation() { Text = "Лёд", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
-                    new Translation() { Text = "Ледяной", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Adjective] },
-                    new Translation() { Text = "Покрываться льдом", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Verb] }
+                    new Word() { Text = "Лёд", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun],
+                                 Definition = "Вода в замёрзшем, затвердевшем состоянии." },
+                    new Word() { Text = "Ледяной", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Adjective],
+                                 Definition = "Состоящий из льда." },
+                    new Word() { Text = "Покрываться льдом", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Verb],
+                                 Definition = "Покрываться льдом." }
                 });
 
             card = AddCard(
@@ -108,9 +120,12 @@ namespace LanguageCards.Data
                 examp: "The hotel walls were covered in damp patches.",
                 translations: new[]
                 {
-                    new Translation() { Text = "Пятно", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
-                    new Translation() { Text = "Заплата", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
-                    new Translation() { Text = "Латать", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Verb] }
+                    new Word() { Text = "Пятно", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun],
+                                 Definition = "Область поверхности, отличающаяся от неё по окраске." },
+                    new Word() { Text = "Заплата", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun],
+                                 Definition = "То, что используется для починки чего-либо." },
+                    new Word() { Text = "Латать", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Verb],
+                                 Definition = "Заделывать отверстия, дыры, ставя заплаты на чём-либо." }
                 });
 
             card = AddCard(
@@ -122,9 +137,12 @@ namespace LanguageCards.Data
                 examp: "A blanket of snow lay on the ground.\nOutside the snow began to fall.",
                 translations: new[]
                 {
-                    new Translation() { Text = "Снег", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
-                    new Translation() { Text = "Снежный", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Adjective] },
-                    new Translation() { Text = "Заносить снегом", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Verb] }
+                    new Word() { Text = "Снег", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun],
+                                 Definition = "Масса выпавших снежинок, образующая рыхлый, не очень плотный белый слой." },
+                    new Word() { Text = "Снежный", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Adjective],
+                                 Definition = "Относящийся к снегу, свойственный снегу или состоящий из него." },
+                    new Word() { Text = "Заносить снегом", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Verb],
+                                 Definition = "Заносить снегом." }
                 });
 
             card = AddCard(
@@ -136,7 +154,8 @@ namespace LanguageCards.Data
                 examp: "A glacier is like a river of ice.\nAs the weather got warmer, the glacier started to melt.",
                 translations: new[]
                 {
-                    new Translation() { Text = "Ледник", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] }
+                    new Word() { Text = "Ледник", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun],
+                                 Definition = "Движущаяся естественная масса кристаллического льда на поверхности Земли." }
                 });
 
             card = AddCard(
@@ -148,7 +167,8 @@ namespace LanguageCards.Data
                 examp: "On day 9, the snowflakes became very big.",
                 translations: new[]
                 {
-                    new Translation() { Text = "Снежинка", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
+                    new Word() { Text = "Снежинка", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun],
+                                 Definition = "Частица снега, кристалл льда, часто шестиконечной формы." },
                 });
 
             card = AddCard(
@@ -160,9 +180,12 @@ namespace LanguageCards.Data
                 examp: "There will be widespread showers of rain and hail.",
                 translations: new[]
                 {
-                    new Translation() { Text = "Град", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
-                    new Translation() { Text = "Оклик", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
-                    new Translation() { Text = "Приветствовать", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Verb] }
+                    new Word() { Text = "Град", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun],
+                                 Definition = "Большое количество, наплыв чего-либо." },
+                    new Word() { Text = "Оклик", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun],
+                                 Definition = "Возглас, слово (слова), которым окликают." },
+                    new Word() { Text = "Приветствовать", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Verb],
+                                 Definition = "Здороваться, выражать приветствие, подавать знак доброго отношения к кому-либо." }
                 });
 
             card = AddCard(
@@ -174,7 +197,8 @@ namespace LanguageCards.Data
                 examp: "Danny, come here and choose your ice cream.\nWe sell 32 different flavours of ice cream.\nA tub of ice cream.",
                 translations: new[]
                 {
-                    new Translation() { Text = "Мороженое", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] }
+                    new Word() { Text = "Мороженое", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun],
+                                 Definition = "Сладкое замороженное десертное лакомство, обычно на основе молока, сливок, масла или фруктов." }
                 });
 
             #endregion
@@ -191,14 +215,26 @@ namespace LanguageCards.Data
 
         private static Language AddLanguage(LanguageCardsContext contxt, CultureInfo cInf)
         {
-            var newLang = new Language() { Name = cInf.EnglishName, NativeName = cInf.NativeName };
+            var newLang = new Language() { Name = cInf.EnglishName };
             contxt.Languages.Add(newLang);
             return newLang;
         }
 
-        private static Card AddCard(LanguageCardsContext contxt, string txt, Language lang, SpeechPart wClass, string defStr, string examp, IEnumerable<Translation> translations)
+        private static Card AddCard(LanguageCardsContext contxt, string txt, Language lang, SpeechPart wClass, string defStr, string examp, IEnumerable<Word> translations)
         {
-            var word = new Word() { Text = txt, Language = lang, SpeechPart = wClass, Definition = defStr, Example = examp, Translations = translations.ToArray() };
+            var word = new Word()
+            {
+                Text = txt,
+                Language = lang,
+                SpeechPart = wClass,
+                Definition = defStr,
+                Example = examp,
+                Translations = translations.ToArray()
+            };
+            //foreach (var trans in word.Translations)
+            //{
+            //    trans.Translation.Words = new[] { new WordTranslation() { Word = word } };
+            //}
             var card = new Card() { Word = word };
             contxt.Cards.Add(card);
             return card;

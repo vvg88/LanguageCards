@@ -1,12 +1,9 @@
 ﻿using LanguageCards.Data;
-using LanguageCards.Data.Entities;
 using LanguageCards.Data.Repositories;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Globalization;
 using System.Linq;
 
-namespace LanguageCards
+namespace LanguageCards.Test
 {
     class Program
     {
@@ -15,8 +12,8 @@ namespace LanguageCards
             using (LanguageCardsContext CardsDataBase = new LanguageCardsContext())
             {
                 DbInitializer.InitializeContext(CardsDataBase);
-                var user = new UsersRepository(CardsDataBase).GetUsers().FirstOrDefault();
-                var cardsRep = new CardsRepository(CardsDataBase);
+                var user = RepositoryProvider.GetUsersRepository(CardsDataBase).GetUsers().FirstOrDefault();
+                var cardsRep = RepositoryProvider.GetCardsRepository(CardsDataBase);
                 var cards = cardsRep.GetCards(user.Id, 3);
                 foreach (var card in cards)
                 {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LanguageCards.Data.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Text;
 namespace LanguageCards.Data.Entities
 {
     /// <summary>
-    /// The progress for a card for each user
+    /// The progress of a card for each user
     /// </summary>
     public class CardProgress
     {
@@ -17,9 +18,7 @@ namespace LanguageCards.Data.Entities
         public Card Card { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }
-        public int CardStatusId { get; set; }
+        public CardStatusEnum CardStatusId { get; set; }
         public CardStatus CardStatus { get; set; }
-        [NotMapped]
-        public bool IsFinished => Score >= MaxScore;
     }
 }

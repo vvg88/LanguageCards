@@ -16,12 +16,15 @@ namespace LanguageCards.Data
         public DbSet<Language> Languages { get; set; }
         public DbSet<SpeechPart> SpeechParts { get; set; }
         public DbSet<Word> Words { get; set; }
-        public DbSet<Translation> Translations { get; set; }
         public DbSet<CardStatus> Statuses { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=LanguageCards;Trusted_Connection=True;");
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
         }
     }
 }

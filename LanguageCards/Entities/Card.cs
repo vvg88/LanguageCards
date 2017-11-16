@@ -11,9 +11,6 @@ namespace LanguageCards.Data.Entities
     {
         public int Id { get; set; }
         public int WordId { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
         public Word Word { get; set; }
     }
 }

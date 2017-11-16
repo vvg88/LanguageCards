@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LanguageCards.Data.Enums;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -19,7 +20,7 @@ namespace LanguageCards.Data.Entities
         /// </summary>
         public Language Language { get; set; }
 
-        public int SpeechPartId { get; set; }
+        public SpeechPartEnum SpeechPartId { get; set; }
         /// <summary>
         /// Retrieves the part of speech
         /// </summary>
@@ -33,7 +34,7 @@ namespace LanguageCards.Data.Entities
         /// <summary>
         /// Represents the translations of the word
         /// </summary>
-        public ICollection<Translation> Translations { get; set; }
+        public ICollection<Word> Translations { get; set; }
 
         /// <summary>
         /// Represents an example (or examples) containing this word
