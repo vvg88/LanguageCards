@@ -24,7 +24,7 @@ namespace LanguageCards.Data
             
             var originalLang = AddLanguage(context, CultureInfo.CurrentCulture);
             var translateLang = AddLanguage(context, CultureInfo.GetCultures(CultureTypes.AllCultures)
-                                                           .FirstOrDefault(cultInf => cultInf.Name == "ru"));
+                                                                .FirstOrDefault(cultInf => cultInf.Name == "ru"));
 
             var speechParts = new Dictionary<SpeechPartEnum, SpeechPart>
             {
@@ -56,7 +56,6 @@ namespace LanguageCards.Data
                     new Translation() { Text = "Творчество", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
                     new Translation() { Text = "Созидание", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] }
                 });
-            AddProgress(context, card, user, cardStatuses[CardStatusEnum.InProgress]);
 
             card = AddCard(
                 contxt: context,
@@ -71,7 +70,6 @@ namespace LanguageCards.Data
                     new Translation() { Text = "Избыточный", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Adjective] },
                     new Translation() { Text = "Чрезмерный", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Adjective] }
                 });
-            AddProgress(context, card, user, cardStatuses[CardStatusEnum.InProgress]);
 
             card = AddCard(
                 contxt: context,
@@ -86,7 +84,6 @@ namespace LanguageCards.Data
                     new Translation() { Text = "Обвал", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
                     new Translation() { Text = "Масса", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] }
                 });
-            AddProgress(context, card, user, cardStatuses[CardStatusEnum.InProgress]);
 
             card = AddCard(
                 contxt: context,
@@ -101,7 +98,6 @@ namespace LanguageCards.Data
                     new Translation() { Text = "Ледяной", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Adjective] },
                     new Translation() { Text = "Покрываться льдом", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Verb] }
                 });
-            AddProgress(context, card, user, cardStatuses[CardStatusEnum.InProgress]);
 
             card = AddCard(
                 contxt: context,
@@ -116,7 +112,6 @@ namespace LanguageCards.Data
                     new Translation() { Text = "Заплата", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun] },
                     new Translation() { Text = "Латать", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Verb] }
                 });
-            AddProgress(context, card, user, cardStatuses[CardStatusEnum.InProgress]);
 
             card = AddCard(
                 contxt: context,

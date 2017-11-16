@@ -1,5 +1,4 @@
 ﻿using LanguageCards.Data;
-using LanguageCards.Data.AccessLayer;
 using LanguageCards.Data.Entities;
 using LanguageCards.Data.Repositories;
 using Microsoft.EntityFrameworkCore;

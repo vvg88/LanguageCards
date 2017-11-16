@@ -4,7 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using LanguageCards.Data.AccessLayer;
+using LanguageCards.Data.Entities;
+using LanguageCards.Data;
+using LanguageCards.Data.Repositories;
+using LanguageCards.Data.Enums;
 
 namespace LanguageCards.WebApp.Controllers
 {
@@ -12,13 +15,30 @@ namespace LanguageCards.WebApp.Controllers
     [Route("api/Cards")]
     public class CardsController : Controller
     {
+        LanguageCardsContext lcContext;
+        IUsersRepository usersRepository;
+        ICardsRepository cardsRepository;
+
+        public CardsController()
+        {
+            lcContext = new LanguageCardsContext();
+            usersRepository = RepositoryProvider.GetUsersRepository(lcContext);
+            cardsRepository = RepositoryProvider.GetCardsRepository(lcContext);
+        }
+
         [HttpGet("[action]")]
         public IEnumerable<Cards> GetCards()
         {
             IEnumerable<Card> cards;
-            var accessProvider = DbAccessLayer.DbAccessProvider;
-            var user = accessProvider.GetUsers().FirstOrDefault();
-            cards = accessProvider.GetRandomCards(5, user);
+            var user = usersRepository.GetUsers().FirstOrDefault();
+            cards = cardsRepository.GetCards(user.Id, 5);
+            var cs = lcContext.Statuses.SingleOrDefault(s => s.Id == (int)CardStatusEnum.InProgress);
+            foreach (var card in cards)
+            {
+                var cardProgress = new CardProgress() { Card = card, CardStatus = cs, User = user };
+                lcContext.CardProgresses.Add(cardProgress);
+            }
+            lcContext.SaveChanges();
             return cards.Select(c => new Cards() { Word = c.Word.Text, Definition = c.Word.Definition, Example = c.Word.Example });
         }
     }
