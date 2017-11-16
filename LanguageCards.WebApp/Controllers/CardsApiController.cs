@@ -12,21 +12,21 @@ using LanguageCards.Data.Enums;
 namespace LanguageCards.WebApp.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Cards")]
-    public class CardsController : Controller
+    [Route("api/cards")]
+    public class CardsApiController : Controller
     {
         LanguageCardsContext lcContext;
         IUsersRepository usersRepository;
         ICardsRepository cardsRepository;
 
-        public CardsController()
+        public CardsApiController()
         {
             lcContext = new LanguageCardsContext();
             usersRepository = RepositoryProvider.GetUsersRepository(lcContext);
             cardsRepository = RepositoryProvider.GetCardsRepository(lcContext);
         }
 
-        [HttpGet("[action]")]
+        [HttpGet]
         public IEnumerable<Cards> GetCards()
         {
             IEnumerable<Card> cards;
