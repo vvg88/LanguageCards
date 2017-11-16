@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LanguageCards.Data.Entities
 {
@@ -20,7 +22,7 @@ namespace LanguageCards.Data.Entities
         /// </summary>
         public Language Language { get; set; }
 
-        public SpeechPartEnum SpeechPartId { get; set; }
+        public int SpeechPartId { get; set; }
         /// <summary>
         /// Retrieves the part of speech
         /// </summary>

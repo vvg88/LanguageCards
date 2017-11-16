@@ -18,7 +18,7 @@ namespace LanguageCards.Data.Entities
         public Card Card { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }
-        public CardStatusEnum CardStatusId { get; set; }
+        public int CardStatusId { get; set; }
         public CardStatus CardStatus { get; set; }
     }
 }

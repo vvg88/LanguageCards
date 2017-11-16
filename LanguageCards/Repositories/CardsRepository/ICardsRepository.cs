@@ -8,5 +8,6 @@ namespace LanguageCards.Data.Repositories
     public interface ICardsRepository
     {
         IEnumerable<Card> GetCards(int userId, int cardsNumber);
+        void SetCardsInProgress(IEnumerable<Card> cards, int userId);
     }
 }

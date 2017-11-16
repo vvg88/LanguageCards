@@ -9,5 +9,7 @@ namespace LanguageCards.Data.Repositories
         public static ICardsRepository GetCardsRepository(LanguageCardsContext context) => new CardsRepository(context);
 
         public static IUsersRepository GetUsersRepository(LanguageCardsContext context) => new UsersRepository(context);
+
+        public static ICardStatusesRepository GetCardStatusesRepository(LanguageCardsContext context) => new CardStatusesRepository(context);
     }
 }
