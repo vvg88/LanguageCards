@@ -5,6 +5,7 @@ using LanguageCards.Data.Entities;
 using System.Linq;
 using LanguageCards.Data.Enums;
 using Microsoft.EntityFrameworkCore;
+using LanguageCards.Data.DalOperation;
 
 namespace LanguageCards.Data.Repositories
 {
@@ -29,49 +30,84 @@ namespace LanguageCards.Data.Repositories
             if (cardsNumber < 0)
                 throw new ArgumentOutOfRangeException("Number of requested cards can not be negative!");
 
-            var cardsInProgress = GetCardsInProgress(userId, cardsNumber);
-            var cardsInProgressNum = cardsInProgress.Count();
-            if (cardsInProgressNum < cardsNumber)
+            try
             {
-                var cardsNotStudied = context.Cards.Include(c => c.Word)
-                                                   .AsEnumerable()
-                                                   .Except(cardsInProgress, new CardsComparer())
-                                                   .Take(cardsNumber - cardsInProgressNum)
-                                                   .ToList();
-                cardsInProgress = cardsInProgress.Concat(cardsNotStudied);
+                var cardsInProgress = GetCardsInProgress(userId, cardsNumber);
+                var cardsInProgressNum = cardsInProgress.Count();
+                if (cardsInProgressNum < cardsNumber)
+                {
+                    RunExceptionHandledMethod(() =>
+                    {
+                        var cardsNotStudied = context.Cards.Include(c => c.Word)
+                                                           .AsEnumerable()
+                                                           .Except(cardsInProgress, new CardsComparer())
+                                                           .Take(cardsNumber - cardsInProgressNum)
+                                                           .ToList();
+                        cardsInProgress = cardsInProgress.Concat(cardsNotStudied);
+                    });
+                }
+                return cardsInProgress;
             }
-            return cardsInProgress;
+            catch { throw; }
         }
 
         public void SetCardsInProgress(IEnumerable<Card> cards, int userId)
         {
             if (!UserIdOk(userId))
-                throw new DalOperation.DalOperationException($"User with id = { userId } hasn't been found!", DalOperation.DalOperationStatusCode.UserNotFound);
+                throw new DalOperationException($"User with id = { userId } hasn't been found!", DalOperationStatusCode.UserNotFound);
 
             if (cards.Count() == 0)
                 return;
 
-            var cardsInProgress = context.CardProgresses.AsNoTracking().Select(cp => cp.Card);
-            var cardsToBeSetInProgress = cards.Except(cardsInProgress, new CardsComparer());
-
-            var cardStat = csRepository.GetCardStatus(CardStatusEnum.InProgress);
-            foreach(var card in cardsToBeSetInProgress)
+            try
             {
-                context.CardProgresses.Add(new CardProgress() { Card = card, CardStatus = cardStat, User = usersRepository.GetUser(userId), MaxScore = 5 });
+                var cardsInProgress = context.CardProgresses.AsNoTracking().Select(cp => cp.Card);
+                var cardsToBeSetInProgress = cards.Except(cardsInProgress, new CardsComparer());
+
+                var cardStat = csRepository.GetCardStatus(CardStatusEnum.InProgress);
+                foreach (var card in cardsToBeSetInProgress)
+                {
+                    context.CardProgresses.Add(new CardProgress() { Card = card, CardStatus = cardStat, User = usersRepository.GetUser(userId), MaxScore = 5 });
+                }
+                context.SaveChanges();
             }
-            context.SaveChanges();
+            catch (DalOperationException) { throw; }
+            catch (Exception e)
+            {
+                throw new DalOperationException("An inner exception occurred on setting cards in progress!", DalOperationStatusCode.InnerExceptionOccurred, e);
+            }
         }
 
         private bool UserIdOk(int userId) => userId > 0 && context.Users.AsNoTracking().Select(u => u.Id).Contains(userId);
 
         private IEnumerable<Card> GetCardsInProgress(int userId, int cardsNumber)
         {
-            var cardsInProgress = context.CardProgresses.Where(cp => cp.UserId == userId && cp.CardStatus.Id == (int)CardStatusEnum.InProgress)
-                                                        .Select(cp => cp.Card)
-                                                        .Include(c => c.Word)
-                                                        .Take(cardsNumber)
-                                                        .ToList();
-            return cardsInProgress;
+            IEnumerable<Card> cardsInProgress = Enumerable.Empty<Card>();
+            try
+            {
+                RunExceptionHandledMethod(() =>
+                {
+                    cardsInProgress = context.CardProgresses.Where(cp => cp.UserId == userId && cp.CardStatus.Id == (int)CardStatusEnum.InProgress)
+                                                            .Select(cp => cp.Card)
+                                                            .Include(c => c.Word)
+                                                            .Take(cardsNumber)
+                                                            .ToList();
+                });
+                return cardsInProgress;
+            }
+            catch { throw; }
+        }
+
+        private void RunExceptionHandledMethod(Action method)
+        {
+            try
+            {
+                method();
+            }
+            catch (Exception e)
+            {
+                throw new DalOperationException("An inner exception occurred on cards' request!", DalOperationStatusCode.InnerExceptionOccurred, e);
+            }
         }
     }
 }

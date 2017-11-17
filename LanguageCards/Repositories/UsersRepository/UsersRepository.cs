@@ -18,12 +18,39 @@ namespace LanguageCards.Data.Repositories
 
         public User GetUser(int id)
         {
-            var user = context.Users.SingleOrDefault(u => u.Id == id);
+            User user = null;
+            try
+            {
+                RunExceptionHandledMethod(() => user = context.Users.SingleOrDefault(u => u.Id == id));
+            }
+            catch { throw; }
+
             if (user == null)
                 throw new DalOperationException($"User with id = {id} hasn't been found!", DalOperationStatusCode.UserNotFound);
             return user;
         }
 
-        public IEnumerable<User> GetUsers() => context.Users;
+        public IEnumerable<User> GetUsers()
+        {
+            IEnumerable<User> users = null;
+            try
+            {
+                RunExceptionHandledMethod(() => users = context.Users);
+                return users;
+            }
+            catch { throw; }
+        }
+
+        private void RunExceptionHandledMethod(Action method)
+        {
+            try
+            {
+                method();
+            }
+            catch (Exception e)
+            {
+                throw new DalOperationException("An inner exception occurred on users' request!", DalOperationStatusCode.InnerExceptionOccurred, e);
+            }
+        }
     }
 }

@@ -5,6 +5,7 @@ using LanguageCards.Data.Entities;
 using LanguageCards.Data.Enums;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using LanguageCards.Data.DalOperation;
 
 namespace LanguageCards.Data.Repositories
 {
@@ -17,8 +18,16 @@ namespace LanguageCards.Data.Repositories
             this.context = context;
         }
 
-        public CardStatus GetCardStatus(CardStatusEnum cardStatus) => context.Statuses
-                                                                             .AsNoTracking()
-                                                                             .SingleOrDefault(s => s.Id == (int)CardStatusEnum.InProgress);
+        public CardStatus GetCardStatus(CardStatusEnum cardStatus)
+        {
+            try
+            {
+                return context.Statuses.SingleOrDefault(s => s.Id == (int)cardStatus);
+            }
+            catch (Exception e)
+            {
+                throw new DalOperationException("An inner exception occurred on card's status request!", DalOperationStatusCode.InnerExceptionOccurred, e);
+            }
+        }
     }
 }

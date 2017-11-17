@@ -9,5 +9,6 @@ namespace LanguageCards.Data.DalOperation
         Error,
         EntityNotFound,
         UserNotFound,
+        InnerExceptionOccurred,
     }
 }
