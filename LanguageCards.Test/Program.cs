@@ -33,7 +33,6 @@ namespace LanguageCards.Test
                 {
                     Console.WriteLine($"{card.Word.Text}: ");
                 }
-
             }
 
             Console.Read();

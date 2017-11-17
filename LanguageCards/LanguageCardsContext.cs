@@ -26,6 +26,7 @@ namespace LanguageCards.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<WordTranslation>().HasKey(wt => new { wt.WordId, wt.TranslationId });
             modelBuilder.Entity<WordTranslation>().HasOne(wt => wt.Word)
                                                   .WithMany()
                                                   .HasForeignKey(wt => wt.WordId)

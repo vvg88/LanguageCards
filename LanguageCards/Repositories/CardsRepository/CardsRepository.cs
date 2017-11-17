@@ -33,10 +33,11 @@ namespace LanguageCards.Data.Repositories
             var cardsInProgressNum = cardsInProgress.Count();
             if (cardsInProgressNum < cardsNumber)
             {
-                var cardsNotStudied = context.Cards.AsNoTracking().Except(cardsInProgress)
-                                                                  .Include(c => c.Word)
-                                                                  .Take(cardsNumber - cardsInProgressNum)
-                                                                  .ToList();
+                var cardsNotStudied = context.Cards.Include(c => c.Word)
+                                                   .AsEnumerable()
+                                                   .Except(cardsInProgress, new CardsComparer())
+                                                   .Take(cardsNumber - cardsInProgressNum)
+                                                   .ToList();
                 cardsInProgress = cardsInProgress.Concat(cardsNotStudied);
             }
             return cardsInProgress;
@@ -51,7 +52,7 @@ namespace LanguageCards.Data.Repositories
                 return;
 
             var cardsInProgress = context.CardProgresses.AsNoTracking().Select(cp => cp.Card);
-            var cardsToBeSetInProgress = cards.Except(cardsInProgress);
+            var cardsToBeSetInProgress = cards.Except(cardsInProgress, new CardsComparer());
 
             var cardStat = csRepository.GetCardStatus(CardStatusEnum.InProgress);
             foreach(var card in cardsToBeSetInProgress)
@@ -65,11 +66,11 @@ namespace LanguageCards.Data.Repositories
 
         private IEnumerable<Card> GetCardsInProgress(int userId, int cardsNumber)
         {
-            var cardsInProgress = context.CardProgresses.AsNoTracking().Where(cp => cp.UserId == userId && cp.CardStatus.Id == (int)CardStatusEnum.InProgress)
-                                                                       .Select(cp => cp.Card)
-                                                                       .Include(c => c.Word)
-                                                                       .Take(cardsNumber)
-                                                                       .ToList();
+            var cardsInProgress = context.CardProgresses.Where(cp => cp.UserId == userId && cp.CardStatus.Id == (int)CardStatusEnum.InProgress)
+                                                        .Select(cp => cp.Card)
+                                                        .Include(c => c.Word)
+                                                        .Take(cardsNumber)
+                                                        .ToList();
             return cardsInProgress;
         }
     }

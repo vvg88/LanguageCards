@@ -8,7 +8,6 @@ namespace LanguageCards.Data.Entities
     [Table("WordsTranslations")]
     public class WordTranslation
     {
-        public int Id { get; set; }
         public int? WordId { get; set; }
         public Word Word { get; set; }
         public int? TranslationId { get; set; }
