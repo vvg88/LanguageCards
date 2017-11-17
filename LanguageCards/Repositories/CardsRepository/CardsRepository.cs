@@ -40,7 +40,7 @@ namespace LanguageCards.Data.Repositories
                     {
                         var cardsNotStudied = context.Cards.Include(c => c.Word)
                                                            .AsEnumerable()
-                                                           .Except(cardsInProgress, new CardsComparer())
+                                                           .Except(GetCardsInProgressTable(userId), new CardsComparer())
                                                            .Take(cardsNumber - cardsInProgressNum)
                                                            .ToList();
                         cardsInProgress = cardsInProgress.Concat(cardsNotStudied);
@@ -80,7 +80,7 @@ namespace LanguageCards.Data.Repositories
 
         private bool UserIdOk(int userId) => userId > 0 && context.Users.AsNoTracking().Select(u => u.Id).Contains(userId);
 
-        private IEnumerable<Card> GetCardsInProgress(int userId, int cardsNumber)
+        public IEnumerable<Card> GetCardsInProgress(int userId, int cardsNumber)
         {
             IEnumerable<Card> cardsInProgress = Enumerable.Empty<Card>();
             try
@@ -94,6 +94,22 @@ namespace LanguageCards.Data.Repositories
                                                             .ToList();
                 });
                 return cardsInProgress;
+            }
+            catch { throw; }
+        }
+
+        private IQueryable<Card> GetCardsInProgressTable(int userId)
+        {
+            IQueryable<Card> cardsInProgTable = null;
+            try
+            {
+                RunExceptionHandledMethod(() =>
+                {
+                    cardsInProgTable = context.CardProgresses.Where(cp => cp.UserId == userId && (cp.CardStatusId == (int)CardStatusEnum.InProgress || cp.CardStatusId == (int)CardStatusEnum.Finished))
+                                                             .Select(cp => cp.Card)
+                                                             .Include(c => c.Word);
+                });
+                return cardsInProgTable;
             }
             catch { throw; }
         }

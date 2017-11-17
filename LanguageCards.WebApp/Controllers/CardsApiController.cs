@@ -8,6 +8,9 @@ using LanguageCards.Data.Entities;
 using LanguageCards.Data;
 using LanguageCards.Data.Repositories;
 using LanguageCards.Data.Enums;
+using LanguageCards.Data.DalOperation;
+using LanguageCards.WebApp.Models;
+using LanguageCards.Data.Models;
 
 namespace LanguageCards.WebApp.Controllers
 {
@@ -15,38 +18,54 @@ namespace LanguageCards.WebApp.Controllers
     [Route("api/cards")]
     public class CardsApiController : Controller
     {
-        LanguageCardsContext lcContext;
-        IUsersRepository usersRepository;
-        ICardsRepository cardsRepository;
+        private LanguageCardsContext lcContext;
+        private IUsersRepository usersRepository;
+        private ICardsRepository cardsRepository;
+        private ICardStatusesRepository cardStatusesRepository;
+        private ICardProgressesRepository cardProgressesRepository;
+        private static IEnumerable<CardModel> cardModels;
+        private static User user;
 
         public CardsApiController()
         {
             lcContext = new LanguageCardsContext();
             usersRepository = RepositoryProvider.GetUsersRepository(lcContext);
             cardsRepository = RepositoryProvider.GetCardsRepository(lcContext);
+            cardStatusesRepository = RepositoryProvider.GetCardStatusesRepository(lcContext);
+            cardProgressesRepository = RepositoryProvider.GetCardProgressesRepository(lcContext);
         }
 
         [HttpGet]
-        public IEnumerable<Cards> GetCards()
+        public IEnumerable<CardModel> GetCards()
         {
             IEnumerable<Card> cards;
-            var user = usersRepository.GetUsers().FirstOrDefault();
-            cards = cardsRepository.GetCards(user.Id, 5);
-            var cs = lcContext.Statuses.SingleOrDefault(s => s.Id == (int)CardStatusEnum.InProgress);
-            foreach (var card in cards)
+            try
             {
-                var cardProgress = new CardProgress() { Card = card, CardStatus = cs, User = user };
-                lcContext.CardProgresses.Add(cardProgress);
+                user = usersRepository.GetUsers().FirstOrDefault();
+                cards = cardsRepository.GetCards(user.Id, 5);
+                cardsRepository.SetCardsInProgress(cards, user.Id);
+                return cardModels = cards.Select(c => (CardModel)c);
             }
-            lcContext.SaveChanges();
-            return cards.Select(c => new Cards() { Word = c.Word.Text, Definition = c.Word.Definition, Example = c.Word.Example });
+            catch (DalOperationException)
+            {
+                return Enumerable.Empty<CardModel>();
+            }
         }
-    }
 
-    public class Cards
-    {
-        public string Word { get; set; }
-        public string Definition { get; set; }
-        public string Example { get; set; }
+        // POST: api/cards/    
+        [HttpPost]
+        public void Post([FromBody]IEnumerable<AnsweredCardModel> answeredCardModels)
+        {
+            try
+            {
+                answeredCardModels = answeredCardModels.Select(ac => new AnsweredCardModel() { Answer = ac.Answer, Card = cardModels.SingleOrDefault(cm => cm.Id == ac.Card.Id) });
+                var answeredCards = answeredCardModels.Select(acm => (AnsweredCard)acm);
+                cardProgressesRepository.SetAnsweredCardsProgress(answeredCards, user.Id);
+            }
+            catch (DalOperationException)
+            {
+
+            }
+        }
     }
 }
