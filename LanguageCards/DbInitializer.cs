@@ -59,6 +59,7 @@ namespace LanguageCards.Data
                     new Word() { Text = "Создание", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun],
                                  Definition = "Действие по значению гл. создавать." },
                 });
+            AddWordTranslation(context, card.Word);
 
             card = AddCard(
                 contxt: context,
@@ -76,6 +77,7 @@ namespace LanguageCards.Data
                     new Word() { Text = "Чрезмерный", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Adjective],
                                  Definition = "Превосходящий меру, слишком большой по силе, величине, степени проявления." }
                 });
+            AddWordTranslation(context, card.Word);
 
             card = AddCard(
                 contxt: context,
@@ -93,6 +95,7 @@ namespace LanguageCards.Data
                     new Word() { Text = "Масса", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun],
                                  Definition = "Неопределённо большое количество." }
                 });
+            AddWordTranslation(context, card.Word);
 
             card = AddCard(
                 contxt: context,
@@ -110,6 +113,7 @@ namespace LanguageCards.Data
                     new Word() { Text = "Покрываться льдом", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Verb],
                                  Definition = "Покрываться льдом." }
                 });
+            AddWordTranslation(context, card.Word);
 
             card = AddCard(
                 contxt: context,
@@ -127,6 +131,7 @@ namespace LanguageCards.Data
                     new Word() { Text = "Латать", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Verb],
                                  Definition = "Заделывать отверстия, дыры, ставя заплаты на чём-либо." }
                 });
+            AddWordTranslation(context, card.Word);
 
             card = AddCard(
                 contxt: context,
@@ -144,6 +149,7 @@ namespace LanguageCards.Data
                     new Word() { Text = "Заносить снегом", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Verb],
                                  Definition = "Заносить снегом." }
                 });
+            AddWordTranslation(context, card.Word);
 
             card = AddCard(
                 contxt: context,
@@ -157,6 +163,7 @@ namespace LanguageCards.Data
                     new Word() { Text = "Ледник", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun],
                                  Definition = "Движущаяся естественная масса кристаллического льда на поверхности Земли." }
                 });
+            AddWordTranslation(context, card.Word);
 
             card = AddCard(
                 contxt: context,
@@ -170,6 +177,7 @@ namespace LanguageCards.Data
                     new Word() { Text = "Снежинка", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun],
                                  Definition = "Частица снега, кристалл льда, часто шестиконечной формы." },
                 });
+            AddWordTranslation(context, card.Word);
 
             card = AddCard(
                 contxt: context,
@@ -187,6 +195,7 @@ namespace LanguageCards.Data
                     new Word() { Text = "Приветствовать", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Verb],
                                  Definition = "Здороваться, выражать приветствие, подавать знак доброго отношения к кому-либо." }
                 });
+            AddWordTranslation(context, card.Word);
 
             card = AddCard(
                 contxt: context,
@@ -200,6 +209,7 @@ namespace LanguageCards.Data
                     new Word() { Text = "Мороженое", Language = translateLang, SpeechPart = speechParts[SpeechPartEnum.Noun],
                                  Definition = "Сладкое замороженное десертное лакомство, обычно на основе молока, сливок, масла или фруктов." }
                 });
+            AddWordTranslation(context, card.Word);
 
             #endregion
 
@@ -231,10 +241,6 @@ namespace LanguageCards.Data
                 Example = examp,
                 Translations = translations.ToArray()
             };
-            //foreach (var trans in word.Translations)
-            //{
-            //    trans.Translation.Words = new[] { new WordTranslation() { Word = word } };
-            //}
             var card = new Card() { Word = word };
             contxt.Cards.Add(card);
             return card;
@@ -259,6 +265,14 @@ namespace LanguageCards.Data
             var crdStat = new CardStatus() { Id = (int)cStat, Name = cStat.ToString() };
             contxt.Statuses.Add(crdStat);
             return crdStat;
+        }
+
+        private static void AddWordTranslation(LanguageCardsContext contxt, Word word)
+        {
+            foreach(var translation in word.Translations)
+            {
+                contxt.WordsTranslations.Add(new WordTranslation() { Word = word, Translation = translation });
+            }
         }
     }
 }

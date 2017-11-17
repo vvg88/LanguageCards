@@ -2,8 +2,5 @@
 LanguageCards/bin/
 obj/
 packages/
-.sql
 *.sql
-/bin
 bin/
-LanguageCards/Entities/WordTranslation.cs

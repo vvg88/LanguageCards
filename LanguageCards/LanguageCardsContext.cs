@@ -17,6 +17,7 @@ namespace LanguageCards.Data
         public DbSet<SpeechPart> SpeechParts { get; set; }
         public DbSet<Word> Words { get; set; }
         public DbSet<CardStatus> Statuses { get; set; }
+        public DbSet<WordTranslation> WordsTranslations { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -25,6 +26,14 @@ namespace LanguageCards.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<WordTranslation>().HasOne(wt => wt.Word)
+                                                  .WithMany()
+                                                  .HasForeignKey(wt => wt.WordId)
+                                                  .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<WordTranslation>().HasOne(wt => wt.Translation)
+                                                  .WithMany()
+                                                  .HasForeignKey(wt => wt.TranslationId);
         }
     }
 }
