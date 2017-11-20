@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
+using LanguageCards.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace LanguageCards.WebApp
 {
@@ -28,6 +30,7 @@ namespace LanguageCards.WebApp
             {
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
             });
+            services.AddDbContext<LanguageCardsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LanguageCardsDatabase")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

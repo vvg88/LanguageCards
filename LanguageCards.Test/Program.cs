@@ -1,5 +1,7 @@
 ﻿using LanguageCards.Data;
 using LanguageCards.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Linq;
 
@@ -9,7 +11,9 @@ namespace LanguageCards.Test
     {
         static void Main(string[] args)
         {
-            using (LanguageCardsContext CardsDataBase = new LanguageCardsContext())
+            var optionsBuilder = new DbContextOptionsBuilder<LanguageCardsContext>();
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\\mssqllocaldb;Database=LanguageCards;Trusted_Connection=True;");
+            using (LanguageCardsContext CardsDataBase = new LanguageCardsContext(optionsBuilder.Options))
             {
                 DbInitializer.InitializeContext(CardsDataBase);
                 var user = RepositoryProvider.GetUsersRepository(CardsDataBase).GetUsers().FirstOrDefault();

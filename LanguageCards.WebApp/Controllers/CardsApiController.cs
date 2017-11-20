@@ -26,9 +26,9 @@ namespace LanguageCards.WebApp.Controllers
         private static IEnumerable<CardModel> cardModels;
         private static User user;
 
-        public CardsApiController()
+        public CardsApiController(LanguageCardsContext context)
         {
-            lcContext = new LanguageCardsContext();
+            lcContext = context;
             usersRepository = RepositoryProvider.GetUsersRepository(lcContext);
             cardsRepository = RepositoryProvider.GetCardsRepository(lcContext);
             cardStatusesRepository = RepositoryProvider.GetCardStatusesRepository(lcContext);

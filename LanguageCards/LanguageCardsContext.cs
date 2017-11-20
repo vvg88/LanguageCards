@@ -19,10 +19,8 @@ namespace LanguageCards.Data
         public DbSet<CardStatus> Statuses { get; set; }
         public DbSet<WordTranslation> WordsTranslations { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=LanguageCards;Trusted_Connection=True;");
-        }
+        public LanguageCardsContext(DbContextOptions<LanguageCardsContext> options) : base(options)
+        { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
