@@ -3,16 +3,16 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace LanguageCards.Data.Models
+namespace LanguageCards.Data.Entities
 {
     public class AnsweredCard
     {
-        public Card Card { get; }
+        public int CardId { get; }
         public string Answer { get; }
 
-        public AnsweredCard(Card card, string answer)
+        public AnsweredCard(int cardId, string answer)
         {
-            Card = card;
+            CardId = cardId;
             Answer = answer;
         }
     }

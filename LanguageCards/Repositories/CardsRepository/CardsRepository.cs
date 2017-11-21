@@ -12,27 +12,40 @@ namespace LanguageCards.Data.Repositories
     class CardsRepository : ICardsRepository
     {
         private LanguageCardsContext context;
-        private ICardStatusesRepository csRepository;
+        private ICardProgressesRepository cardProgressesRepository;
         private IUsersRepository usersRepository;
 
         public CardsRepository(LanguageCardsContext context)
         {
             this.context = context;
-            csRepository = RepositoryProvider.GetCardStatusesRepository(context);
+            cardProgressesRepository = RepositoryProvider.GetCardProgressesRepository(context);
             usersRepository = RepositoryProvider.GetUsersRepository(context);
+        }
+
+        public Card GetCard(int cardId)
+        {
+            if (cardId <= 0)
+                throw new DalOperationException("Requested card ID can not be negative!", DalOperationStatusCode.Error);
+            try
+            {
+                Card card = null;
+                RunExceptionHandledMethod(() => card = context.Cards.SingleOrDefault(c => c.Id == cardId));
+                if (card == null)
+                    throw new DalOperationException($"Requested card with ID = {cardId} has not been found!", DalOperationStatusCode.EntityNotFound);
+                return card;
+            }
+            catch { throw; }
         }
 
         public IEnumerable<Card> GetCards(int userId, int cardsNumber)
         {
-            if (!UserIdOk(userId))
-                throw new DalOperation.DalOperationException($"User with id = { userId } hasn't been found!", DalOperation.DalOperationStatusCode.UserNotFound);
-
             if (cardsNumber < 0)
-                throw new ArgumentOutOfRangeException("Number of requested cards can not be negative!");
+                throw new DalOperationException("Number of requested cards can not be negative!", DalOperationStatusCode.Error);
 
             try
             {
-                var cardsInProgress = GetCardsInProgress(userId, cardsNumber);
+                usersRepository.ThrowIfUserNotExist(userId);
+                var cardsInProgress = cardProgressesRepository.GetCardsInProgress(userId, cardsNumber);
                 var cardsInProgressNum = cardsInProgress.Count();
                 if (cardsInProgressNum < cardsNumber)
                 {
@@ -40,76 +53,13 @@ namespace LanguageCards.Data.Repositories
                     {
                         var cardsNotStudied = context.Cards.Include(c => c.Word)
                                                            .AsEnumerable()
-                                                           .Except(GetCardsInProgressTable(userId), new CardsComparer())
+                                                           .Except(cardProgressesRepository.GetCardsInProgressAndFinished(userId), new CardsComparer())
                                                            .Take(cardsNumber - cardsInProgressNum)
                                                            .ToList();
                         cardsInProgress = cardsInProgress.Concat(cardsNotStudied);
                     });
                 }
                 return cardsInProgress;
-            }
-            catch { throw; }
-        }
-
-        public void SetCardsInProgress(IEnumerable<Card> cards, int userId)
-        {
-            if (!UserIdOk(userId))
-                throw new DalOperationException($"User with id = { userId } hasn't been found!", DalOperationStatusCode.UserNotFound);
-
-            if (cards.Count() == 0)
-                return;
-
-            try
-            {
-                var cardsInProgress = context.CardProgresses.AsNoTracking().Select(cp => cp.Card);
-                var cardsToBeSetInProgress = cards.Except(cardsInProgress, new CardsComparer());
-
-                var cardStat = csRepository.GetCardStatus(CardStatusEnum.InProgress);
-                foreach (var card in cardsToBeSetInProgress)
-                {
-                    context.CardProgresses.Add(new CardProgress() { Card = card, CardStatus = cardStat, User = usersRepository.GetUser(userId), MaxScore = 5 });
-                }
-                context.SaveChanges();
-            }
-            catch (DalOperationException) { throw; }
-            catch (Exception e)
-            {
-                throw new DalOperationException("An inner exception occurred on setting cards in progress!", DalOperationStatusCode.InnerExceptionOccurred, e);
-            }
-        }
-
-        private bool UserIdOk(int userId) => userId > 0 && context.Users.AsNoTracking().Select(u => u.Id).Contains(userId);
-
-        public IEnumerable<Card> GetCardsInProgress(int userId, int cardsNumber)
-        {
-            IEnumerable<Card> cardsInProgress = Enumerable.Empty<Card>();
-            try
-            {
-                RunExceptionHandledMethod(() =>
-                {
-                    cardsInProgress = context.CardProgresses.Where(cp => cp.UserId == userId && cp.CardStatus.Id == (int)CardStatusEnum.InProgress)
-                                                            .Select(cp => cp.Card)
-                                                            .Include(c => c.Word)
-                                                            .Take(cardsNumber)
-                                                            .ToList();
-                });
-                return cardsInProgress;
-            }
-            catch { throw; }
-        }
-
-        private IQueryable<Card> GetCardsInProgressTable(int userId)
-        {
-            IQueryable<Card> cardsInProgTable = null;
-            try
-            {
-                RunExceptionHandledMethod(() =>
-                {
-                    cardsInProgTable = context.CardProgresses.Where(cp => cp.UserId == userId && (cp.CardStatusId == (int)CardStatusEnum.InProgress || cp.CardStatusId == (int)CardStatusEnum.Finished))
-                                                             .Select(cp => cp.Card)
-                                                             .Include(c => c.Word);
-                });
-                return cardsInProgTable;
             }
             catch { throw; }
         }
