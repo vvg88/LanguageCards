@@ -16,10 +16,6 @@ namespace LanguageCards.Data.Entities
             modelBuilder.Entity<Word>()
                         .Property(w => w.Definition)
                         .IsRequired();
-
-            modelBuilder.Entity<Word>()
-                        .Property(w => w.Example)
-                        .IsRequired();
         }
     }
 }
