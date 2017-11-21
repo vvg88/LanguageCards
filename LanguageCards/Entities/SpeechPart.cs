@@ -11,7 +11,6 @@ namespace LanguageCards.Data.Entities
     /// </summary>
     public class SpeechPart
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
         public string Name { get; set; }
         public ICollection<Word> Words { get; set; }

@@ -24,15 +24,13 @@ namespace LanguageCards.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<WordTranslation>().HasKey(wt => new { wt.WordId, wt.TranslationId });
-            modelBuilder.Entity<WordTranslation>().HasOne(wt => wt.Word)
-                                                  .WithMany()
-                                                  .HasForeignKey(wt => wt.WordId)
-                                                  .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<WordTranslation>().HasOne(wt => wt.Translation)
-                                                  .WithMany()
-                                                  .HasForeignKey(wt => wt.TranslationId);
+            WordTranslationConfiguration.Configure(modelBuilder);
+            CardProgressConfiguration.Configure(modelBuilder);
+            CardStatusConfiguration.Configure(modelBuilder);
+            SpeechPartConfiguration.Configure(modelBuilder);
+            UserConfiguration.Configure(modelBuilder);
+            WordConfiguration.Configure(modelBuilder);
+            WordTranslationConfiguration.Configure(modelBuilder);
         }
     }
 }

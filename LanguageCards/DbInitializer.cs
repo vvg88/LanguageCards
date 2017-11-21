@@ -255,7 +255,7 @@ namespace LanguageCards.Data
 
         private static CardProgress AddProgress(LanguageCardsContext contxt, Card card, User user, CardStatus cardStat)
         {
-            var cardScore = new CardProgress() { Card = card, User = user, Score = 0, MaxScore = 5, CardStatus = cardStat };
+            var cardScore = new CardProgress() { Card = card, User = user, Score = 0, CardStatus = cardStat };
             contxt.CardProgresses.Add(cardScore);
             return cardScore;
         }
