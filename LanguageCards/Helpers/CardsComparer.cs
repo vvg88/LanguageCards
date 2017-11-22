@@ -9,12 +9,14 @@ namespace LanguageCards.Data
     {
         public bool Equals(Card x, Card y)
         {
+            if (x.Equals(y))
+                return true;
             return x.Id == y.Id;
         }
 
         public int GetHashCode(Card obj)
         {
-            return obj.GetHashCode();
+            return obj.Id ^ obj.WordId;
         }
     }
 }

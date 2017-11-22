@@ -44,9 +44,9 @@ namespace LanguageCards.WebApp.Controllers
                 cardProgsRep.SetCardsInProgress(cards, user.Id);
                 return cards.Select(c => (CardModel)c);
             }
-            catch (DalOperationException)
+            catch (Exception)
             {
-                return Enumerable.Empty<CardModel>();
+                throw;
             }
         }
 
@@ -60,9 +60,9 @@ namespace LanguageCards.WebApp.Controllers
                 var answeredCards = answeredCardModels.Select(acm => (AnsweredCard)acm);
                 cardProgsRep.SetAnsweredCardsProgress(answeredCards, user.Id);
             }
-            catch (DalOperationException)
+            catch (Exception)
             {
-
+                throw;
             }
         }
     }
