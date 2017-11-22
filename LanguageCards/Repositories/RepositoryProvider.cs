@@ -13,5 +13,7 @@ namespace LanguageCards.Data.Repositories
         public static ICardStatusesRepository GetCardStatusesRepository(LanguageCardsContext context) => new CardStatusesRepository(context);
 
         public static ICardProgressesRepository GetCardProgressesRepository(LanguageCardsContext context) => new CardProgressesRepository(context);
+
+        public static ICardProgressesRepository GetCardProgressesRepository(LanguageCardsContext context, ICardsRepository cardsRep) => new CardProgressesRepository(context, cardsRep);
     }
 }

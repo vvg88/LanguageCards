@@ -16,13 +16,15 @@ namespace LanguageCards.Data.Repositories
         private IUsersRepository usersRepository;
         private ICardStatusesRepository cardStatusesRepository;
 
-        public CardProgressesRepository(LanguageCardsContext context)
+        public CardProgressesRepository(LanguageCardsContext context, ICardsRepository cardsRep)
         {
             this.context = context;
-            cardsRepository = RepositoryProvider.GetCardsRepository(context);
+            cardsRepository = cardsRep;
             usersRepository = RepositoryProvider.GetUsersRepository(context);
             cardStatusesRepository = RepositoryProvider.GetCardStatusesRepository(context);
         }
+
+        public CardProgressesRepository(LanguageCardsContext context) : this(context, RepositoryProvider.GetCardsRepository(context)) { }
 
         public CardProgress GetCardProgress(int userId, int cardId)
         {
