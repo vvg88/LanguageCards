@@ -15,7 +15,7 @@ namespace LanguageCards.WebApp.Models
         public int SpeechPartId { get; set; }
         public SpeechPartModel SpeechPart { get; set; }
         public string Definition { get; set; }
-        public ICollection<WordModel> Translations { get; set; }
+        public IEnumerable<WordModel> Translations { get; set; }
         public string Example { get; set; }
 
         public static explicit operator WordModel(Word word)
@@ -29,7 +29,7 @@ namespace LanguageCards.WebApp.Models
                 SpeechPartId = word.SpeechPartId,
                 SpeechPart = (SpeechPartModel)word.SpeechPart,
                 Definition = word.Definition,
-                Translations = (word.Translations == null || word.Translations.Count == 0) ? Enumerable.Empty<WordModel>().ToList() : word.Translations.Cast<WordModel>().ToList(),
+                Translations = (word.Translations == null || word.Translations.Count == 0) ? Enumerable.Empty<WordModel>() : word.Translations.Select(t => (WordModel)t),
                 Example = word.Example,
             };
         }
@@ -45,7 +45,7 @@ namespace LanguageCards.WebApp.Models
                 SpeechPartId = wordModel.SpeechPartId,
                 SpeechPart = (SpeechPart)wordModel.SpeechPart,
                 Definition = wordModel.Definition,
-                Translations = (wordModel.Translations == null || wordModel.Translations.Count == 0) ? Enumerable.Empty<Word>().ToList() : wordModel.Translations.Cast<Word>().ToList(),
+                Translations = (wordModel.Translations == null || wordModel.Translations.Count() == 0) ? Enumerable.Empty<Word>().ToList() : wordModel.Translations.Cast<Word>().ToList(),
                 Example = wordModel.Example,
             };
         }

@@ -8,14 +8,25 @@ namespace LanguageCards.WebApp.Models
 {
     public class SpeechPartModel
     {
-        public static explicit operator SpeechPart(SpeechPartModel languageModel)
+        public int Id { get; set; }
+        public string Name { get; set; }
+
+        public static explicit operator SpeechPart(SpeechPartModel speechPartModel)
         {
-            return new SpeechPart();
+            return new SpeechPart()
+            {
+                Id = speechPartModel.Id,
+                Name = speechPartModel.Name,
+            };
         }
 
-        public static explicit operator SpeechPartModel(SpeechPart languageModel)
+        public static explicit operator SpeechPartModel(SpeechPart speechPart)
         {
-            return new SpeechPartModel();
+            return new SpeechPartModel()
+            {
+                Id = speechPart.Id,
+                Name = speechPart.Name,
+            };
         }
     }
 }

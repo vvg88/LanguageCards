@@ -8,14 +8,25 @@ namespace LanguageCards.WebApp.Models
 {
     public class LanguageModel
     {
+        public int Id { get; set; }
+        public string Name { get; set; }
+
         public static explicit operator Language(LanguageModel languageModel)
         {
-            return new Language();
+            return new Language()
+            {
+                Id = languageModel.Id,
+                Name = languageModel.Name,
+            };
         }
 
-        public static explicit operator LanguageModel(Language languageModel)
+        public static explicit operator LanguageModel(Language language)
         {
-            return new LanguageModel();
+            return new LanguageModel()
+            {
+                Id = language.Id,
+                Name = language.Name,
+            };
         }
     }
 }
