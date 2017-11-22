@@ -10,7 +10,6 @@ using LanguageCards.Data.Repositories;
 using LanguageCards.Data.Enums;
 using LanguageCards.Data.DalOperation;
 using LanguageCards.WebApp.Models;
-using LanguageCards.Data.Models;
 
 namespace LanguageCards.WebApp.Controllers
 {
@@ -19,20 +18,19 @@ namespace LanguageCards.WebApp.Controllers
     public class CardsApiController : Controller
     {
         private LanguageCardsContext lcContext;
-        private IUsersRepository usersRepository;
-        private ICardsRepository cardsRepository;
-        private ICardStatusesRepository cardStatusesRepository;
-        private ICardProgressesRepository cardProgressesRepository;
-        private static IEnumerable<CardModel> cardModels;
-        private static User user;
+        private IUsersRepository usersRep;
+        private ICardsRepository cardsRep;
+        private ICardStatusesRepository cardStatusesRep;
+        private ICardProgressesRepository cardProgsRep;
+        private const int requestedCardsNum = 5;
 
         public CardsApiController(LanguageCardsContext context)
         {
             lcContext = context;
-            usersRepository = RepositoryProvider.GetUsersRepository(lcContext);
-            cardsRepository = RepositoryProvider.GetCardsRepository(lcContext);
-            cardStatusesRepository = RepositoryProvider.GetCardStatusesRepository(lcContext);
-            cardProgressesRepository = RepositoryProvider.GetCardProgressesRepository(lcContext);
+            usersRep = RepositoryProvider.GetUsersRepository(lcContext);
+            cardsRep = RepositoryProvider.GetCardsRepository(lcContext);
+            cardStatusesRep = RepositoryProvider.GetCardStatusesRepository(lcContext);
+            cardProgsRep = RepositoryProvider.GetCardProgressesRepository(lcContext);
         }
 
         [HttpGet]
@@ -41,10 +39,10 @@ namespace LanguageCards.WebApp.Controllers
             IEnumerable<Card> cards;
             try
             {
-                user = usersRepository.GetUsers().FirstOrDefault();
-                cards = cardsRepository.GetCards(user.Id, 5);
-                cardsRepository.SetCardsInProgress(cards, user.Id);
-                return cardModels = cards.Select(c => (CardModel)c);
+                var user = usersRep.GetUsers().FirstOrDefault();
+                cards = cardsRep.GetCards(user.Id, requestedCardsNum);
+                cardProgsRep.SetCardsInProgress(cards, user.Id);
+                return cards.Select(c => (CardModel)c);
             }
             catch (DalOperationException)
             {
@@ -58,9 +56,9 @@ namespace LanguageCards.WebApp.Controllers
         {
             try
             {
-                answeredCardModels = answeredCardModels.Select(ac => new AnsweredCardModel() { Answer = ac.Answer, Card = cardModels.SingleOrDefault(cm => cm.Id == ac.Card.Id) });
+                var user = usersRep.GetUsers().FirstOrDefault();
                 var answeredCards = answeredCardModels.Select(acm => (AnsweredCard)acm);
-                cardProgressesRepository.SetAnsweredCardsProgress(answeredCards, user.Id);
+                cardProgsRep.SetAnsweredCardsProgress(answeredCards, user.Id);
             }
             catch (DalOperationException)
             {

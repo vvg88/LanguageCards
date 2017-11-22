@@ -12,14 +12,14 @@ namespace LanguageCards.Data.Repositories
     class CardsRepository : ICardsRepository
     {
         private LanguageCardsContext context;
-        private ICardProgressesRepository cardProgressesRepository;
-        private IUsersRepository usersRepository;
+        private ICardProgressesRepository cardProgsRep;
+        private IUsersRepository usersRep;
 
         public CardsRepository(LanguageCardsContext context)
         {
             this.context = context;
-            cardProgressesRepository = RepositoryProvider.GetCardProgressesRepository(context);
-            usersRepository = RepositoryProvider.GetUsersRepository(context);
+            cardProgsRep = RepositoryProvider.GetCardProgressesRepository(context, this);
+            usersRep = RepositoryProvider.GetUsersRepository(context);
         }
 
         public Card GetCard(int cardId)
@@ -29,7 +29,7 @@ namespace LanguageCards.Data.Repositories
             try
             {
                 Card card = null;
-                RunExceptionHandledMethod(() => card = context.Cards.SingleOrDefault(c => c.Id == cardId));
+                RunExceptionHandledMethod(() => card = context.Cards.Include(c => c.Word).SingleOrDefault(c => c.Id == cardId));
                 if (card == null)
                     throw new DalOperationException($"Requested card with ID = {cardId} has not been found!", DalOperationStatusCode.EntityNotFound);
                 return card;
@@ -44,16 +44,22 @@ namespace LanguageCards.Data.Repositories
 
             try
             {
-                usersRepository.ThrowIfUserNotExist(userId);
-                var cardsInProgress = cardProgressesRepository.GetCardsInProgress(userId, cardsNumber);
+                usersRep.ThrowIfUserNotExist(userId);
+                var cardsInProgress = cardProgsRep.GetCardsInProgress(userId, cardsNumber);
                 var cardsInProgressNum = cardsInProgress.Count();
                 if (cardsInProgressNum < cardsNumber)
                 {
                     RunExceptionHandledMethod(() =>
                     {
-                        var cardsNotStudied = context.Cards.Include(c => c.Word)
+                        context.Cards.SelectMany(c => c.Word.Translations)
+                                     .Include(t => t.Language)
+                                     .Include(t => t.SpeechPart)
+                                     .Load();
+                        var cardsNotStudied = context.Cards.Include(c => c.Word).ThenInclude(w => w.Language)
+                                                           .Include(c => c.Word).ThenInclude(w => w.SpeechPart)
+                                                           .Include(c => c.Word).ThenInclude(w => w.Translations).AsQueryable()
                                                            .AsEnumerable()
-                                                           .Except(cardProgressesRepository.GetCardsInProgressAndFinished(userId), new CardsComparer())
+                                                           .Except(cardProgsRep.GetCardsInProgressAndFinished(userId), new CardsComparer())
                                                            .Take(cardsNumber - cardsInProgressNum)
                                                            .ToList();
                         cardsInProgress = cardsInProgress.Concat(cardsNotStudied);

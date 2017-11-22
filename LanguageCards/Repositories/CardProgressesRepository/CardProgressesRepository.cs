@@ -137,11 +137,17 @@ namespace LanguageCards.Data.Repositories
                 usersRepository.ThrowIfUserNotExist(userId);
                 RunExceptionHandledMethod(() =>
                 {
-                    var cardsQuery = context.CardProgresses.Where(cp => cp.UserId == userId && cp.CardStatus.Id == (int)cardStatus)
+                    context.CardProgresses.SelectMany(cp => cp.Card.Word.Translations)
+                                          .Include(t => t.Language)
+                                          .Include(t => t.SpeechPart)
+                                          .Load();
+                    var cardsQuery = context.CardProgresses.Where(cp => cp.UserId == userId && cp.CardStatusId == (int)cardStatus)
                                                            .Select(cp => cp.Card)
-                                                           .Include(c => c.Word);
+                                                           .Include(c => c.Word).ThenInclude(w => w.Language)
+                                                           .Include(c => c.Word).ThenInclude(w => w.SpeechPart)
+                                                           .Include(c => c.Word).ThenInclude(w => w.Translations);
 
-                    requestedСards = (cardsNumber == 0 ? cardsQuery.Take(cardsNumber) : cardsQuery).ToList();
+                    requestedСards = (cardsNumber == 0 ? cardsQuery : cardsQuery.Take(cardsNumber)).ToList();
                 });
                 return requestedСards;
             }
