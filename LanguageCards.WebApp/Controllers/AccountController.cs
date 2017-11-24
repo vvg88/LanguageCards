@@ -89,6 +89,14 @@ namespace LanguageCards.WebApp.Controllers
             }
             return Error("Unexpected error");
         }
+        
+        // POST: /Account/sign-out
+        [HttpPost("sign-out")]
+        public async Task<IActionResult> SignOut()
+        {
+            await signInManager.SignOutAsync();
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
 
         private string GetIdToken(IdentityUser user)
         {
