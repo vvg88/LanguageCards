@@ -39,7 +39,7 @@ namespace LanguageCards.WebApp.Controllers
         }
 
         [HttpPost("sign-in")]
-        public async Task<IActionResult> SignIn([FromBody] Credentials credentials)
+        public async Task<IActionResult> SignIn([FromBody] SignInCredentials credentials)
         {
             if (ModelState.IsValid)
             {
@@ -59,11 +59,11 @@ namespace LanguageCards.WebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register([FromBody] Credentials credentials)
+        public async Task<IActionResult> Register([FromBody] RegistrationCredentials credentials)
         {
             if (ModelState.IsValid)
             {
-                var userIdentity = (IdentityUser)credentials;// new IdentityUser { UserName = credentials.Email, Email = credentials.Email };
+                var userIdentity = (IdentityUser)credentials;
                 var result = await userManager.CreateAsync(userIdentity, credentials.Password);
                 if (result.Succeeded)
                 {
