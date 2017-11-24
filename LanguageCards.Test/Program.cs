@@ -24,7 +24,7 @@ namespace LanguageCards.Test
                     Console.WriteLine($"{card.Word.Text}: ");
                 }
                 Console.WriteLine();
-                cardsRep.SetCardsInProgress(cards, user.Id);
+                //cardsRep.SetCardsInProgress(cards, user.Id);
 
                 cards = cardsRep.GetCards(user.Id, 5);
                 foreach (var card in cards)
