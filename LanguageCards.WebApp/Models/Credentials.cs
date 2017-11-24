@@ -1,3 +1,5 @@
+using LanguageCards.Data.Entities;
+using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
 namespace LanguageCards.WebApp.Models
@@ -14,5 +16,31 @@ namespace LanguageCards.WebApp.Models
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
+
+        [Required]
+        [Display(Name = "FirstName")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [Display(Name = "LastName")]
+        public string LastName { get; set; }
+
+        public static explicit operator IdentityUser(Credentials credentials)
+        {
+            return new IdentityUser()
+            {
+                Email = credentials.Email,
+                UserName = $"{credentials.FirstName}_{credentials.LastName}",
+            };
+        }
+
+        public static explicit operator User(Credentials credentials)
+        {
+            return new User()
+            {
+                FirstName = credentials.FirstName,
+                LastName = credentials.LastName,
+            };
+        }
     }
 }

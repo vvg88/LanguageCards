@@ -8,7 +8,7 @@ namespace LanguageCards.Data.DalOperation
     {
         Error,
         EntityNotFound,
-        UserNotFound,
+        //UserNotFound,
         InnerExceptionOccurred,
     }
 }

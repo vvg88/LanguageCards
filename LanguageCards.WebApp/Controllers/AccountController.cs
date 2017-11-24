@@ -12,40 +12,46 @@ using Microsoft.Extensions.Options;
 using System;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using LanguageCards.WebApp.Models;
+using LanguageCards.Data.Entities;
+using LanguageCards.Data.Repositories;
+using LanguageCards.Data;
 
 namespace LanguageCards.WebApp.Controllers
 {
     [Route("api/[controller]")]
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly JWTSettings _options;
+        private readonly UserManager<IdentityUser> userManager;
+        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly JWTSettings options;
+        private readonly IUsersRepository usersRep;
 
         public AccountController(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
-            IOptions<JWTSettings> optionsAccessor)
+            IOptions<JWTSettings> optionsAccessor,
+            LanguageCardsContext context)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _options = optionsAccessor.Value;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
+            options = optionsAccessor.Value;
+            usersRep = RepositoryProvider.GetUsersRepository(context);
         }
 
         [HttpPost("sign-in")]
-        public async Task<IActionResult> SignIn([FromBody] Credentials Credentials)
+        public async Task<IActionResult> SignIn([FromBody] Credentials credentials)
         {
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(Credentials.Email, Credentials.Password, false, false);
+                var result = await signInManager.PasswordSignInAsync(credentials.Email, credentials.Password, false, false);
                 if (result.Succeeded)
                 {
-                    var user = await _userManager.FindByEmailAsync(Credentials.Email);
+                    var user = await userManager.FindByEmailAsync(credentials.Email);
                     return new JsonResult(new Dictionary<string, object>
-            {
-                { "access_token", GetAccessToken(Credentials.Email) },
-                { "id_token", GetIdToken(user) }
-            });
+                    {
+                        { "access_token", GetAccessToken(credentials.Email) },
+                        { "id_token", GetIdToken(user) }
+                    });
                 }
                 return new JsonResult("Unable to sign in") { StatusCode = 401 };
             }
@@ -53,23 +59,33 @@ namespace LanguageCards.WebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register([FromBody] Credentials Credentials)
+        public async Task<IActionResult> Register([FromBody] Credentials credentials)
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Credentials.Email, Email = Credentials.Email };
-                var result = await _userManager.CreateAsync(user, Credentials.Password);
+                var userIdentity = (IdentityUser)credentials;// new IdentityUser { UserName = credentials.Email, Email = credentials.Email };
+                var result = await userManager.CreateAsync(userIdentity, credentials.Password);
                 if (result.Succeeded)
                 {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    var user = (User)credentials;
+                    user.UsersDbId = userIdentity.Id;
+                    try
+                    {
+                        usersRep.AddUser(user);
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+
+                    await signInManager.SignInAsync(userIdentity, isPersistent: false);
                     return new JsonResult(new Dictionary<string, object>
                     {
-                        { "access_token", GetAccessToken(Credentials.Email) },
-                        { "id_token", GetIdToken(user) }
+                        { "access_token", GetAccessToken(credentials.Email) },
+                        { "id_token", GetIdToken(userIdentity) }
                     });
                 }
                 return Errors(result);
-
             }
             return Error("Unexpected error");
         }
@@ -98,10 +114,10 @@ namespace LanguageCards.WebApp.Controllers
 
         private string GetToken(Dictionary<string, object> payload)
         {
-            var secret = _options.SecretKey;
+            var secret = options.SecretKey;
 
-            payload.Add("iss", _options.Issuer);
-            payload.Add("aud", _options.Audience);
+            payload.Add("iss", options.Issuer);
+            payload.Add("aud", options.Audience);
             payload.Add("nbf", ConvertToUnixTimestamp(DateTime.Now));
             payload.Add("iat", ConvertToUnixTimestamp(DateTime.Now));
             payload.Add("exp", ConvertToUnixTimestamp(DateTime.Now.AddDays(7)));

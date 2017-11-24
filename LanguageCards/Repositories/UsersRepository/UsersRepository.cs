@@ -48,12 +48,32 @@ namespace LanguageCards.Data.Repositories
                 bool userIdExist = false;
                 RunExceptionHandledMethod(() => userIdExist = context.Users.Any(u => u.Id == id));
                 if (!userIdExist)
-                    throw new DalOperationException($"User with id = {id} hasn't been found!", DalOperationStatusCode.UserNotFound);
+                    throw new DalOperationException($"User with id = {id} hasn't been found!", DalOperationStatusCode.EntityNotFound);
+            }
+            catch { throw; }
+        }
+
+        public void AddUser(User user)
+        {
+            if (user == null)
+                throw new DalOperationException($"Argument {nameof(user)} is null!", DalOperationStatusCode.Error);
+            try
+            {
+                RunExceptionHandledMethod(() =>
+                {
+                    context.Users.Add(user);
+                    context.SaveChanges();
+                }, "An inner exception occurred on adding a new user!");
             }
             catch { throw; }
         }
 
         private void RunExceptionHandledMethod(Action method)
+        {
+            RunExceptionHandledMethod(method, "An inner exception occurred on users' request!");
+        }
+
+        private void RunExceptionHandledMethod(Action method, string message)
         {
             try
             {
@@ -61,7 +81,7 @@ namespace LanguageCards.Data.Repositories
             }
             catch (Exception e)
             {
-                throw new DalOperationException("An inner exception occurred on users' request!", DalOperationStatusCode.InnerExceptionOccurred, e);
+                throw new DalOperationException(message, DalOperationStatusCode.InnerExceptionOccurred, e);
             }
         }
     }

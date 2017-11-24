@@ -10,5 +10,6 @@ namespace LanguageCards.Data.Repositories
         IEnumerable<User> GetUsers();
         User GetUser(int id);
         void ThrowIfUserNotExist(int id);
+        void AddUser(User user);
     }
 }

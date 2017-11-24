@@ -10,6 +10,9 @@ namespace LanguageCards.Data.Entities
         public static void Configure(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()
+                        .HasKey(u => u.Id);
+
+            modelBuilder.Entity<User>()
                         .Property(u => u.FirstName)
                         .IsRequired();
 
