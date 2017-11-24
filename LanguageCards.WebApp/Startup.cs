@@ -13,6 +13,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Net;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
 
 namespace LanguageCards.WebApp
 {
@@ -35,6 +40,40 @@ namespace LanguageCards.WebApp
 
             services.AddIdentity<IdentityUser, IdentityRole>()
                     .AddEntityFrameworkStores<UserDbContext>();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                // avoid redirecting REST clients on 401
+                options.Events = new CookieAuthenticationEvents
+                {
+                    OnRedirectToLogin = ctx =>
+                    {
+                        ctx.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        return Task.FromResult(0);
+                    }
+                };
+            });
+
+            // secretKey contains a secret passphrase only your server knows
+            var secretKey = Configuration.GetSection("JWTSettings:SecretKey").Value;
+            var issuer = Configuration.GetSection("JWTSettings:Issuer").Value;
+            var audience = Configuration.GetSection("JWTSettings:Audience").Value;
+            var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretKey));
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = signingKey,
+
+                // Validate the JWT Issuer (iss) claim
+                ValidateIssuer = true,
+                ValidIssuer = issuer,
+
+                // Validate the JWT Audience (aud) claim
+                ValidateAudience = true,
+                ValidAudience = audience
+            };
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options => options = new JwtBearerOptions { TokenValidationParameters = tokenValidationParameters });
 
             services.AddMvc();
             services.AddSwaggerGen(c =>
