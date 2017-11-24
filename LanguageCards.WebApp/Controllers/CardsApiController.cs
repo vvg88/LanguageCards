@@ -10,27 +10,32 @@ using LanguageCards.Data.Repositories;
 using LanguageCards.Data.Enums;
 using LanguageCards.Data.DalOperation;
 using LanguageCards.WebApp.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace LanguageCards.WebApp.Controllers
 {
+    [Authorize]
     [Produces("application/json")]
     [Route("api/cards")]
     public class CardsApiController : Controller
     {
-        private LanguageCardsContext lcContext;
-        private IUsersRepository usersRep;
-        private ICardsRepository cardsRep;
-        private ICardStatusesRepository cardStatusesRep;
-        private ICardProgressesRepository cardProgsRep;
+        private readonly LanguageCardsContext lcContext;
+        private readonly IUsersRepository usersRep;
+        private readonly ICardsRepository cardsRep;
+        private readonly ICardStatusesRepository cardStatusesRep;
+        private readonly ICardProgressesRepository cardProgsRep;
+        private readonly UserManager<IdentityUser> userManager;
         private const int requestedCardsNum = 5;
 
-        public CardsApiController(LanguageCardsContext context)
+        public CardsApiController(LanguageCardsContext context, UserManager<IdentityUser> userManager)
         {
             lcContext = context;
             usersRep = RepositoryProvider.GetUsersRepository(lcContext);
             cardsRep = RepositoryProvider.GetCardsRepository(lcContext);
             cardStatusesRep = RepositoryProvider.GetCardStatusesRepository(lcContext);
             cardProgsRep = RepositoryProvider.GetCardProgressesRepository(lcContext);
+            this.userManager = userManager;
         }
 
         [HttpGet]
@@ -39,7 +44,7 @@ namespace LanguageCards.WebApp.Controllers
             IEnumerable<Card> cards;
             try
             {
-                var user = usersRep.GetUsers().FirstOrDefault();
+                var user = GetUser().Result;
                 cards = cardsRep.GetCards(user.Id, requestedCardsNum);
                 cardProgsRep.SetCardsInProgress(cards, user.Id);
                 return cards.Select(c => (CardModel)c);
@@ -56,7 +61,7 @@ namespace LanguageCards.WebApp.Controllers
         {
             try
             {
-                var user = usersRep.GetUsers().FirstOrDefault();
+                var user = GetUser().Result;
                 var answeredCards = answeredCardModels.Select(acm => (AnsweredCard)acm);
                 cardProgsRep.SetAnsweredCardsProgress(answeredCards, user.Id);
             }
@@ -64,6 +69,25 @@ namespace LanguageCards.WebApp.Controllers
             {
                 throw;
             }
+        }
+
+        private async Task<User> GetUser()
+        {
+            try
+            {
+                User user = null;
+                var identityUser = await userManager.GetUserAsync(User);
+                if (identityUser != null)
+                {
+                    user = usersRep.GetUser(identityUser.Id);
+                }
+                else
+                {
+                    throw new DalOperationException("Required user identity has not been found!", DalOperationStatusCode.Error);
+                }
+                return user;
+            }
+            catch { throw; }
         }
     }
 }

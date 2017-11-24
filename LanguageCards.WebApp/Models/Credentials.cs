@@ -30,7 +30,7 @@ namespace LanguageCards.WebApp.Models
             return new IdentityUser()
             {
                 Email = credentials.Email,
-                UserName = $"{credentials.FirstName}_{credentials.LastName}",
+                UserName = credentials.Email,
             };
         }
 

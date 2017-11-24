@@ -28,7 +28,23 @@ namespace LanguageCards.Data.Repositories
             catch { throw; }
         }
 
-        public IEnumerable<User> GetUsers()
+        public User GetUser(string id)
+        {
+            User user = null;
+            try
+            {
+                bool userIdExist = false;
+                RunExceptionHandledMethod(() => userIdExist = context.Users.Any(u => u.UsersDbId == id));
+                if (!userIdExist)
+                    throw new DalOperationException($"User with UsersDbId = {id} hasn't been found!", DalOperationStatusCode.EntityNotFound);
+
+                RunExceptionHandledMethod(() => user = context.Users.SingleOrDefault(u => u.UsersDbId == id));
+                return user;
+            }
+            catch { throw; }
+        }
+
+            public IEnumerable<User> GetUsers()
         {
             IEnumerable<User> users = null;
             try
@@ -57,6 +73,10 @@ namespace LanguageCards.Data.Repositories
         {
             if (user == null)
                 throw new DalOperationException($"Argument {nameof(user)} is null!", DalOperationStatusCode.Error);
+
+            if (context.Users.Any(u => u.UsersDbId == user.UsersDbId))
+                return;
+
             try
             {
                 RunExceptionHandledMethod(() =>
