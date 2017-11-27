@@ -18,6 +18,8 @@ using System.Net;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
+using Microsoft.Extensions.PlatformAbstractions;
+using System.IO;
 
 namespace LanguageCards.WebApp
 {
@@ -33,6 +35,7 @@ namespace LanguageCards.WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            #region User identity services configuration
             services.Configure<JWTSettings>(Configuration.GetSection("JWTSettings"));
 
             services.AddEntityFrameworkSqlServer()
@@ -74,11 +77,22 @@ namespace LanguageCards.WebApp
             };
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options => options = new JwtBearerOptions { TokenValidationParameters = tokenValidationParameters });
+            #endregion
 
             services.AddMvc();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+                c.SwaggerDoc("v1", new Info
+                {
+                    Title = "Language cards API",
+                    Version = "v1",
+                    Description = "This API provides an access to the databases that store language cards and users",
+                });
+
+                // Set the comments path for the Swagger JSON and UI.
+                var basePath = PlatformServices.Default.Application.ApplicationBasePath;
+                var xmlPath = Path.Combine(basePath, "LanguageCards.WebApp.xml");
+                c.IncludeXmlComments(xmlPath);
             });
             services.AddDbContext<LanguageCardsContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LanguageCardsDatabase")));
         }
@@ -101,6 +115,7 @@ namespace LanguageCards.WebApp
 
             app.UseStaticFiles();
 
+            #region Configure swagger
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
@@ -109,6 +124,7 @@ namespace LanguageCards.WebApp
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
+            #endregion
 
             app.UseAuthentication();
 

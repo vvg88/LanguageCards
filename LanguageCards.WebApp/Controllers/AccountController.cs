@@ -18,6 +18,9 @@ using LanguageCards.Data;
 
 namespace LanguageCards.WebApp.Controllers
 {
+    /// <summary>
+    /// Provides methods for user identity operations
+    /// </summary>
     [Route("api/[controller]")]
     public class AccountController : Controller
     {
@@ -26,11 +29,10 @@ namespace LanguageCards.WebApp.Controllers
         private readonly JWTSettings options;
         private readonly IUsersRepository usersRep;
 
-        public AccountController(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
-            IOptions<JWTSettings> optionsAccessor,
-            LanguageCardsContext context)
+        public AccountController(UserManager<IdentityUser> userManager,
+                                 SignInManager<IdentityUser> signInManager,
+                                 IOptions<JWTSettings> optionsAccessor,
+                                 LanguageCardsContext context)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
@@ -38,6 +40,11 @@ namespace LanguageCards.WebApp.Controllers
             usersRep = RepositoryProvider.GetUsersRepository(context);
         }
 
+        /// <summary>
+        /// Called on user's sign-in operation
+        /// </summary>
+        /// <param name="credentials"> Sign-in credentials that include user's e-mail and the password </param>
+        /// <returns> The result of operation </returns>
         [HttpPost("sign-in")]
         public async Task<IActionResult> SignIn([FromBody] SignInCredentials credentials)
         {
@@ -58,6 +65,11 @@ namespace LanguageCards.WebApp.Controllers
             return Error("Unexpected error");
         }
 
+        /// <summary>
+        /// Called on user's registration
+        /// </summary>
+        /// <param name="credentials"> User's registration credentials that include an e-mail, a password, the first and the second name </param>
+        /// <returns> The result of operation </returns>
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] RegistrationCredentials credentials)
         {
@@ -90,6 +102,10 @@ namespace LanguageCards.WebApp.Controllers
             return Error("Unexpected error");
         }
         
+        /// <summary>
+        /// Called on user's sign-out
+        /// </summary>
+        /// <returns> The result of operation </returns>
         // POST: /Account/sign-out
         [HttpPost("sign-out")]
         public async Task<IActionResult> SignOut()
@@ -150,7 +166,7 @@ namespace LanguageCards.WebApp.Controllers
             return new JsonResult(message) { StatusCode = 400 };
         }
 
-        public static double ConvertToUnixTimestamp(DateTime date)
+        private double ConvertToUnixTimestamp(DateTime date)
         {
             DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             TimeSpan diff = date.ToUniversalTime() - origin;

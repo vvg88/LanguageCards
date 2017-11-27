@@ -15,6 +15,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace LanguageCards.WebApp.Controllers
 {
+    /// <summary>
+    /// Provides methods for getting cards and saving answers in a database
+    /// </summary>
     [Authorize]
     [Produces("application/json")]
     [Route("api/cards")]
@@ -38,6 +41,10 @@ namespace LanguageCards.WebApp.Controllers
             this.userManager = userManager;
         }
 
+        /// <summary>
+        /// Gets a set of cards for the authorized user
+        /// </summary>
+        /// <returns> A set of requested cards </returns>
         [HttpGet]
         public IEnumerable<CardModel> GetCards()
         {
@@ -55,7 +62,11 @@ namespace LanguageCards.WebApp.Controllers
             }
         }
 
-        // POST: api/cards/    
+        // POST: api/cards/ 
+        /// <summary>
+        /// Sets a score and a status for the answered cards and saves the result in a database
+        /// </summary>
+        /// <param name="answeredCardModels"> A collection that contains answers and cards' ids </param>
         [HttpPost]
         public void Post([FromBody]IEnumerable<AnsweredCardModel> answeredCardModels)
         {
