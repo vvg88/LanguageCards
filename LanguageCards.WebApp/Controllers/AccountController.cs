@@ -24,13 +24,13 @@ namespace LanguageCards.WebApp.Controllers
     [Route("api/[controller]")]
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly UserManager<User> userManager;
+        private readonly SignInManager<User> signInManager;
         private readonly JWTSettings options;
         private readonly IUsersRepository usersRep;
 
-        public AccountController(UserManager<IdentityUser> userManager,
-                                 SignInManager<IdentityUser> signInManager,
+        public AccountController(UserManager<User> userManager,
+                                 SignInManager<User> signInManager,
                                  IOptions<JWTSettings> optionsAccessor,
                                  LanguageCardsContext context)
         {
@@ -75,21 +75,10 @@ namespace LanguageCards.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userIdentity = (IdentityUser)credentials;
+                var userIdentity = (User)credentials;
                 var result = await userManager.CreateAsync(userIdentity, credentials.Password);
                 if (result.Succeeded)
                 {
-                    var user = (User)credentials;
-                    user.UsersDbId = userIdentity.Id;
-                    try
-                    {
-                        usersRep.AddUser(user);
-                    }
-                    catch (Exception)
-                    {
-                        throw;
-                    }
-
                     await signInManager.SignInAsync(userIdentity, isPersistent: false);
                     return new JsonResult(new Dictionary<string, object>
                     {
@@ -114,7 +103,7 @@ namespace LanguageCards.WebApp.Controllers
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
-        private string GetIdToken(IdentityUser user)
+        private string GetIdToken(User user)
         {
             var payload = new Dictionary<string, object>
             {

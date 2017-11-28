@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.Extensions.PlatformAbstractions;
 using System.IO;
+using LanguageCards.Data.Entities;
 
 namespace LanguageCards.WebApp
 {
@@ -39,10 +40,10 @@ namespace LanguageCards.WebApp
             services.Configure<JWTSettings>(Configuration.GetSection("JWTSettings"));
 
             services.AddEntityFrameworkSqlServer()
-              .AddDbContext<UserDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("LanguageCardsUsersDatabase")));
+              .AddDbContext<LanguageCardsContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("LanguageCardsDatabase")));
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
-                    .AddEntityFrameworkStores<UserDbContext>();
+            services.AddIdentity<User, IdentityRole<int>>()
+                    .AddEntityFrameworkStores<LanguageCardsContext>();
 
             services.ConfigureApplicationCookie(options =>
             {

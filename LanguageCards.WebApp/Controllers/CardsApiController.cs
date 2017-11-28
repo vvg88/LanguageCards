@@ -28,10 +28,10 @@ namespace LanguageCards.WebApp.Controllers
         private readonly ICardsRepository cardsRep;
         private readonly ICardStatusesRepository cardStatusesRep;
         private readonly ICardProgressesRepository cardProgsRep;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<User> userManager;
         private const int requestedCardsNum = 5;
 
-        public CardsApiController(LanguageCardsContext context, UserManager<IdentityUser> userManager)
+        public CardsApiController(LanguageCardsContext context, UserManager<User> userManager)
         {
             lcContext = context;
             usersRep = RepositoryProvider.GetUsersRepository(lcContext);
@@ -86,17 +86,15 @@ namespace LanguageCards.WebApp.Controllers
         {
             try
             {
-                User user = null;
                 var identityUser = await userManager.GetUserAsync(User);
                 if (identityUser != null)
                 {
-                    user = usersRep.GetUser(identityUser.Id);
+                    return identityUser;
                 }
                 else
                 {
                     throw new DalOperationException("Required user identity has not been found!", DalOperationStatusCode.Error);
                 }
-                return user;
             }
             catch { throw; }
         }

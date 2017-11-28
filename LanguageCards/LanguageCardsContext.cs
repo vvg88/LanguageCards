@@ -1,4 +1,6 @@
 ﻿using LanguageCards.Data.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,10 +10,9 @@ using System.Threading.Tasks;
 
 namespace LanguageCards.Data
 {
-    public class LanguageCardsContext : DbContext
+    public class LanguageCardsContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
         public DbSet<Card> Cards { get; set; }
-        public DbSet<User> Users { get; set; }
         public DbSet<CardProgress> CardProgresses { get; set; }
         public DbSet<Language> Languages { get; set; }
         public DbSet<SpeechPart> SpeechParts { get; set; }
@@ -24,6 +25,7 @@ namespace LanguageCards.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             WordTranslationConfiguration.Configure(modelBuilder);
             CardProgressConfiguration.Configure(modelBuilder);
             CardStatusConfiguration.Configure(modelBuilder);

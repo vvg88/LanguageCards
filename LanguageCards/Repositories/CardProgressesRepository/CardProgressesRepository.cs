@@ -91,32 +91,27 @@ namespace LanguageCards.Data.Repositories
         public void SetAnsweredCardsProgress(IEnumerable<AnsweredCard> answeredCards, int userId)
         {
             if (answeredCards == null)
-                throw new NullReferenceException($"Parameter {nameof(answeredCards)} can not be null!");
+                throw new DalOperationException($"Parameter {nameof(answeredCards)} can not be null!", DalOperationStatusCode.Error);
 
             if (answeredCards.Count() == 0)
-                return;
+                throw new DalOperationException($"The parameter {nameof(answeredCards)} has no cards!", DalOperationStatusCode.Error);
 
-            try
+            RunExceptionHandledMethod(() =>
             {
-                usersRepository.ThrowIfUserNotExist(userId);
-                RunExceptionHandledMethod(() =>
+                foreach (var answeredCard in answeredCards)
                 {
-                    foreach (var answeredCard in answeredCards)
+                    var card = cardsRepository.GetCard(answeredCard.CardId);
+                    if (answeredCard.Answer == card.Word.Text)
                     {
-                        var card = cardsRepository.GetCard(answeredCard.CardId);
-                        if (answeredCard.Answer == card.Word.Text)
+                        var cardProgress = GetCardProgress(userId, answeredCard.CardId);
+                        if (++cardProgress.Score == cardProgress.MaxScore)
                         {
-                            var cardProgress = GetCardProgress(userId, answeredCard.CardId);
-                            if (++cardProgress.Score == cardProgress.MaxScore)
-                            {
-                                cardProgress.CardStatusId = (int)CardStatusEnum.Finished;
-                            }
+                            cardProgress.CardStatusId = (int)CardStatusEnum.Finished;
                         }
                     }
-                    context.SaveChanges();
-                }, $"An inner exception occurred on setting of card progress entity for user ID = {userId}!");
-            }
-            catch { throw; }
+                }
+                context.SaveChanges();
+            }, $"An inner exception occurred on setting of card progress entity for user ID = {userId}!");
         }
 
         /// <summary>
@@ -156,14 +151,7 @@ namespace LanguageCards.Data.Repositories
 
         private void RunExceptionHandledMethod(Action method)
         {
-            try
-            {
-                method();
-            }
-            catch (Exception e)
-            {
-                throw new DalOperationException("An inner exception occurred on cards' progresses request!", DalOperationStatusCode.InnerExceptionOccurred, e);
-            }
+            RunExceptionHandledMethod(method, "An inner exception occurred on cards' progresses request!");
         }
 
         private void RunExceptionHandledMethod(Action method, string message)

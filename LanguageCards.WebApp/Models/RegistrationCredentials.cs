@@ -20,6 +20,8 @@ namespace LanguageCards.WebApp.Models
             {
                 FirstName = credentials.FirstName,
                 LastName = credentials.LastName,
+                Email = credentials.Email,
+                UserName = credentials.Email,
             };
         }
     }

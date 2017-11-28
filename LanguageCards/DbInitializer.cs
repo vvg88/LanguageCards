@@ -19,8 +19,6 @@ namespace LanguageCards.Data
             {
                 return;
             }
-
-            var user = AddUser(context, "Vladimir", "Grishanin");
             
             var originalLang = AddLanguage(context, CultureInfo.CurrentCulture);
             var translateLang = AddLanguage(context, CultureInfo.GetCultures(CultureTypes.AllCultures)
@@ -214,13 +212,6 @@ namespace LanguageCards.Data
             #endregion
 
             context.SaveChanges();
-        }
-
-        private static User AddUser(LanguageCardsContext context, string firstName, string lastName)
-        {
-            var newUser = new User() { FirstName = firstName, LastName = lastName };
-            context.Users.Add(newUser);
-            return newUser;
         }
 
         private static Language AddLanguage(LanguageCardsContext contxt, CultureInfo cInf)

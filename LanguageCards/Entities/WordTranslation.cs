@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LanguageCards.Data.Entities
 {
-    [Table("WordsTranslations")]
     public class WordTranslation
     {
         public int? WordId { get; set; }

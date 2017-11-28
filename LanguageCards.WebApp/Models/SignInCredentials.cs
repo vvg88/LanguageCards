@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using LanguageCards.Data.Entities;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -19,14 +20,5 @@ namespace LanguageCards.WebApp.Models
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
-
-        public static explicit operator IdentityUser(SignInCredentials credentials)
-        {
-            return new IdentityUser()
-            {
-                Email = credentials.Email,
-                UserName = credentials.Email,
-            };
-        }
     }
 }
