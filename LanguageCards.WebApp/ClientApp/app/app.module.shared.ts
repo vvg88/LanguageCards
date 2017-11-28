@@ -6,18 +6,14 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
-import { HomeComponent } from './components/home/home.component';
-import { FetchDataComponent } from './components/fetchdata/fetchdata.component';
-import { CounterComponent } from './components/counter/counter.component';
+import { SigninComponent } from './components/signin/signin.component';
 import { CardsComponent } from './components/cards/cards.component'
 
 @NgModule({
     declarations: [
         AppComponent,
         NavMenuComponent,
-        CounterComponent,
-        FetchDataComponent,
-        HomeComponent,
+        SigninComponent,
         CardsComponent
     ],
     imports: [
@@ -25,12 +21,10 @@ import { CardsComponent } from './components/cards/cards.component'
         HttpModule,
         FormsModule,
         RouterModule.forRoot([
-            { path: '', redirectTo: 'home', pathMatch: 'full' },
-            { path: 'home', component: HomeComponent },
-            { path: 'counter', component: CounterComponent },
-            { path: 'fetch-data', component: FetchDataComponent },
+            { path: '', redirectTo: 'signin', pathMatch: 'full' },
+            { path: 'signin', component: SigninComponent },
             { path: 'cards', component: CardsComponent },
-            { path: '**', redirectTo: 'home' }
+            { path: '**', redirectTo: 'signin' }
         ])
     ]
 })
