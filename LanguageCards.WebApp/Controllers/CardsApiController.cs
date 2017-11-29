@@ -56,10 +56,7 @@ namespace LanguageCards.WebApp.Controllers
                 cardProgsRep.SetCardsInProgress(cards, user.Id);
                 return cards.Select(c => (CardModel)c);
             }
-            catch (Exception)
-            {
-                throw;
-            }
+            catch { throw; }
         }
 
         // POST: api/cards/ 
@@ -76,10 +73,7 @@ namespace LanguageCards.WebApp.Controllers
                 var answeredCards = answeredCardModels.Select(acm => (AnsweredCard)acm);
                 cardProgsRep.SetAnsweredCardsProgress(answeredCards, user.Id);
             }
-            catch (Exception)
-            {
-                throw;
-            }
+            catch { throw; }
         }
 
         private async Task<User> GetUser()

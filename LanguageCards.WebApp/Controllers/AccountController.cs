@@ -21,7 +21,7 @@ namespace LanguageCards.WebApp.Controllers
     /// <summary>
     /// Provides methods for user identity operations
     /// </summary>
-    [Route("api/[controller]")]
+    [Route("api/account")]
     public class AccountController : Controller
     {
         private readonly UserManager<User> userManager;

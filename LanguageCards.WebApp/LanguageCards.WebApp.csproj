@@ -37,6 +37,7 @@
 
   <ItemGroup>
     <None Remove="ClientApp\app\components\cards\cards.component.ts" />
+    <None Remove="ClientApp\app\models\signInCredentials.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,6 +46,7 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\components\cards\cards.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\models\signInCredentials.ts" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
