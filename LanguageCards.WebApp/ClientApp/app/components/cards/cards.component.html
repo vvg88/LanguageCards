@@ -14,9 +14,9 @@
     </thead>
     <tbody>
         <tr *ngFor="let card of cards">
-            <td>{{ card.word }}</td>
-            <td>{{ card.definition }}</td>
-            <td>{{ card.example }}</td>
+            <td>{{ card.word.text }}</td>
+            <td>{{ card.word.definition }}</td>
+            <td>{{ card.word.example }}</td>
         </tr>
     </tbody>
 </table>
