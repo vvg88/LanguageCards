@@ -10,7 +10,7 @@ export class CardsComponent {
     public cards: Card[];
 
     constructor(http: Http, @Inject('BASE_URL') baseUrl: string) {
-        http.get(baseUrl + 'api/Cards/GetCards').subscribe(result => {
+        http.get(baseUrl + 'api/cards').subscribe(result => {
             this.cards = result.json() as Card[];
         }, error => console.error(error));
     }

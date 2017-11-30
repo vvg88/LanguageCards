@@ -116,6 +116,8 @@ namespace LanguageCards.WebApp
 
             app.UseStaticFiles();
 
+            app.UseAuthentication();
+
             #region Configure swagger
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
@@ -126,8 +128,6 @@ namespace LanguageCards.WebApp
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
             #endregion
-
-            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

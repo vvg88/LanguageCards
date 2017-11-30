@@ -21,7 +21,7 @@ namespace LanguageCards.WebApp.Controllers
     [Authorize]
     [Produces("application/json")]
     [Route("api/cards")]
-    public class CardsApiController : Controller
+    public class CardsController : Controller
     {
         private readonly LanguageCardsContext lcContext;
         private readonly IUsersRepository usersRep;
@@ -31,7 +31,7 @@ namespace LanguageCards.WebApp.Controllers
         private readonly UserManager<User> userManager;
         private const int requestedCardsNum = 5;
 
-        public CardsApiController(LanguageCardsContext context, UserManager<User> userManager)
+        public CardsController(LanguageCardsContext context, UserManager<User> userManager)
         {
             lcContext = context;
             usersRep = RepositoryProvider.GetUsersRepository(lcContext);
