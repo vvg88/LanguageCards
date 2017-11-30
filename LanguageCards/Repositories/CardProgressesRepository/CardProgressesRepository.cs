@@ -46,7 +46,7 @@ namespace LanguageCards.Data.Repositories
         /// <param name="userId"> User's id </param>
         /// <param name="cardsNumber"> Required number of cards. If this parameter is 0, the method returns all the available cards </param>
         /// <returns> Required number of cards </returns>
-        public IEnumerable<Card> GetCardsInProgress(int userId, int cardsNumber) => GetCardsWithStatus(userId, CardStatusEnum.InProgress, cardsNumber);
+        public IEnumerable<Card> GetCardsInProgress(int userId, int cardsNumber = 0) => GetCardsWithStatus(userId, CardStatusEnum.InProgress, cardsNumber);
 
         /// <summary>
         /// Reveals all the cards for particular user that are finished
@@ -63,29 +63,38 @@ namespace LanguageCards.Data.Repositories
         /// <returns> Required cards </returns>
         public IEnumerable<Card> GetCardsInProgressAndFinished(int userId) => GetCardsInProgress(userId, 0).Concat(GetCardsFinished(userId, 0));
 
+        public IEnumerable<CardProgress> GetProgresses(int userId)
+        {
+            IEnumerable<CardProgress> progresses = Enumerable.Empty<CardProgress>();
+            usersRepository.ThrowIfUserNotExist(userId);
+            RunExceptionHandledMethod(() =>
+            {
+                progresses = context.CardProgresses.Where(cp => cp.UserId == userId)
+                                                   .Include(cp => cp.Card)
+                                                   .ThenInclude(c => c.Word)
+                                                   .AsEnumerable();
+            });
+            return progresses;
+        }
+
         public void SetCardsInProgress(IEnumerable<Card> cards, int userId)
         {
             if (cards.Count() == 0)
-                return;
+                throw new DalOperationException($"The parameter {nameof(cards)} has no cards!", DalOperationStatusCode.Error);
 
-            try
+            RunExceptionHandledMethod(() =>
             {
-                usersRepository.ThrowIfUserNotExist(userId);
-                RunExceptionHandledMethod(() =>
-                {
-                    var cardsInProgress = GetCardsInProgress(userId, 0);
-                    var cardsToBeSetInProgress = cards.Except(cardsInProgress, new CardsComparer());
+                var cardsInProgress = GetCardsInProgress(userId, 0);
+                var cardsToBeSetInProgress = cards.Except(cardsInProgress, new CardsComparer());
 
-                    var cardStat = cardStatusesRepository.GetCardStatus(CardStatusEnum.InProgress);
-                    var user = usersRepository.GetUser(userId);
-                    foreach (var card in cardsToBeSetInProgress)
-                    {
-                        context.CardProgresses.Add(new CardProgress() { Card = card, CardStatus = cardStat, User = user });
-                    }
-                    context.SaveChanges();
-                }, "An inner exception occurred on setting cards in progress!");
-            }
-            catch { throw; }
+                var cardStat = cardStatusesRepository.GetCardStatus(CardStatusEnum.InProgress);
+                var user = usersRepository.GetUser(userId);
+                foreach (var card in cardsToBeSetInProgress)
+                {
+                    context.CardProgresses.Add(new CardProgress() { Card = card, CardStatus = cardStat, User = user });
+                }
+                context.SaveChanges();
+            }, "An inner exception occurred on setting cards in progress!");
         }
 
         public void SetAnsweredCardsProgress(IEnumerable<AnsweredCard> answeredCards, int userId)
@@ -114,6 +123,11 @@ namespace LanguageCards.Data.Repositories
             }, $"An inner exception occurred on setting of card progress entity for user ID = {userId}!");
         }
 
+        public void UpdateCardsInProgress()
+        {
+            RunExceptionHandledMethod(() => context.SaveChanges(), "An inner exception occurred on updating cards in progress!");
+        }
+
         /// <summary>
         /// Reveals required number of cards for particular user with status <see cref="CardStatusEnum"/>
         /// </summary>
@@ -127,26 +141,22 @@ namespace LanguageCards.Data.Repositories
                 throw new DalOperationException($"The parameter {nameof(cardsNumber)} must be non negative!", DalOperationStatusCode.Error);
 
             IEnumerable<Card> requestedСards = Enumerable.Empty<Card>();
-            try
+            usersRepository.ThrowIfUserNotExist(userId);
+            RunExceptionHandledMethod(() =>
             {
-                usersRepository.ThrowIfUserNotExist(userId);
-                RunExceptionHandledMethod(() =>
-                {
-                    context.CardProgresses.SelectMany(cp => cp.Card.Word.Translations)
-                                          .Include(t => t.Language)
-                                          .Include(t => t.SpeechPart)
-                                          .Load();
-                    var cardsQuery = context.CardProgresses.Where(cp => cp.UserId == userId && cp.CardStatusId == (int)cardStatus)
-                                                           .Select(cp => cp.Card)
-                                                           .Include(c => c.Word).ThenInclude(w => w.Language)
-                                                           .Include(c => c.Word).ThenInclude(w => w.SpeechPart)
-                                                           .Include(c => c.Word).ThenInclude(w => w.Translations);
+                context.CardProgresses.SelectMany(cp => cp.Card.Word.Translations)
+                                      .Include(t => t.Language)
+                                      .Include(t => t.SpeechPart)
+                                      .Load();
+                var cardsQuery = context.CardProgresses.Where(cp => cp.UserId == userId && cp.CardStatusId == (int)cardStatus)
+                                                       .Select(cp => cp.Card)
+                                                       .Include(c => c.Word).ThenInclude(w => w.Language)
+                                                       .Include(c => c.Word).ThenInclude(w => w.SpeechPart)
+                                                       .Include(c => c.Word).ThenInclude(w => w.Translations);
 
-                    requestedСards = (cardsNumber == 0 ? cardsQuery : cardsQuery.Take(cardsNumber)).ToList();
-                });
-                return requestedСards;
-            }
-            catch { throw; }
+                requestedСards = (cardsNumber == 0 ? cardsQuery : cardsQuery.Take(cardsNumber)).ToList();
+            });
+            return requestedСards;
         }
 
         private void RunExceptionHandledMethod(Action method)

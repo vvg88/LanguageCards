@@ -16,7 +16,7 @@ namespace LanguageCards.Data
 
         public int GetHashCode(Card obj)
         {
-            return obj.Id ^ obj.WordId;
+            return obj.Id.GetHashCode() ^ obj.WordId.GetHashCode();
         }
     }
 }

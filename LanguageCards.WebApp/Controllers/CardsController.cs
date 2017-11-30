@@ -70,8 +70,21 @@ namespace LanguageCards.WebApp.Controllers
             try
             {
                 var user = GetUser().Result;
-                var answeredCards = answeredCardModels.Select(acm => (AnsweredCard)acm);
-                cardProgsRep.SetAnsweredCardsProgress(answeredCards, user.Id);
+                var cardsProgresses = cardProgsRep.GetProgresses(user.Id);
+                var answeredCards = cardsProgresses.Join(answeredCardModels,
+                                                         cp => cp.CardId,
+                                                         acm => acm.CardId,
+                                                         (cp, acm) => new { CardProgress = cp, AnswerIsCorrect = acm.Answer.Equals(cp.Card.Word.Text) });
+
+                foreach (var answeredCard in answeredCards)
+                {
+                    if (answeredCard.AnswerIsCorrect
+                        && ++answeredCard.CardProgress.Score == answeredCard.CardProgress.MaxScore)
+                    {
+                        answeredCard.CardProgress.CardStatusId = (int)CardStatusEnum.Finished;
+                    }
+                }
+                cardProgsRep.UpdateCardsInProgress();
             }
             catch { throw; }
         }
