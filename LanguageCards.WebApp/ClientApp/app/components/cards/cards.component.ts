@@ -7,7 +7,7 @@ import { Card } from '../../models/card';
     templateUrl: './cards.component.html'
 })
 export class CardsComponent {
-    public cards: Card[];
+    public cards: Card[] = [];
 
     constructor(http: Http, @Inject('BASE_URL') baseUrl: string) {
         http.get(baseUrl + 'api/cards').subscribe(result => {

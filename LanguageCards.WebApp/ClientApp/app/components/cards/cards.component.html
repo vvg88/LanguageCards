@@ -4,10 +4,7 @@
 
 <p *ngIf="!cards"><em>Loading...</em></p>
 <div *ngIf="cards">
-    <card *ngFor="let card of cards" [cardItem] ="card"></card>
-    <!--<card [cardItem]="cards[0]"></card>
-    <card [cardItem]="cards[1]"></card>
-    <card [cardItem]="cards[2]"></card>
-    <card [cardItem]="cards[3]"></card>
-    <card [cardItem]="cards[4]"></card>-->
+    <card *ngFor="let card1 of cards" [card] ="card1" class="success">
+        <div class="divider" role="separator"></div>
+    </card>
 </div>
