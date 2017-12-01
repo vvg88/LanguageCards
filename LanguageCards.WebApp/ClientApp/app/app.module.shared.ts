@@ -8,13 +8,17 @@ import { AppComponent } from './components/app/app.component';
 import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { SigninComponent } from './components/signin/signin.component';
 import { CardsComponent } from './components/cards/cards.component'
+import { CardComponent } from './components/card/card.component'
+import { Card } from './models/card';
+import { Word } from './models/word';
 
 @NgModule({
     declarations: [
         AppComponent,
         NavMenuComponent,
         SigninComponent,
-        CardsComponent
+        CardComponent,
+        CardsComponent,
     ],
     imports: [
         CommonModule,

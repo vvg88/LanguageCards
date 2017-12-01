@@ -1,8 +1,11 @@
-﻿import Word = WordModule.Word;
+﻿import { Word } from './word';
 
-module CardModule {
-    export class Card {
-        id: number;
-        word: Word;
+export class Card {
+    id: number;
+    word: Word;
+
+    constructor(obj: any) {
+        this.id = obj.id;
+        this.word = obj.word;
     }
 }

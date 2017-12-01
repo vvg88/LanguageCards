@@ -3,20 +3,11 @@
 <p>This component demonstrates cards.</p>
 
 <p *ngIf="!cards"><em>Loading...</em></p>
-
-<table class='table' *ngIf="cards">
-    <thead>
-        <tr>
-            <th>Word</th>
-            <th>Definition</th>
-            <th>Example</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let card of cards">
-            <td>{{ card.word.text }}</td>
-            <td>{{ card.word.definition }}</td>
-            <td>{{ card.word.example }}</td>
-        </tr>
-    </tbody>
-</table>
+<div *ngIf="cards">
+    <card *ngFor="let card of cards" [cardItem] ="card"></card>
+    <!--<card [cardItem]="cards[0]"></card>
+    <card [cardItem]="cards[1]"></card>
+    <card [cardItem]="cards[2]"></card>
+    <card [cardItem]="cards[3]"></card>
+    <card [cardItem]="cards[4]"></card>-->
+</div>

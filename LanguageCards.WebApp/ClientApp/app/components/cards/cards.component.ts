@@ -1,6 +1,6 @@
 ﻿import { Component, Inject } from '@angular/core';
 import { Http } from '@angular/http';
-import Card = CardModule.Card;
+import { Card } from '../../models/card';
 
 @Component({
     selector: 'cards',
@@ -14,10 +14,4 @@ export class CardsComponent {
             this.cards = result.json() as Card[];
         }, error => console.error(error));
     }
-}
-
-interface Cards {
-    word: string
-    definition: string
-    example: string
 }

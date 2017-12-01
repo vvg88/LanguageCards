@@ -1,4 +1,5 @@
 import { Component, Inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { Http } from '@angular/http';
 import { SignInCredentials } from '../../models/signInCredentials'
 
@@ -12,19 +13,31 @@ export class SigninComponent {
         email: "",
         password: "",
     };
-    private http: Http;
-    private baseUrl: string;
     public signInResult: string = "";
 
-    constructor(http: Http, @Inject('BASE_URL') baseUrl: string) {
+    private http: Http;
+    private baseUrl: string;
+    private router: Router;
+
+    constructor(http: Http,
+                @Inject('BASE_URL') baseUrl: string,
+                router: Router) {
         this.http = http;
         this.baseUrl = baseUrl;
+        this.router = router;
     }
 
     public signIn() {
         const url: string = this.baseUrl + 'api/account/sign-in';
         this.http.post(this.baseUrl + 'api/account/sign-in', this.signInCredentials).subscribe(result => {
-            this.signInResult = result.ok ? "Success!" : "Error!";
+            if (result.ok) {
+                this.signInResult = "Success!";
+                this.router.navigateByUrl('/cards');
+            }
+            else {
+                this.signInResult = "Error!";
+            }
+            
         });
     }
 }
