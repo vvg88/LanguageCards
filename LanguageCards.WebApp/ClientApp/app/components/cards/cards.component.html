@@ -1,0 +1,10 @@
+﻿<h1>Cards</h1>
+
+<p>This component demonstrates cards.</p>
+
+<p *ngIf="!cards"><em>Loading...</em></p>
+<div *ngIf="cards">
+    <card *ngFor="let card1 of cards" [card] ="card1" class="success">
+        <div class="divider" role="separator"></div>
+    </card>
+</div>

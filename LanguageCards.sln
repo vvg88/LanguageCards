@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.27004.2006
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanguageCards.Data", "LanguageCards\LanguageCards.Data.csproj", "{ABC87148-866A-4BA2-8884-8597C2D6F38A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LanguageCards.WebApp", "LanguageCards.WebApp\LanguageCards.WebApp.csproj", "{575D3D2E-E2D1-4387-942A-A94136232612}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanguageCards.Test", "LanguageCards.Test\LanguageCards.Test.csproj", "{37704263-0F3F-4A1B-8191-4898D7AF09FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{ABC87148-866A-4BA2-8884-8597C2D6F38A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABC87148-866A-4BA2-8884-8597C2D6F38A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABC87148-866A-4BA2-8884-8597C2D6F38A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{575D3D2E-E2D1-4387-942A-A94136232612}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{575D3D2E-E2D1-4387-942A-A94136232612}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{575D3D2E-E2D1-4387-942A-A94136232612}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{575D3D2E-E2D1-4387-942A-A94136232612}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37704263-0F3F-4A1B-8191-4898D7AF09FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37704263-0F3F-4A1B-8191-4898D7AF09FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37704263-0F3F-4A1B-8191-4898D7AF09FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37704263-0F3F-4A1B-8191-4898D7AF09FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
