@@ -33,7 +33,7 @@ export class SigninComponent {
         this.http.post(this.baseUrl + 'api/account/sign-in', this.signInCredentials).subscribe(result => {
             if (result.ok) {
                 this.signInResult = "Success!";
-                this.router.navigateByUrl('/mainapp');
+                this.router.navigateByUrl('/mainapp/(cardList:cards)');
             }
             else {
                 this.signInResult = "Error!";

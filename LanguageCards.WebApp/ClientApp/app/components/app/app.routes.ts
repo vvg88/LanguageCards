@@ -8,7 +8,8 @@ import { MainAppComponent } from '../mainapp/mainapp.component'
 export const ROUTES: Routes = [
     { path: '', redirectTo: 'signin', pathMatch: 'full' },
     { path: 'signin', component: SigninComponent },
-    { path: 'cards', component: CardsComponent, outlet: 'cardList' },
-    { path: 'mainapp', component: MainAppComponent, },
+    { path: 'mainapp', component: MainAppComponent, children: [
+        { path: 'cards', component: CardsComponent, outlet: 'cardList' }
+            ]},
     { path: '**', redirectTo: 'signin' }
 ];
