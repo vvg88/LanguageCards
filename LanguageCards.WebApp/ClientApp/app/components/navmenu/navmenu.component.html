@@ -12,8 +12,11 @@
         <div class='clearfix'></div>
         <div class='navbar-collapse collapse'>
             <ul class='nav navbar-nav'>
-                <li [routerLinkActive]="['link-active']">
-                    <a [routerLink]="['/cards']">
+                <!--<li role="presentation" class="active">
+                    <a href="/cards/"><span class="glyphicon glyphicon-th-list"></span> Cards</a>
+                </li>-->
+                <li ><!-- [routerLinkActive]="['link-active']" -->
+                    <a [routerLink]="[{ outlets: { cardList: ['cards'] }}]" routerLinkActive="active"><!--"['/cards']"-->
                         <span class="glyphicon glyphicon-th-list"></span> Cards
                     </a>
                 </li>
