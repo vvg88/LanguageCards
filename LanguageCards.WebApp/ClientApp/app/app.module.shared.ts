@@ -11,6 +11,8 @@ import { CardsComponent } from './components/cards/cards.component'
 import { CardComponent } from './components/card/card.component'
 import { Card } from './models/card';
 import { Word } from './models/word';
+import { MainAppComponent } from './components/mainapp/mainapp.component'
+import { ROUTES } from './components/app/app.routes'
 
 @NgModule({
     declarations: [
@@ -19,17 +21,13 @@ import { Word } from './models/word';
         SigninComponent,
         CardComponent,
         CardsComponent,
+        MainAppComponent,
     ],
     imports: [
         CommonModule,
         HttpModule,
         FormsModule,
-        RouterModule.forRoot([
-            { path: '', redirectTo: 'signin', pathMatch: 'full' },
-            { path: 'signin', component: SigninComponent },
-            { path: 'cards', component: CardsComponent },
-            { path: '**', redirectTo: 'signin' }
-        ])
+        RouterModule.forRoot(ROUTES)
     ]
 })
 export class AppModuleShared {
