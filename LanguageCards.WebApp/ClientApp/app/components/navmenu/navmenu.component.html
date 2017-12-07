@@ -12,18 +12,24 @@
         <div class='clearfix'></div>
         <div class='navbar-collapse collapse'>
             <ul class='nav navbar-nav'>
-                <li >
-                    <a [routerLink]="[{ outlets: { cardList: ['cards'] }}]" routerLinkActive="active" >
+                <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="[{ outlets: { cardList: ['cards'] }}]">
                         <span class="glyphicon glyphicon-th-list"></span> Cards
                     </a>
                 </li>
-            </ul>
-            <ul class='nav navbar-nav'>
+
                 <li [routerLinkActive]="['link-active']">
-                    <a [routerLink]="['/signin']">
-                        <span class="glyphicon glyphicon-user"></span> Sign in
+                    <a [routerLink]="['/test']">
+                        <span class="glyphicon glyphicon-check"></span> Test
                     </a>
                 </li>
+
+                <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/signin']">
+                        <span class="glyphicon glyphicon-log-out"></span> Sign out
+                    </a>
+                </li>
+
             </ul>
         </div>
     </div>

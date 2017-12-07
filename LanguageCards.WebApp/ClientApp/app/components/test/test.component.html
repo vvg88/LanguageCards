@@ -1,0 +1,12 @@
+﻿<form (ngSubmit)="submitAnswers()" class="form-test">
+    <h2>Test</h2>
+    <p>Write down answers!</p>
+    <hr/>
+    <p *ngIf="!cards"><em>Loading...</em></p>
+    <div *ngIf="cards">
+        <testcard *ngFor="let card1 of cards" [card]="card1" class="success">
+            <div class="divider" role="separator"></div>
+        </testcard>
+        <button type="submit" class="btn btn-primary btn-lg">Submit answers</button>
+    </div>
+</form>

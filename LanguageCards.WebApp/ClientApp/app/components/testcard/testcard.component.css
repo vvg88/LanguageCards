@@ -1,0 +1,13 @@
+﻿body {
+}
+.bracket:after {
+    content: ")"
+}
+
+.bracket:before {
+    content: "("
+}
+
+p.italic {
+    font-style: italic;
+}

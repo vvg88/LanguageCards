@@ -11,7 +11,6 @@ import { Word } from '../../models/word';
 
 export class CardComponent {
     @Input() card: Card;
-    public answer: string = "";
 
     constructor() { }
 }
