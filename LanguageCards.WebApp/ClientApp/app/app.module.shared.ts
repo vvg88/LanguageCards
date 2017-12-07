@@ -13,6 +13,7 @@ import { Card } from './models/card';
 import { Word } from './models/word';
 import { MainAppComponent } from './components/mainapp/mainapp.component'
 import { ROUTES } from './components/app/app.routes'
+import { CardDetailComponent } from './components/carddetail/carddetail.component'
 
 @NgModule({
     declarations: [
@@ -22,6 +23,7 @@ import { ROUTES } from './components/app/app.routes'
         CardComponent,
         CardsComponent,
         MainAppComponent,
+        CardDetailComponent,
     ],
     imports: [
         CommonModule,

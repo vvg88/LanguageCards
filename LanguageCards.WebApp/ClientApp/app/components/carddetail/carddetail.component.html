@@ -1,0 +1,21 @@
+﻿<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Translation:</th>
+                        <th>Speech part:</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let translation of card.word.translations">
+                    <tr>
+                        <td>{{translation.text}}</td>
+                        <td>{{translation.speechPart.name}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="text-left col-lg-12">{{card.word.example}}</div>
+</div>

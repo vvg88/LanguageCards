@@ -11,3 +11,8 @@
 p.italic {
     font-style: italic;
 }
+
+.word {
+    font-weight: 600;
+    font-size: 20px;
+}
