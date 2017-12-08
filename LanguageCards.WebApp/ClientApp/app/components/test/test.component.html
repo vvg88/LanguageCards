@@ -4,9 +4,7 @@
     <hr/>
     <p *ngIf="!cards"><em>Loading...</em></p>
     <div *ngIf="cards">
-        <testcard *ngFor="let card1 of cards" [card]="card1" class="success">
-            <div class="divider" role="separator"></div>
-        </testcard>
+        <testcard *ngFor="let card1 of cards; let i = index" [card]="card1" [answer]="answers[i]" ></testcard>
         <button type="submit" class="btn btn-primary btn-lg">Submit answers</button>
     </div>
 </form>

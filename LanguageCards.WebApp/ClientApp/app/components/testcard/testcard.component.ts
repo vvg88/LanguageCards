@@ -1,6 +1,7 @@
-﻿import { Component, Input } from '@angular/core';
+﻿import { Component, Input, OnInit } from '@angular/core';
 import { Card } from '../../models/card';
 import { Word } from '../../models/word';
+import { Answer } from '../../models/answer';
 
 @Component({
     selector: 'testcard',
@@ -8,9 +9,16 @@ import { Word } from '../../models/word';
     styleUrls: ['./testcard.component.css'],
 })
 
-export class TestCardComponent {
+export class TestCardComponent implements OnInit {
     @Input() card: Card;
-    public answer: string = "";
+    @Input() answer: Answer = {
+        answerText: "",
+        cardId: NaN,
+    };
 
     constructor() { }
+
+    ngOnInit() {
+        this.answer.cardId = this.card.id;
+    }
 }

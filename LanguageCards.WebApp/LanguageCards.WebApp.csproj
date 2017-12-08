@@ -43,6 +43,7 @@
     <None Remove="ClientApp\app\components\mainapp\mainapp.component.ts" />
     <None Remove="ClientApp\app\components\testcard\testcard.component.ts" />
     <None Remove="ClientApp\app\components\test\test.component.ts" />
+    <None Remove="ClientApp\app\models\answer.ts" />
     <None Remove="ClientApp\app\models\card.ts" />
     <None Remove="ClientApp\app\models\signInCredentials.ts" />
     <None Remove="ClientApp\app\models\word.ts" />
@@ -60,6 +61,7 @@
     <TypeScriptCompile Include="ClientApp\app\components\mainapp\mainapp.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\testcard\testcard.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\test\test.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\models\answer.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\card.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\signInCredentials.ts" />
     <TypeScriptCompile Include="ClientApp\app\models\word.ts" />

@@ -1,4 +1,5 @@
 ﻿using LanguageCards.Data.Entities;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ namespace LanguageCards.WebApp.Models
 {
     public class AnsweredCardModel
     {
+        [JsonProperty(PropertyName = "answerText")]
         public string Answer { get; set; }
         public int CardId { get; set; }
 
