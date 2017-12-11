@@ -11,35 +11,24 @@ import { SignInService } from '../../services/signin.service';
 })
 
 export class SigninComponent {
-    public signInCredentials: SignInCredentials = {
-        email: "",
-        password: "",
-    };
-    public signInResult: string = "";
+    public signInCredentials: SignInCredentials = new SignInCredentials();
 
-    private http: Http;
-    private baseUrl: string;
+    private signInService: SignInService;
     private router: Router;
 
-    constructor(http: Http,
-                @Inject('BASE_URL') baseUrl: string,
+    constructor(signInService: SignInService,
                 router: Router) {
-        this.http = http;
-        this.baseUrl = baseUrl;
+        this.signInService = signInService;
         this.router = router;
     }
 
     public signIn() {
-        const url: string = this.baseUrl + 'api/account/sign-in';
-        this.http.post(this.baseUrl + 'api/account/sign-in', this.signInCredentials).subscribe(result => {
+        this.signInService.signIn(this.signInCredentials).then(response => response.subscribe(result => {
             if (result.ok) {
-                this.signInResult = "Success!";
                 this.router.navigateByUrl('/mainapp/(cardList:cards)');
             }
-            else {
-                this.signInResult = "Error!";
-            }
+            else { }
             
-        });
+        }));
     }
 }

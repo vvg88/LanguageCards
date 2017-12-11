@@ -36,7 +36,10 @@ import { SignInService } from './services/signin.service';
         HttpModule,
         FormsModule,
         RouterModule.forRoot(ROUTES)
-    ]
+    ],
+    providers: [
+        SignInService,
+    ],
 })
 export class AppModuleShared {
 }
