@@ -1,7 +1,7 @@
 ﻿import { Component, Input, OnInit } from '@angular/core';
-import { Card } from '../../models/card';
-import { Word } from '../../models/word';
-import { Answer } from '../../models/answer';
+import { Card } from '../../shared/classes/card';
+import { Word } from '../../shared/classes/word';
+import { Answer } from '../../shared/classes/answer';
 
 @Component({
     selector: 'testcard',
@@ -11,10 +11,7 @@ import { Answer } from '../../models/answer';
 
 export class TestCardComponent implements OnInit {
     @Input() card: Card;
-    @Input() answer: Answer = {
-        answerText: "",
-        cardId: NaN,
-    };
+    @Input() answer: Answer = new Answer();
 
     constructor() { }
 

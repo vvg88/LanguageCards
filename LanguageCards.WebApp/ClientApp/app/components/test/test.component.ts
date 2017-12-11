@@ -1,8 +1,8 @@
 ﻿import { Component, Inject, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Http } from '@angular/http';
-import { Card } from '../../models/card';
-import { Answer } from '../../models/answer';
+import { Card } from '../../shared/classes/card';
+import { Answer } from '../../shared/classes/answer';
 import { TestCardComponent } from '../testcard/testcard.component';
 
 @Component({

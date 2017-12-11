@@ -9,13 +9,15 @@ import { NavMenuComponent } from './components/navmenu/navmenu.component';
 import { SigninComponent } from './components/signin/signin.component';
 import { CardsComponent } from './components/cards/cards.component';
 import { CardComponent } from './components/card/card.component';
-import { Card } from './models/card';
-import { Word } from './models/word';
+import { Card } from './shared/classes/card';
+import { Word } from './shared/classes/word';
 import { MainAppComponent } from './components/mainapp/mainapp.component';
 import { ROUTES } from './components/app/app.routes';
 import { CardDetailComponent } from './components/carddetail/carddetail.component';
 import { TestCardComponent } from './components/testcard/testcard.component';
 import { TestComponent } from './components/test/test.component';
+
+import { SignInService } from './services/signin.service';
 
 @NgModule({
     declarations: [

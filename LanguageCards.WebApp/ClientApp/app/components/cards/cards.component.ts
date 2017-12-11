@@ -1,6 +1,6 @@
 ﻿import { Component, Inject } from '@angular/core';
 import { Http } from '@angular/http';
-import { Card } from '../../models/card';
+import { Card } from '../../shared/classes/card';
 
 @Component({
     selector: 'cards',

@@ -1,7 +1,7 @@
 ﻿import { Component, Inject, Input } from '@angular/core';
 import { Http } from '@angular/http';
-import { Card } from '../../models/card';
-import { Word } from '../../models/word';
+import { Card } from '../../shared/classes/card';
+import { Word } from '../../shared/classes/word';
 
 @Component({
     selector: 'card',

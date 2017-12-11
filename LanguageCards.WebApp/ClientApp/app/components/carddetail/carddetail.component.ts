@@ -1,11 +1,10 @@
 ﻿import { Component, Input } from '@angular/core';
-import { Card } from '../../models/card';
-import { Word } from '../../models/word';
+import { Card } from '../../shared/classes/card';
+import { Word } from '../../shared/classes/word';
 
 @Component({
     selector: 'carddetail',
     templateUrl: './carddetail.component.html',
-    //styleUrls: ['./carddetail.component.css'],
 })
 
 export class CardDetailComponent {

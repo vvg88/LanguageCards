@@ -1,7 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Http } from '@angular/http';
-import { SignInCredentials } from '../../models/signInCredentials'
+import { SignInCredentials } from '../../shared/classes/signInCredentials';
+import { SignInService } from '../../services/signin.service';
 
 @Component({
     selector: 'signin',
