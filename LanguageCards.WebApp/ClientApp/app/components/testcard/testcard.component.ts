@@ -2,6 +2,7 @@
 import { Card } from '../../shared/classes/card';
 import { Word } from '../../shared/classes/word';
 import { Answer } from '../../shared/classes/answer';
+import { AnsweredCard } from '../../shared/classes/answeredCard';
 
 @Component({
     selector: 'testcard',
@@ -10,12 +11,9 @@ import { Answer } from '../../shared/classes/answer';
 })
 
 export class TestCardComponent implements OnInit {
-    @Input() card: Card;
-    @Input() answer: Answer = new Answer();
+    @Input() answeredCard: AnsweredCard;
 
     constructor() { }
 
-    ngOnInit() {
-        this.answer.cardId = this.card.id;
-    }
+    ngOnInit() { }
 }

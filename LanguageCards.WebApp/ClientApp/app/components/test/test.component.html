@@ -4,7 +4,7 @@
     <hr/>
     <p *ngIf="!cards"><em>Loading...</em></p>
     <div *ngIf="cards">
-        <testcard *ngFor="let card1 of cards; let i = index" [card]="card1" [answer]="answers[i]" ></testcard>
+        <testcard *ngFor="let card1 of cards; let i = index" [answeredCard]="card1"></testcard>
         <button type="submit" class="btn btn-primary btn-lg">Submit answers</button>
     </div>
 </form>

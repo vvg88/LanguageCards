@@ -6,6 +6,7 @@ import { Answer } from '../../shared/classes/answer';
 import { TestCardComponent } from '../testcard/testcard.component';
 import { CardsService } from '../../services/cards.service';
 import { AppRoutes } from '../../shared/classes/routes';
+import { AnsweredCard } from '../../shared/classes/answeredCard';
 
 @Component({
     selector: 'test',
@@ -13,8 +14,7 @@ import { AppRoutes } from '../../shared/classes/routes';
     styleUrls: ['./test.component.css'],
 })
 export class TestComponent {
-    public cards: Card[] = [];
-    public answers: Answer[] = [{ answerText: "", cardId: 0 }, { answerText: "", cardId: 0 }, { answerText: "", cardId: 0 }, { answerText: "", cardId: 0 }, { answerText: "", cardId: 0 }];
+    public cards: AnsweredCard[] = [];
     private cardsService: CardsService;
     private router: Router;
 
@@ -22,13 +22,27 @@ export class TestComponent {
         this.cardsService = cardsService;
         this.router = router;
         this.cardsService.getCards().then(response => response.subscribe(result => {
-            this.cards = result.json() as Card[];
+            this.getCards(result.json() as Card[]);
         }, error => console.error(error)));
     }
     
     submitAnswers() {
-        this.cardsService.postCards(this.answers).then(response => response.subscribe(result => {
+        this.cardsService.postCards(this.getAnswers()).then(response => response.subscribe(result => {
             this.router.navigateByUrl(AppRoutes.mainAppCards);
         }, error => console.error(error)));
+    }
+
+    private getCards(cards: Card[]) {
+        this.cards = cards.map((card) =>
+            new AnsweredCard(card.id, card.word.definition, card.word.speechPart.name, card.word.translations.map(t => t.text)));
+    }
+
+    private getAnswers(): Answer[] {
+        return this.cards.map(c => {
+            let answ = new Answer();
+            answ.cardId = c.cardId;
+            answ.answerText = c.answer;
+            return answ;
+        });
     }
 }

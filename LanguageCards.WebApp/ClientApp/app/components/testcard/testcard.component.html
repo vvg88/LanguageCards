@@ -5,18 +5,11 @@
                 
                 <div class="form-group">
                     <div class="text-left col-lg-8">
-                        {{card.word.definition}} <br />
-                        <p class="italic bracket">{{card.word.speechPart.name}}</p>
+                        {{answeredCard.wordDefinition}} <br />
+                        <p class="italic bracket">{{answeredCard.speechPart}}</p>
                     </div>
-                    <div class="col-lg-4 has-feedback" [class.has-success]="card.word.text === answer.answerText">
-                        <input type="text" class="form-control" id="answer" [(ngModel)]="answer.answerText" name="answer">
-                        <span class="glyphicon glyphicon-ok form-control-feedback" *ngIf="card.word.text === answer.answerText"></span>
-                    </div>
-                </div>
-                <a href="#details" data-toggle="collapse"></a>
-                <div id="details" class="collapse">
-                    <div class="form-group">
-                        <carddetail [card]="card"></carddetail>
+                    <div class="col-lg-4 has-feedback">
+                        <input type="text" class="form-control" id="answer" [(ngModel)]="answeredCard.answer" name="answer">
                     </div>
                 </div>
             </form>
