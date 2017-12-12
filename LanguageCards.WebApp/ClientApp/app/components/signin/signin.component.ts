@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Http } from '@angular/http';
 import { SignInCredentials } from '../../shared/classes/signInCredentials';
 import { SignInService } from '../../services/signin.service';
+import { AppRoutes } from '../../shared/classes/routes'
 
 @Component({
     selector: 'signin',
@@ -25,10 +26,8 @@ export class SigninComponent {
     public signIn() {
         this.signInService.signIn(this.signInCredentials).then(response => response.subscribe(result => {
             if (result.ok) {
-                this.router.navigateByUrl('/mainapp/(cardList:cards)');
+                this.router.navigateByUrl(AppRoutes.mainAppCards);
             }
-            else { }
-            
-        }));
+        }, error => console.error(error)));
     }
 }

@@ -18,6 +18,7 @@ import { TestCardComponent } from './components/testcard/testcard.component';
 import { TestComponent } from './components/test/test.component';
 
 import { SignInService } from './services/signin.service';
+import { CardsService } from './services/cards.service';
 
 @NgModule({
     declarations: [
@@ -39,6 +40,7 @@ import { SignInService } from './services/signin.service';
     ],
     providers: [
         SignInService,
+        CardsService,
     ],
 })
 export class AppModuleShared {

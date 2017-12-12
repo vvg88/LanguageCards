@@ -1,21 +1,19 @@
 ﻿import { Inject, Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { SignInCredentials } from '../shared/classes/signInCredentials';
-import { Observable } from 'rxjs/Observable';
+import { AppRoutes } from '../shared/classes/routes';
+import { HttpHelper } from '../utils/httpHelper';
 
 @Injectable()
-export class SignInService {
-    private http: Http;
-    private baseUrl: string;
-    private signInUrl: string = 'api/account/sign-in';
+export class SignInService extends HttpHelper {
+    private signInUrl: string = AppRoutes.apiAccSignIn;
 
-    constructor(http: Http,
-                @Inject('BASE_URL') baseUrl: string) {
-        this.http = http;
+    constructor(http: Http, @Inject('BASE_URL') baseUrl: string) {
+        super(http);
         this.signInUrl = baseUrl + this.signInUrl;
     }
 
     public async signIn(signInCredentials: SignInCredentials) {
-        return await this.http.post(this.signInUrl, signInCredentials);
+        return await this.postAction(this.signInUrl, signInCredentials);
     }
 }
