@@ -1,6 +1,6 @@
 ﻿import { Http } from '@angular/http';
 
-export class HttpHelper {
+export default class HttpHelper {
     private http: Http;
 
     constructor(http: Http) {

@@ -1,8 +1,8 @@
-﻿import { Component, Input, OnInit } from '@angular/core';
-import { Card } from '../../shared/classes/card';
-import { Word } from '../../shared/classes/word';
-import { Answer } from '../../shared/classes/answer';
-import { AnsweredCard } from '../../shared/classes/answeredCard';
+﻿import { Component, Input } from '@angular/core';
+import Card from '../../shared/models/card';
+import Word from '../../shared/models/word';
+import Answer from '../../shared/models/answer';
+import AnsweredCard from '../../shared/models/answeredCard';
 
 @Component({
     selector: 'testcard',
@@ -10,10 +10,6 @@ import { AnsweredCard } from '../../shared/classes/answeredCard';
     styleUrls: ['./testcard.component.css'],
 })
 
-export class TestCardComponent implements OnInit {
+export default class TestCardComponent {
     @Input() answeredCard: AnsweredCard;
-
-    constructor() { }
-
-    ngOnInit() { }
 }

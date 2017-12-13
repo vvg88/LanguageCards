@@ -4,6 +4,5 @@
     selector: 'mainapp',
     templateUrl: './mainapp.component.html',
 })
-
-export class MainAppComponent {
+export default class MainAppComponent {
 }

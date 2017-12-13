@@ -45,8 +45,8 @@
     <None Remove="ClientApp\app\components\test\test.component.ts" />
     <None Remove="ClientApp\app\services\cards.service.ts" />
     <None Remove="ClientApp\app\services\signin.service.ts" />
-    <None Remove="ClientApp\app\shared\classes\answeredCard.ts" />
-    <None Remove="ClientApp\app\shared\classes\routes.ts" />
+    <None Remove="ClientApp\app\shared\models\answeredCard.ts" />
+    <None Remove="ClientApp\app\shared\models\routes.ts" />
     <None Remove="ClientApp\app\utils\httpHelper.ts" />
   </ItemGroup>
 
@@ -55,7 +55,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="ClientApp\app\components\app\app.routes.ts" />
+    <TypeScriptCompile Include="ClientApp\app\app.routes.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\carddetail\carddetail.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\cards\cards.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\card\card.component.ts" />
@@ -64,12 +64,12 @@
     <TypeScriptCompile Include="ClientApp\app\components\test\test.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\cards.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\signin.service.ts" />
-    <TypeScriptCompile Include="ClientApp\app\shared\classes\answer.ts" />
-    <TypeScriptCompile Include="ClientApp\app\shared\classes\answeredCard.ts" />
-    <TypeScriptCompile Include="ClientApp\app\shared\classes\card.ts" />
-    <TypeScriptCompile Include="ClientApp\app\shared\classes\routes.ts" />
-    <TypeScriptCompile Include="ClientApp\app\shared\classes\signInCredentials.ts" />
-    <TypeScriptCompile Include="ClientApp\app\shared\classes\word.ts" />
+    <TypeScriptCompile Include="ClientApp\app\shared\models\answer.ts" />
+    <TypeScriptCompile Include="ClientApp\app\shared\models\answeredCard.ts" />
+    <TypeScriptCompile Include="ClientApp\app\shared\models\card.ts" />
+    <TypeScriptCompile Include="ClientApp\app\shared\routes.ts" />
+    <TypeScriptCompile Include="ClientApp\app\shared\models\signInCredentials.ts" />
+    <TypeScriptCompile Include="ClientApp\app\shared\models\word.ts" />
     <TypeScriptCompile Include="ClientApp\app\utils\httpHelper.ts" />
   </ItemGroup>
 

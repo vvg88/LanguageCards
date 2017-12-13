@@ -1,16 +1,14 @@
 ﻿import { Inject, Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { AppRoutes } from '../shared/classes/routes';
-import { HttpHelper } from '../utils/httpHelper';
+import { AppRoutes } from '../shared/routes';
+import HttpHelper from '../utils/httpHelper';
 
 @Injectable()
-export class CardsService extends HttpHelper {
+export default class CardsService extends HttpHelper {
     private cardsApiUrl: string = AppRoutes.apiCards;
-    private baseUrl: string;
 
     constructor(http: Http, @Inject('BASE_URL') baseUrl: string) {
         super(http);
-        this.baseUrl = baseUrl;
         this.cardsApiUrl = baseUrl + this.cardsApiUrl;
     }
 

@@ -1,19 +1,19 @@
 ﻿import { Component, Inject, } from '@angular/core';
 import { Router } from '@angular/router';
 import { Http } from '@angular/http';
-import { Card } from '../../shared/classes/card';
-import { Answer } from '../../shared/classes/answer';
-import { TestCardComponent } from '../testcard/testcard.component';
-import { CardsService } from '../../services/cards.service';
-import { AppRoutes } from '../../shared/classes/routes';
-import { AnsweredCard } from '../../shared/classes/answeredCard';
+import { AppRoutes } from '../../shared/routes';
+import Card from '../../shared/models/card';
+import Answer from '../../shared/models/answer';
+import TestCardComponent from '../testcard/testcard.component';
+import CardsService from '../../services/cards.service';
+import AnsweredCard from '../../shared/models/answeredCard';
 
 @Component({
     selector: 'test',
     templateUrl: './test.component.html',
     styleUrls: ['./test.component.css'],
 })
-export class TestComponent {
+export default class TestComponent {
     public cards: AnsweredCard[] = [];
     private cardsService: CardsService;
     private router: Router;
@@ -33,8 +33,10 @@ export class TestComponent {
     }
 
     private getCards(cards: Card[]) {
-        this.cards = cards.map((card) =>
-            new AnsweredCard(card.id, card.word.definition, card.word.speechPart.name, card.word.translations.map(t => t.text)));
+        this.cards = cards.map((card) => {
+            let ac: AnsweredCard = { cardId: card.id, wordDefinition: card.word.definition, speechPart: card.word.speechPart.name, translations: card.word.translations.map(t => t.text), answer: "" };
+            return ac;
+        });
     }
 
     private getAnswers(): Answer[] {
