@@ -24,10 +24,11 @@ export default class SigninComponent {
     }
 
     public signIn() {
-        this.signInService.signIn(this.signInCredentials).then(response => response.subscribe(result => {
-            if (result.ok) {
-                this.router.navigateByUrl(AppRoutes.mainAppCards);
-            }
-        }, error => console.error(error)));
+        this.signInService.signIn(this.signInCredentials)
+            .then(reslt => {
+                if (reslt) {
+                    this.router.navigateByUrl(AppRoutes.mainAppCards);
+                }
+            }).catch(error => console.error(error));
     }
 }

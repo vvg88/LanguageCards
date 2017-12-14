@@ -21,9 +21,7 @@ export default class TestComponent {
     constructor(cardsService: CardsService, router: Router) {
         this.cardsService = cardsService;
         this.router = router;
-        this.cardsService.getCards().then(response => response.subscribe(result => {
-            this.getCards(result.json() as Card[]);
-        }, error => console.error(error)));
+        this.cardsService.getCards().then(cards => this.getCards(cards), error => console.error(error));
     }
     
     submitAnswers() {
@@ -34,7 +32,12 @@ export default class TestComponent {
 
     private getCards(cards: Card[]) {
         this.cards = cards.map((card) => {
-            let ac: AnsweredCard = { cardId: card.id, wordDefinition: card.word.definition, speechPart: card.word.speechPart.name, translations: card.word.translations.map(t => t.text), answer: "" };
+            let ac: AnsweredCard = {
+                cardId: card.id,
+                wordDefinition: card.word.definition,
+                speechPart: card.word.speechPart.name,
+                translations: card.word.translations.map(t => t.text), answer: ""
+            };
             return ac;
         });
     }

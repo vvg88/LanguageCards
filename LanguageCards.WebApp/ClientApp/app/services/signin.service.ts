@@ -13,7 +13,8 @@ export default class SignInService extends HttpHelper {
         this.signInUrl = baseUrl + this.signInUrl;
     }
 
-    public async signIn(signInCredentials: SignInCredentials) {
-        return await this.postAction(this.signInUrl, signInCredentials);
+    public async signIn(signInCredentials: SignInCredentials): Promise<boolean> {
+        let resp = await this.postAction(this.signInUrl, signInCredentials);
+        return await new Promise<boolean>((resolve, reject) => resp.subscribe(result => resolve(result.ok), error => reject(error)));
     }
 }

@@ -2,6 +2,8 @@
 import { Http } from '@angular/http';
 import { AppRoutes } from '../shared/routes';
 import HttpHelper from '../utils/httpHelper';
+import Card from '../shared/models/card';
+import Answer from '../shared/models/answer';
 
 @Injectable()
 export default class CardsService extends HttpHelper {
@@ -12,11 +14,12 @@ export default class CardsService extends HttpHelper {
         this.cardsApiUrl = baseUrl + this.cardsApiUrl;
     }
 
-    public async getCards() {
-        return await this.getAction(this.cardsApiUrl);
+    public async getCards(): Promise<Card[]> {
+        let resp = await this.getAction(this.cardsApiUrl);
+        return await new Promise<Card[]>((resolve, reject) => resp.subscribe(result => resolve(result.json() as Card[]), error => reject(error)));
     }
 
-    public async postCards(body: any) {
+    public async postCards(body: Answer[]) {
         return await this.postAction(this.cardsApiUrl, body);
     }
 }
