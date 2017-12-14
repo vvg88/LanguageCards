@@ -40,7 +40,8 @@ namespace LanguageCards.WebApp
             services.Configure<JWTSettings>(Configuration.GetSection("JWTSettings"));
 
             services.AddEntityFrameworkSqlServer()
-              .AddDbContext<LanguageCardsContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("LanguageCardsDatabase")));
+              .AddDbContext<LanguageCardsContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("LanguageCardsDatabase"),
+                                                                          b => b.MigrationsAssembly("LanguageCards.WebApp")));
 
             services.AddIdentity<User, IdentityRole<int>>()
                     .AddEntityFrameworkStores<LanguageCardsContext>();
