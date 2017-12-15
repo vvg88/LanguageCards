@@ -19,6 +19,7 @@ namespace LanguageCards.Data
         public DbSet<Word> Words { get; set; }
         public DbSet<CardStatus> Statuses { get; set; }
         public DbSet<WordTranslation> WordsTranslations { get; set; }
+        public DbSet<Statistic> Statistics { get; set; }
 
         public LanguageCardsContext(DbContextOptions<LanguageCardsContext> options) : base(options)
         { }
@@ -33,6 +34,7 @@ namespace LanguageCards.Data
             UserConfiguration.Configure(modelBuilder);
             WordConfiguration.Configure(modelBuilder);
             WordTranslationConfiguration.Configure(modelBuilder);
+            StatisticConfiguration.Configure(modelBuilder);
         }
     }
 }

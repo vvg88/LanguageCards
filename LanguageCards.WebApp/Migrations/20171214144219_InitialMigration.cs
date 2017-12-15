@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace LanguageCards.WebApp.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -309,6 +309,36 @@ namespace LanguageCards.WebApp.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Statistics",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    AttemptsNum = table.Column<int>(nullable: false),
+                    BeginTime = table.Column<long>(nullable: false),
+                    CardId = table.Column<int>(nullable: false),
+                    FinishTime = table.Column<long>(nullable: false),
+                    SuccessfulAttemptsNum = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Statistics", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Statistics_Cards_CardId",
+                        column: x => x.CardId,
+                        principalTable: "Cards",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Statistics_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -369,6 +399,16 @@ namespace LanguageCards.WebApp.Migrations
                 column: "WordId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Statistics_CardId",
+                table: "Statistics",
+                column: "CardId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Statistics_UserId",
+                table: "Statistics",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Words_LanguageId",
                 table: "Words",
                 column: "LanguageId");
@@ -410,16 +450,19 @@ namespace LanguageCards.WebApp.Migrations
                 name: "CardProgresses");
 
             migrationBuilder.DropTable(
+                name: "Statistics");
+
+            migrationBuilder.DropTable(
                 name: "WordsTranslations");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Cards");
+                name: "Statuses");
 
             migrationBuilder.DropTable(
-                name: "Statuses");
+                name: "Cards");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

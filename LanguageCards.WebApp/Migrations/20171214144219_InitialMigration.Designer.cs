@@ -11,8 +11,8 @@ using System;
 namespace LanguageCards.WebApp.Migrations
 {
     [DbContext(typeof(LanguageCardsContext))]
-    [Migration("20171213153939_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20171214144219_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -95,6 +95,32 @@ namespace LanguageCards.WebApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SpeechParts");
+                });
+
+            modelBuilder.Entity("LanguageCards.Data.Entities.Statistic", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("AttemptsNum");
+
+                    b.Property<long>("BeginTime");
+
+                    b.Property<int>("CardId");
+
+                    b.Property<long>("FinishTime");
+
+                    b.Property<int>("SuccessfulAttemptsNum");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CardId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Statistics");
                 });
 
             modelBuilder.Entity("LanguageCards.Data.Entities.User", b =>
@@ -320,6 +346,19 @@ namespace LanguageCards.WebApp.Migrations
                     b.HasOne("LanguageCards.Data.Entities.CardStatus", "CardStatus")
                         .WithMany("CardProgresses")
                         .HasForeignKey("CardStatusId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("LanguageCards.Data.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("LanguageCards.Data.Entities.Statistic", b =>
+                {
+                    b.HasOne("LanguageCards.Data.Entities.Card", "Card")
+                        .WithMany()
+                        .HasForeignKey("CardId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("LanguageCards.Data.Entities.User", "User")
