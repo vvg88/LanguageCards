@@ -14,9 +14,11 @@ import MainAppComponent from './components/mainapp/mainapp.component';
 import CardDetailComponent from './components/carddetail/carddetail.component';
 import TestCardComponent from './components/testcard/testcard.component';
 import TestComponent from './components/test/test.component';
+import StatisticComponent from './components/statistic/statistic.component';
 
 import SignInService from './services/signin.service';
 import CardsService from './services/cards.service';
+import StatisticService from './services/statistic.service';
 
 @NgModule({
     declarations: [
@@ -29,6 +31,7 @@ import CardsService from './services/cards.service';
         CardDetailComponent,
         TestCardComponent,
         TestComponent,
+        StatisticComponent,
     ],
     imports: [
         CommonModule,
@@ -39,6 +42,7 @@ import CardsService from './services/cards.service';
     providers: [
         SignInService,
         CardsService,
+        StatisticService
     ],
 })
 export class AppModuleShared {

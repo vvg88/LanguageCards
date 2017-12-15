@@ -25,6 +25,12 @@
                 </li>
 
                 <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="[{ outlets: { cardList: ['statistic'] }}]">
+                        <span class="glyphicon glyphicon-stats"></span> Statistic
+                    </a>
+                </li>
+
+                <li [routerLinkActive]="['link-active']">
                     <a [routerLink]="['/signin']">
                         <span class="glyphicon glyphicon-log-out"></span> Sign out
                     </a>

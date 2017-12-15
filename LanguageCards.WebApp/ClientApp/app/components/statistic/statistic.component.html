@@ -1,0 +1,78 @@
+﻿<style>span.italics {font-style:italic}
+    .b:after {
+        content: ")"
+    }
+
+    .b:before {
+        content: "("
+    }
+</style>
+<form>
+    <h2>Statistic</h2>
+    <hr />
+    <p *ngIf="!cardStatInProgress"><em>Loading...</em></p>
+    <div *ngIf="cardStatInProgress">
+
+        <div class="panel-group">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <a data-toggle="collapse" href="#collapse1">Cards in progress <span class="badge">{{cardStatInProgress.length}}</span></a>
+                    </h3>
+                </div>
+                <div id="collapse1" class="panel-collapse collapse">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Card:</th>
+                                <th>Attempts/Successful attempts:</th>
+                                <th>Score/Max score:</th>
+                                <th>Start time:</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let stat of cardStatInProgress">
+                            <tr>
+                                <td>{{stat.cardProgress.card.word.text}} <span class="b italics">{{stat.cardProgress.card.word.speechPart.name}}</span></td>
+                                <td>{{stat.attemptsNum}}/{{stat.successfulAttemptsNum}}</td>
+                                <td>{{stat.cardProgress.score}}/{{stat.cardProgress.maxScore}}</td>
+                                <td>{{stat.beginTime | date:'d MMM y H:mm:ss'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-group">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <a data-toggle="collapse" href="#collapse2">Cards finished <span class="badge">{{cardStatFinished.length}}</span></a>
+                    </h3>
+                </div>
+                <div id="collapse2" class="panel-collapse collapse">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Card:</th>
+                                <th>Attempts/Successful attempts:</th>
+                                <th>Start time:</th>
+                                <th>Finish time:</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let stat of cardStatFinished">
+                            <tr>
+                                <td>{{stat.cardProgress.card.word.text}} <span class="b italics">{{stat.cardProgress.card.word.speechPart.name}}</span></td>
+                                <td>{{stat.attemptsNum}}/{{stat.successfulAttemptsNum}}</td>
+                                <td>{{stat.beginTime | date:'d MMM y H:mm:ss'}}</td>
+                                <td>{{stat.finishTime | date:'d MMM y H:mm:ss'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <hr />
+
+    </div>
+</form>

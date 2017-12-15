@@ -12,6 +12,7 @@ using LanguageCards.Data.DalOperation;
 using LanguageCards.WebApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using LanguageCards.Data.Helpers;
 
 namespace LanguageCards.WebApp.Controllers
 {
@@ -68,7 +69,8 @@ namespace LanguageCards.WebApp.Controllers
             {
                 var user = GetUser().Result;
                 var stat = statRepo.GetStatistic(user.Id);
-                return stat.Select(s => (StatisticModel)s);
+                var tmp = stat.Select(s => (StatisticModel)s).ToList();
+                return tmp;// stat.Select(s => (StatisticModel)s);
             }
             catch { throw; }
         }
@@ -92,10 +94,16 @@ namespace LanguageCards.WebApp.Controllers
 
                 foreach (var answeredCard in answeredCards)
                 {
-                    if (answeredCard.AnswerIsCorrect
-                        && ++answeredCard.CardProgress.Score == answeredCard.CardProgress.MaxScore)
+                    var stat = statRepo.GetStatByProgressId(answeredCard.CardProgress.Id);
+                    stat.AttemptsNum++;
+                    if (answeredCard.AnswerIsCorrect)
                     {
-                        answeredCard.CardProgress.CardStatusId = (int)CardStatusEnum.Finished;
+                        stat.SuccessfulAttemptsNum++;
+                        if (++answeredCard.CardProgress.Score == answeredCard.CardProgress.MaxScore)
+                        {
+                            answeredCard.CardProgress.CardStatusId = (int)CardStatusEnum.Finished;
+                            stat.FinishTime = JsTimeProvider.GetJsTimeInMilliseconds();
+                        }
                     }
                 }
                 cardProgsRep.UpdateCardsInProgress();

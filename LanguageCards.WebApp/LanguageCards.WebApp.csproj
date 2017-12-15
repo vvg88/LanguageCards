@@ -42,12 +42,17 @@
     <None Remove="ClientApp\app\components\cards\cards.component.ts" />
     <None Remove="ClientApp\app\components\card\card.component.ts" />
     <None Remove="ClientApp\app\components\mainapp\mainapp.component.ts" />
+    <None Remove="ClientApp\app\components\statistic\statistic.component.ts" />
     <None Remove="ClientApp\app\components\testcard\testcard.component.ts" />
     <None Remove="ClientApp\app\components\test\test.component.ts" />
     <None Remove="ClientApp\app\services\cards.service.ts" />
     <None Remove="ClientApp\app\services\signin.service.ts" />
+    <None Remove="ClientApp\app\services\statistic.service.ts" />
     <None Remove="ClientApp\app\shared\models\answeredCard.ts" />
+    <None Remove="ClientApp\app\shared\models\cardProgress.ts" />
+    <None Remove="ClientApp\app\shared\models\cardStatus.ts" />
     <None Remove="ClientApp\app\shared\models\routes.ts" />
+    <None Remove="ClientApp\app\shared\models\statistic.ts" />
     <None Remove="ClientApp\app\utils\httpHelper.ts" />
   </ItemGroup>
 
@@ -61,13 +66,19 @@
     <TypeScriptCompile Include="ClientApp\app\components\cards\cards.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\card\card.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\mainapp\mainapp.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\statistic\statistic.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\testcard\testcard.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\test\test.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\cards.service.ts" />
     <TypeScriptCompile Include="ClientApp\app\services\signin.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\services\statistic.service.ts" />
+    <TypeScriptCompile Include="ClientApp\app\shared\enums\cardStatusEnum.ts" />
     <TypeScriptCompile Include="ClientApp\app\shared\models\answer.ts" />
     <TypeScriptCompile Include="ClientApp\app\shared\models\answeredCard.ts" />
     <TypeScriptCompile Include="ClientApp\app\shared\models\card.ts" />
+    <TypeScriptCompile Include="ClientApp\app\shared\models\cardProgress.ts" />
+    <TypeScriptCompile Include="ClientApp\app\shared\models\cardStatus.ts" />
+    <TypeScriptCompile Include="ClientApp\app\shared\models\statistic.ts" />
     <TypeScriptCompile Include="ClientApp\app\shared\routes.ts" />
     <TypeScriptCompile Include="ClientApp\app\shared\models\signInCredentials.ts" />
     <TypeScriptCompile Include="ClientApp\app\shared\models\word.ts" />

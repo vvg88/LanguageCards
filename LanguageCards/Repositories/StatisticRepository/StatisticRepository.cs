@@ -1,5 +1,6 @@
 ﻿using LanguageCards.Data.DalOperation;
 using LanguageCards.Data.Entities;
+using LanguageCards.Data.Helpers;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace LanguageCards.Data.Repositories
         {
             RunExceptionHandledMethod(() =>
             {
-                context.Statistics.Add(new Statistic() { CardProgress = cardProgress, BeginTime = DateTime.Now.Ticks });
+                context.Statistics.Add(new Statistic() { CardProgress = cardProgress, BeginTime = JsTimeProvider.GetJsTimeInMilliseconds() });
                 context.SaveChanges();
             }, "An inner exception occurred on statistics addition!");
         }
@@ -38,6 +39,16 @@ namespace LanguageCards.Data.Repositories
                                               .ToList();
             });
             return statistic;
+        }
+
+        public Statistic GetStatByProgressId(int cardProgressId)
+        {
+            Statistic stat = null;
+            RunExceptionHandledMethod(() =>
+            {
+                stat = context.Statistics.Single(s => s.CardProgressId == cardProgressId);
+            });
+            return stat;
         }
 
         private void RunExceptionHandledMethod(Action method)

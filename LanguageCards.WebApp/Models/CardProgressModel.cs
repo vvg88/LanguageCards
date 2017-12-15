@@ -13,8 +13,6 @@ namespace LanguageCards.WebApp.Models
         public int MaxScore { get; set; }
         public int CardId { get; set; }
         public CardModel Card { get; set; }
-        public int UserId { get; set; }
-        public UserModel User { get; set; }
         public int CardStatusId { get; set; }
         public CardStatusModel CardStatus { get; set; }
 
@@ -27,8 +25,6 @@ namespace LanguageCards.WebApp.Models
                 MaxScore = cardProg.MaxScore,
                 CardId = cardProg.CardId,
                 Card = (CardModel)cardProg.Card,
-                UserId = cardProg.UserId,
-                User = (UserModel)cardProg.User,
                 CardStatusId = cardProg.CardStatusId,
                 CardStatus = (CardStatusModel)cardProg.CardStatus,
             };

@@ -10,5 +10,7 @@ namespace LanguageCards.Data.Repositories
         void AddStatistic(CardProgress cardProgress);
 
         IEnumerable<Statistic> GetStatistic(int userId);
+
+        Statistic GetStatByProgressId(int cardProgressId);
     }
 }
