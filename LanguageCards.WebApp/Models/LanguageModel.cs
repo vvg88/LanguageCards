@@ -22,11 +22,12 @@ namespace LanguageCards.WebApp.Models
 
         public static explicit operator LanguageModel(Language language)
         {
-            return new LanguageModel()
-            {
-                Id = language.Id,
-                Name = language.Name,
-            };
+            return language == null ? new LanguageModel() : 
+                                      new LanguageModel()
+                                      {
+                                          Id = language.Id,
+                                          Name = language.Name,
+                                      };
         }
     }
 }

@@ -28,6 +28,7 @@ namespace LanguageCards.WebApp.Controllers
         private readonly ICardsRepository cardsRep;
         private readonly ICardStatusesRepository cardStatusesRep;
         private readonly ICardProgressesRepository cardProgsRep;
+        private readonly IStatisticRepository statRepo;
         private readonly UserManager<User> userManager;
         private const int requestedCardsNum = 5;
 
@@ -38,6 +39,7 @@ namespace LanguageCards.WebApp.Controllers
             cardsRep = RepositoryProvider.GetCardsRepository(lcContext);
             cardStatusesRep = RepositoryProvider.GetCardStatusesRepository(lcContext);
             cardProgsRep = RepositoryProvider.GetCardProgressesRepository(lcContext);
+            statRepo = RepositoryProvider.GetStatisticRepository(lcContext);
             this.userManager = userManager;
         }
 
@@ -55,6 +57,18 @@ namespace LanguageCards.WebApp.Controllers
                 cards = cardsRep.GetCards(user.Id, requestedCardsNum);
                 cardProgsRep.SetCardsInProgress(cards, user.Id);
                 return cards.Select(c => (CardModel)c);
+            }
+            catch { throw; }
+        }
+
+        [HttpGet("statistic")]
+        public IEnumerable<StatisticModel> GetStatistic()
+        {
+            try
+            {
+                var user = GetUser().Result;
+                var stat = statRepo.GetStatistic(user.Id);
+                return stat.Select(s => (StatisticModel)s);
             }
             catch { throw; }
         }

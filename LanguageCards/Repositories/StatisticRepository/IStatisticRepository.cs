@@ -8,5 +8,7 @@ namespace LanguageCards.Data.Repositories
     public interface IStatisticRepository
     {
         void AddStatistic(CardProgress cardProgress);
+
+        IEnumerable<Statistic> GetStatistic(int userId);
     }
 }
