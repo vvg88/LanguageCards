@@ -15,6 +15,7 @@ namespace LanguageCards.Data.Repositories
         private ICardsRepository cardsRepository;
         private IUsersRepository usersRepository;
         private ICardStatusesRepository cardStatusesRepository;
+        private IStatisticRepository statRepo;
 
         public CardProgressesRepository(LanguageCardsContext context, ICardsRepository cardsRep)
         {
@@ -22,6 +23,7 @@ namespace LanguageCards.Data.Repositories
             cardsRepository = cardsRep;
             usersRepository = RepositoryProvider.GetUsersRepository(context);
             cardStatusesRepository = RepositoryProvider.GetCardStatusesRepository(context);
+            statRepo = RepositoryProvider.GetStatisticRepository(context);
         }
 
         public CardProgressesRepository(LanguageCardsContext context) : this(context, RepositoryProvider.GetCardsRepository(context)) { }
@@ -91,7 +93,9 @@ namespace LanguageCards.Data.Repositories
                 var user = usersRepository.GetUser(userId);
                 foreach (var card in cardsToBeSetInProgress)
                 {
-                    context.CardProgresses.Add(new CardProgress() { Card = card, CardStatus = cardStat, User = user });
+                    var cardProg = new CardProgress() { Card = card, CardStatus = cardStat, User = user };
+                    context.CardProgresses.Add(cardProg);
+                    statRepo.AddStatistic(cardProg);
                 }
                 context.SaveChanges();
             }, "An inner exception occurred on setting cards in progress!");
