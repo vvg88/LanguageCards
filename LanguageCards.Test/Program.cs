@@ -12,7 +12,7 @@ namespace LanguageCards.Test
         static void Main(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<LanguageCardsContext>();
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=LanguageCards;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=LanguageCards1;Trusted_Connection=True;");
             using (LanguageCardsContext CardsDataBase = new LanguageCardsContext(optionsBuilder.Options))
             {
                 DbInitializer.InitializeContext(CardsDataBase);
