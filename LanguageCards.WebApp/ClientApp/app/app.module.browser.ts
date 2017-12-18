@@ -9,9 +9,6 @@ import AppComponent from './components/app/app.component';
         BrowserModule,
         AppModuleShared
     ],
-    providers: [
-        { provide: 'BASE_URL', useFactory: getBaseUrl }
-    ]
 })
 export class AppModule {
 }

@@ -7,9 +7,9 @@ import Statistic from '../shared/models/statistic';
 export default class StatisticService extends HttpHelper {
     private statApiUrl: string = 'api/cards/statistic';
 
-    constructor(http: Http, @Inject('BASE_URL') baseUrl: string) {
+    constructor(http: Http) {
         super(http);
-        this.statApiUrl = baseUrl + this.statApiUrl;
+        this.statApiUrl = this.baseUrl + this.statApiUrl;
     }
 
     public async getStatistic(): Promise<Statistic[]> {

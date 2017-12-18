@@ -8,9 +8,9 @@ import HttpHelper from '../utils/httpHelper';
 export default class SignInService extends HttpHelper {
     private signInUrl: string = AppRoutes.apiAccSignIn;
 
-    constructor(http: Http, @Inject('BASE_URL') baseUrl: string) {
+    constructor(http: Http) {
         super(http);
-        this.signInUrl = baseUrl + this.signInUrl;
+        this.signInUrl = this.baseUrl + this.signInUrl;
     }
 
     public async signIn(signInCredentials: SignInCredentials): Promise<boolean> {

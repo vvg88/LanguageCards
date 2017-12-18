@@ -9,9 +9,9 @@ import Answer from '../shared/models/answer';
 export default class CardsService extends HttpHelper {
     private cardsApiUrl: string = AppRoutes.apiCards;
 
-    constructor(http: Http, @Inject('BASE_URL') baseUrl: string) {
+    constructor(http: Http) {
         super(http);
-        this.cardsApiUrl = baseUrl + this.cardsApiUrl;
+        this.cardsApiUrl = this.baseUrl + this.cardsApiUrl;
     }
 
     public async getCards(): Promise<Card[]> {
