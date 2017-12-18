@@ -11,9 +11,10 @@ using System;
 namespace LanguageCards.WebApp.Migrations
 {
     [DbContext(typeof(LanguageCardsContext))]
-    partial class LanguageCardsContextModelSnapshot : ModelSnapshot
+    [Migration("20171218081528_TimesChanged")]
+    partial class TimesChanged
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

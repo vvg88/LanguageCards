@@ -7,7 +7,7 @@ import Answer from '../shared/models/answer';
 
 @Injectable()
 export default class CardsService extends HttpHelper {
-    private cardsApiUrl: string = AppRoutes.apiCards;
+    private cardsApiUrl: string = 'api/cards';
 
     constructor(http: Http) {
         super(http);

@@ -13,8 +13,8 @@ namespace LanguageCards.WebApp.Models
         public CardProgressModel CardProgress { get; set; }
         public int AttemptsNum { get; set; }
         public int SuccessfulAttemptsNum { get; set; }
-        public long BeginTime { get; set; }
-        public long FinishTime { get; set; }
+        public DateTime BeginTime { get; set; }
+        public DateTime FinishTime { get; set; }
 
         public static explicit operator StatisticModel(Statistic stat)
         {
@@ -25,8 +25,8 @@ namespace LanguageCards.WebApp.Models
                 CardProgress = (CardProgressModel)stat.CardProgress,
                 AttemptsNum = stat.AttemptsNum,
                 SuccessfulAttemptsNum = stat.SuccessfulAttemptsNum,
-                BeginTime = stat.BeginTime,
-                FinishTime = stat.FinishTime,
+                BeginTime = stat.StartTime,
+                FinishTime = stat.TimeFinish ,
             };
         }
     }

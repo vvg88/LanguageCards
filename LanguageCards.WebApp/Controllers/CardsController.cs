@@ -12,7 +12,6 @@ using LanguageCards.Data.DalOperation;
 using LanguageCards.WebApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using LanguageCards.Data.Helpers;
 
 namespace LanguageCards.WebApp.Controllers
 {
@@ -102,7 +101,7 @@ namespace LanguageCards.WebApp.Controllers
                         if (++answeredCard.CardProgress.Score == answeredCard.CardProgress.MaxScore)
                         {
                             answeredCard.CardProgress.CardStatusId = (int)CardStatusEnum.Finished;
-                            stat.FinishTime = JsTimeProvider.GetJsTimeInMilliseconds();
+                            stat.TimeFinish = DateTime.Now;
                         }
                     }
                 }

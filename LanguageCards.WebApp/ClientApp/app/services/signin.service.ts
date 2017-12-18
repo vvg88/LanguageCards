@@ -6,7 +6,7 @@ import HttpHelper from '../utils/httpHelper';
 
 @Injectable()
 export default class SignInService extends HttpHelper {
-    private signInUrl: string = AppRoutes.apiAccSignIn;
+    private signInUrl: string = 'api/account/sign-in';
 
     constructor(http: Http) {
         super(http);

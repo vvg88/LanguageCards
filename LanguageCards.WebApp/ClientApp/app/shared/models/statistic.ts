@@ -6,6 +6,6 @@ export default class Statistic {
     cardProgress: CardProgress;
     attemptsNum: number;
     successfulAttemptsNum: number;
-    beginTime: number;
-    finishTime: number;
+    beginTime: Date;
+    finishTime: Date;
 }

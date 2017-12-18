@@ -11,7 +11,7 @@ namespace LanguageCards.Data.Entities
         public CardProgress CardProgress { get; set; }
         public int AttemptsNum { get; set; }
         public int SuccessfulAttemptsNum { get; set; }
-        public long BeginTime { get; set; }
-        public long FinishTime { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime TimeFinish { get; set; }
     }
 }
