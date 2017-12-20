@@ -7,6 +7,7 @@ import Answer from '../../shared/models/answer';
 import TestCardComponent from '../testcard/testcard.component';
 import CardsService from '../../services/cards.service';
 import AnsweredCard from '../../shared/models/answeredCard';
+import AnsweredCardResult from '../../shared/models/answeredCardResult';
 
 @Component({
     selector: 'test',
@@ -15,6 +16,7 @@ import AnsweredCard from '../../shared/models/answeredCard';
 })
 export default class TestComponent {
     public cards: AnsweredCard[] = [];
+    public answersSubmitted: boolean;
     private cardsService: CardsService;
     private router: Router;
 
@@ -26,7 +28,8 @@ export default class TestComponent {
     
     submitAnswers() {
         this.cardsService.postCards(this.getAnswers()).then(response => response.subscribe(result => {
-            this.router.navigateByUrl(AppRoutes.mainAppCards);
+            this.answersSubmitted = true;
+            this.receiveAnswersResults(result.json() as AnsweredCardResult[]);
         }, error => console.error(error)));
     }
 
@@ -36,7 +39,8 @@ export default class TestComponent {
                 cardId: card.id,
                 wordDefinition: card.word.definition,
                 speechPart: card.word.speechPart.name,
-                translations: card.word.translations.map(t => t.text), answer: ""
+                translations: card.word.translations.map(t => t.text), answer: "",
+                answerIsCorrect: false,
             };
             return ac;
         });
@@ -48,6 +52,13 @@ export default class TestComponent {
             answ.cardId = c.cardId;
             answ.answerText = c.answer;
             return answ;
+        });
+    }
+
+    private receiveAnswersResults(results: AnsweredCardResult[]) {
+        this.cards.forEach(c => {
+            let res = results.find(r => r.cardId === c.cardId);
+            if (res !== undefined) c.answerIsCorrect = res.isCorrect;
         });
     }
 }

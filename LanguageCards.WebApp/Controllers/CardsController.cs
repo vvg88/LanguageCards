@@ -80,7 +80,7 @@ namespace LanguageCards.WebApp.Controllers
         /// </summary>
         /// <param name="answeredCardModels"> A collection that contains answers and cards' ids </param>
         [HttpPost]
-        public void Post([FromBody]IEnumerable<AnsweredCardModel> answeredCardModels)
+        public IEnumerable<AnsweredCardResult> Post([FromBody]IEnumerable<AnsweredCardModel> answeredCardModels)
         {
             try
             {
@@ -106,6 +106,7 @@ namespace LanguageCards.WebApp.Controllers
                     }
                 }
                 cardProgsRep.UpdateCardsInProgress();
+                return answeredCards.Select(ac => new AnsweredCardResult() { CardId = ac.CardProgress.CardId, IsCorrect = ac.AnswerIsCorrect });
             }
             catch { throw; }
         }

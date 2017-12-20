@@ -6,3 +6,12 @@
     padding: 15px;
     margin: 0 auto;
 }
+
+a.disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+button.btn-float-right {
+    float: right;
+}

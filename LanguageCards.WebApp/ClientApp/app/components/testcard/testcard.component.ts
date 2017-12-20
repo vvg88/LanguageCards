@@ -12,4 +12,5 @@ import AnsweredCard from '../../shared/models/answeredCard';
 
 export default class TestCardComponent {
     @Input() answeredCard: AnsweredCard;
+    @Input() answerSubmitted: boolean;
 }

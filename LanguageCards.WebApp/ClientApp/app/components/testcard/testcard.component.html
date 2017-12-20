@@ -4,12 +4,18 @@
             <form class="form-horizontal">
                 
                 <div class="form-group">
-                    <div class="text-left col-lg-8">
+                    <div class="col-lg-8 text-left">
                         {{answeredCard.wordDefinition}} <br />
                         <p class="italic bracket">{{answeredCard.speechPart}}</p>
                     </div>
-                    <div class="col-lg-4 has-feedback">
+                    <div class="col-lg-4 has-feedback"
+                         [class.has-success]="answerSubmitted && answeredCard.answerIsCorrect"
+                         [class.has-error]="answerSubmitted && !answeredCard.answerIsCorrect">
                         <input type="text" class="form-control" id="answer" [(ngModel)]="answeredCard.answer" name="answer">
+                        <span class="col-lg-1 glyphicon glyphicon-ok form-control-feedback"
+                              [class.glyphicon-ok]="answerSubmitted && answeredCard.answerIsCorrect"
+                              [class.glyphicon-remove]="answerSubmitted && !answeredCard.answerIsCorrect">
+                        </span>
                     </div>
                 </div>
             </form>

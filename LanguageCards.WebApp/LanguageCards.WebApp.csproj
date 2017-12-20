@@ -49,6 +49,7 @@
     <None Remove="ClientApp\app\services\signin.service.ts" />
     <None Remove="ClientApp\app\services\statistic.service.ts" />
     <None Remove="ClientApp\app\shared\models\answeredCard.ts" />
+    <None Remove="ClientApp\app\shared\models\answeredCardResult.ts" />
     <None Remove="ClientApp\app\shared\models\cardProgress.ts" />
     <None Remove="ClientApp\app\shared\models\cardStatus.ts" />
     <None Remove="ClientApp\app\shared\models\routes.ts" />
@@ -75,6 +76,7 @@
     <TypeScriptCompile Include="ClientApp\app\shared\enums\cardStatusEnum.ts" />
     <TypeScriptCompile Include="ClientApp\app\shared\models\answer.ts" />
     <TypeScriptCompile Include="ClientApp\app\shared\models\answeredCard.ts" />
+    <TypeScriptCompile Include="ClientApp\app\shared\models\answeredCardResult.ts" />
     <TypeScriptCompile Include="ClientApp\app\shared\models\card.ts" />
     <TypeScriptCompile Include="ClientApp\app\shared\models\cardProgress.ts" />
     <TypeScriptCompile Include="ClientApp\app\shared\models\cardStatus.ts" />

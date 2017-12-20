@@ -4,4 +4,5 @@
     speechPart: string;
     translations: string[];
     answer: string;
+    answerIsCorrect: boolean;
 }

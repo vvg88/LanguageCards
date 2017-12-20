@@ -1,10 +1,11 @@
-﻿<form (ngSubmit)="submitAnswers()" class="form-test">
+﻿<form class="form-test">
     <h2>Test</h2>
     <p>Write down answers!</p>
     <hr/>
     <p *ngIf="!cards"><em>Loading...</em></p>
     <div *ngIf="cards">
-        <testcard *ngFor="let card1 of cards; let i = index" [answeredCard]="card1"></testcard>
-        <button type="submit" class="btn btn-primary btn-lg">Submit answers</button>
+        <testcard *ngFor="let card1 of cards; let i = index" [answeredCard]="card1" [answerSubmitted]="answersSubmitted"></testcard>
+        <a class="btn btn-primary btn-lg" [class.disabled]="!answersSubmitted" href="/mainapp/(cardList:cards)" role="button">&#x2190; Back</a>
+        <button type="submit" class="btn btn-primary btn-lg btn-float-right" (click)="submitAnswers()" [disabled]="answersSubmitted">Submit answers</button>
     </div>
 </form>
