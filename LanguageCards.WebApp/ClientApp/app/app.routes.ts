@@ -6,9 +6,10 @@ import CardComponent from './components/card/card.component';
 import MainAppComponent from './components/mainapp/mainapp.component';
 import TestComponent from './components/test/test.component';
 import StatisticComponent from './components/statistic/statistic.component';
+import { AppRoutes } from './shared/routes';
 
 export const ROUTES: Routes = [
-    { path: '', redirectTo: 'signin', pathMatch: 'full' },
+    { path: '', redirectTo: AppRoutes.mainAppCards, pathMatch: 'full' },
     { path: 'signin', component: SigninComponent },
     { path: 'mainapp', component: MainAppComponent, children: [
         { path: 'cards', component: CardsComponent, outlet: 'cardList' },
@@ -16,5 +17,5 @@ export const ROUTES: Routes = [
         ]
     },
     { path: 'test', component: TestComponent },
-    { path: '**', redirectTo: 'signin' }
+    { path: '**', redirectTo: AppRoutes.mainAppCards }
 ];

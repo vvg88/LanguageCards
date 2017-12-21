@@ -13,8 +13,22 @@ export default class SignInService extends HttpHelper {
         this.signInUrl = this.baseUrl + this.signInUrl;
     }
 
-    public async signIn(signInCredentials: SignInCredentials): Promise<boolean> {
+    public async signIn(signInCredentials: SignInCredentials, rememberMe: boolean): Promise<boolean> {
         let resp = await this.postAction(this.signInUrl, signInCredentials);
-        return await new Promise<boolean>((resolve, reject) => resp.subscribe(result => resolve(result.ok), error => reject(error)));
+        return await new Promise<boolean>((resolve, reject) =>
+            resp.subscribe(result => {
+                if (result.ok) this.saveJwt(result.json().access_token, rememberMe);
+                resolve(result.ok);
+            }, error => reject(error)));
+    }
+
+    private saveJwt(accessTok: string, rememberMe: boolean) {
+        localStorage.removeItem('access_token');
+        sessionStorage.removeItem('access_token');
+        if (rememberMe) {
+            localStorage['access_token'] = accessTok;
+        } else {
+            sessionStorage['access_token'] = accessTok;
+        }
     }
 }

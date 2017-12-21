@@ -11,6 +11,7 @@ export default class CardsComponent {
     public cards: Card[] = [];
 
     constructor(cardsService: CardsService) {
+        let accessTok = sessionStorage['access_token'];
         cardsService.getCards().then(cards => this.cards = cards).catch(error => console.error(error));
     }
 }

@@ -13,7 +13,7 @@ import SignInService from '../../services/signin.service';
 
 export default class SigninComponent {
     public signInCredentials: SignInCredentials = new SignInCredentials();
-
+    public rememberMe: boolean = false;
     private signInService: SignInService;
     private router: Router;
 
@@ -24,7 +24,7 @@ export default class SigninComponent {
     }
 
     public signIn() {
-        this.signInService.signIn(this.signInCredentials)
+        this.signInService.signIn(this.signInCredentials, this.rememberMe)
             .then(reslt => {
                 if (reslt) {
                     this.router.navigateByUrl(AppRoutes.mainAppCards);
